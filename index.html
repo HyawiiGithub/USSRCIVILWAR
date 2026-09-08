@@ -187,7 +187,7 @@ const HOI4_ERW_BASE=[{t:"inf",n:18},{t:"tank",n:4},{t:"mot",n:3},{t:"cav",n:3}];
 const AIR_REV_BASE={fighters:420, cas:110, bombers:78, trans:16};
 const AIR_ERW_BASE={fighters:210, cas:58, bombers:36, trans:10};
 const WAR_START=new Date("2026-09-08T00:00:00Z"), WAR_END=new Date("2026-10-01T00:00:00Z"), DAYS=Math.round((WAR_END-WAR_START)/86400000);
-let proj,path,mergedD,feats, provCentroids=[], provAreas=[];
+let proj,path,mergedD,feats, provCentroids=[], provAreas=[], cityProvIdx=[];
 let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=false, gBase=null;
 let casual=0, gdpTotal=1820, gdpRev=1238, gdpErw=582, lastLogDay=-1;
 const SOUNDS=[
@@ -349,21 +349,20 @@ function renderOngoingBattles(f){
 let cityState=[];
 async function init(){
   const raw=await d3.json(GEO_URL); let origFeats=raw.features;
-  // Build dense provinces — OPTIMIZED: hex grid without expensive intersect, clip via outer clipPath
+  // Build dense provinces — HOTFIX: larger hex (less count) + no intersect, clip via outer clipPath — fixes unoptimized + bugged
   let union=null;
   try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
   let dense=null;
   try{
     const bbox= union ? turf.bbox(union) : [19,35,190,82];
-    const cellSide=110; // km → ~160-190 hexes — optimized, still ALOT ALOT
+    const cellSide=145; // km → ~110-130 hexes — HOTFIX: fewer, faster, still ALOT LOT
     const grid=turf.hexGrid(bbox, cellSide, {units:'kilometers'});
     dense=[];
     for(const cell of grid.features){
-      // quick bbox filter then booleanIntersects (no intersect clipping — outer clipPath handles overhang)
       if(union && !turf.booleanIntersects(cell, union)) continue;
       dense.push(cell);
     }
-    if(dense && dense.length>100) feats=dense; else feats=origFeats;
+    if(dense && dense.length>80) feats=dense; else feats=origFeats;
   }catch(e){ console.warn("dense provinces failed",e); feats=origFeats; }
   proj=projectionFor(feats); path=d3.geoPath(proj);
   mergedD=""; try{ mergedD=path(union|| {type:"FeatureCollection",features:feats}); }catch(e){ feats.forEach(f=> mergedD+=path(f)+" "); }
@@ -371,7 +370,13 @@ async function init(){
   try{
     provCentroids=feats.map(fe=>{ try{ return d3.geoCentroid(fe); }catch(e){ try{ return turf.centroid(fe).geometry.coordinates; }catch(e2){ return [0,0]; } } });
     provAreas=feats.map(fe=>{ try{ return turf.area(fe); }catch(e){ return 1; } });
-  }catch(e){ provCentroids=[]; provAreas=[]; }
+    // cache city → province index (fixes bugged city ownership + speeds up)
+    cityProvIdx=CITIES0.map(c=>{
+      const pt=turf.point(c.coords);
+      for(let i=0;i<feats.length;i++){ try{ if(turf.booleanPointInPolygon(pt, feats[i])) return i; }catch(e){} }
+      return -1;
+    });
+  }catch(e){ provCentroids=[]; provAreas=[]; cityProvIdx=[]; }
   document.getElementById("topInfo").textContent=feats.length+" PROVINCES • "+CITIES0.length+" CITIES • FRONT BY STATE • SEEDED";
   const ds=document.getElementById("daySlider"); if(ds){ ds.max=DAYS; ds.step=0.1; }
   // restore pravda log from localStorage (persists after refresh lmao)
@@ -416,18 +421,14 @@ function render(f){
       if(fac==="REV"){provRev++; areaRev+=a;} else {provErw++; areaErw+=a;}
     }
   }catch(e){ provRev=Math.round(feats.length*0.68); provErw=feats.length-provRev; provFacs=feats.map(()=> "REV"); }
-  // city ownership — FIX BUG: use containing province faction, not direct front line, so city matches map color
-  cityState=CITIES0.map(c=>{
+  // city ownership — FIXED via cached province index (fast + matches map)
+  cityState=CITIES0.map((c, idx)=>{
     let fac="REV";
-    try{
-      const pt=turf.point(c.coords);
-      let found=-1;
-      for(let i=0;i<feats.length;i++){
-        try{ if(turf.booleanPointInPolygon(pt, feats[i])){ found=i; break; } }catch(e){}
-      }
-      if(found>=0) fac=provFacs[found];
-      else fac=factionAt(c.coords[0], c.coords[1], front);
-    }catch(e){ fac=factionAt(c.coords[0], c.coords[1], front); }
+    const pIdx=cityProvIdx[idx];
+    if(pIdx>=0 && provFacs[pIdx]!=null) fac=provFacs[pIdx];
+    else {
+      try{ fac=factionAt(c.coords[0], c.coords[1], front); }catch(e){ fac="REV"; }
+    }
     return {...c, faction:fac};
   });
   const revCities=cityState.filter(c=>c.faction==="REV").length, erwCities=cityState.length-revCities;
@@ -516,16 +517,24 @@ function drawMap(front,f){
   });
   const cityG=gBase.append("g");
   const tooltip=document.getElementById("tooltip"), mapBox=document.getElementById("mapBox");
+  const MAJOR=new Set(["MOSCOW","LENINGRAD","KIEV","MINSK","KHARKOV","ROSTOV","TASHKENT","NOVOSIBIRSK","VLADIVOSTOK","SVERDLOVSK","TIFLIS","BAKU","RIGA","TALLINN","ODESSA","STAVROPOL","GORKY","KAZAN"]);
   cityState.forEach(c=>{
-    const [x,y]=proj(c.coords); const isRev=c.faction==="REV";
+    const [x,y]=proj(c.coords); const isRev=c.faction==="REV"; const isMajor=MAJOR.has(c.name);
     const g=cityG.append("g").attr("transform",`translate(${x},${y})`).style("cursor","pointer");
-    g.append("circle").attr("r",6.5).attr("fill","#111").attr("opacity",0.95);
-    g.append("circle").attr("r",5).attr("fill",isRev?"#ff4444":"#5aa0ff").attr("stroke","#fff").attr("stroke-width",1.2);
-    g.append("circle").attr("r",1.7).attr("fill","#fff");
-    g.append("text").attr("y",isRev?-10:14).attr("text-anchor","middle").attr("class","city-label").text(c.name);
+    const rOuter=isMajor?6.5:4.2, rInner=isMajor?5:3.2;
+    g.append("circle").attr("r",rOuter).attr("fill","#111").attr("opacity",0.95);
+    g.append("circle").attr("r",rInner).attr("fill",isRev?"#ff4444":"#5aa0ff").attr("stroke","#fff").attr("stroke-width",1.1);
+    g.append("circle").attr("r",isMajor?1.7:1.1).attr("fill","#fff");
+    if(isMajor){
+      g.append("text").attr("y",isRev?-10:14).attr("text-anchor","middle").attr("class","city-label").text(c.name);
+    } else {
+      // minor towns: label only on hover via tooltip, dot only on map — fixes bugged clutter
+      g.append("title").text(c.name);
+    }
     g.on("mouseenter",()=>{tooltip.style.opacity="1"; tooltip.innerHTML=`<span style="color:${isRev?'#ff6b6b':'#8ec0ff'}">●</span> ${c.name} — ${isRev?'REVOLUTIONARIES':'ERWIN'}<br><span style="opacity:.7">Day ${f.toFixed(1)} • ${fmtDate(new Date(WAR_START.getTime()+f*86400000))}</span>`;})
      .on("mouseleave",()=>tooltip.style.opacity="0")
      .on("mousemove",()=>{const rect=mapBox.getBoundingClientRect(), svgRect=document.getElementById("map").getBoundingClientRect(); const sx=svgRect.left+(x/W)*svgRect.width, sy=svgRect.top+(y/H)*svgRect.height; tooltip.style.left=(sx-rect.left)+"px"; tooltip.style.top=(sy-rect.top)+"px";});
+    g.on("click",()=>{ zoomToCity(c.name); playBattleSounds("STALEMATE", c.faction); });
   });
   gBase.append("text").attr("x",W/2).attr("y",28).attr("text-anchor","middle").attr("font-family","Playfair Display").attr("font-weight",900).attr("font-size",15).attr("letter-spacing",".06em").attr("fill","#111").attr("opacity",0.92).text(`USSR • ${fmtDate(new Date(WAR_START.getTime()+f*86400000))} • DAY ${f.toFixed(1)}/${DAYS} • ${f>=DAYS?"ARMISTICE":"TILL 1 OCT"}`).attr("paint-order","stroke").attr("stroke","#e8dcc6").attr("stroke-width",4).attr("stroke-linejoin","round");
 }
