@@ -502,18 +502,18 @@ function drawMap(front,f){
   defs.append("clipPath").attr("id","ussrClip").append("path").attr("d",mergedD);
   svg.append("rect").attr("width",W).attr("height",H).attr("fill","#b8ad94");
   gBase=svg.append("g").attr("id","gBase");
-  // PROVINCES (HOI4) + STATES — provinces thin, states thick (like HOI4)
+  // PROVINCES + STATES visible — provinces thin white, states thick black (HOI4)
   const provG=gBase.append("g").attr("id","provinces");
   const facs=window._provFacs||[];
   for(let i=0;i<feats.length;i++){
     const fac=facs[i]||"REV";
     const d=path(feats[i]);
-    provG.append("path").attr("d", d).attr("fill", fac==="REV"?"#8a0f14":"#1e3d64").attr("stroke","#2a2a2a").attr("stroke-width",0.35).attr("opacity",0.98);
+    if(!d) continue;
+    provG.append("path").attr("d", d).attr("fill", fac==="REV"?"#9e1a1f":"#1e3d64").attr("stroke","#f5e6a3").attr("stroke-width",0.7).attr("opacity",1);
   }
-  // states (original 84) thicker border — HOI4 style
   const stateG=gBase.append("g").attr("id","states");
   for(const st of (window._statesFeats||statesFeats||[])){
-    try{ const d=path(st); if(d) stateG.append("path").attr("d",d).attr("fill","none").attr("stroke","#111").attr("stroke-width",1.0).attr("opacity",0.95); }catch(e){}
+    try{ const d=path(st); if(d) stateG.append("path").attr("d",d).attr("fill","none").attr("stroke","#111").attr("stroke-width",1.8).attr("opacity",0.98); }catch(e){}
   }
   // hatch overlay clipped to USSR for texture
   const hatchG=gBase.append("g").attr("clip-path","url(#ussrClip)");
