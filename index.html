@@ -84,22 +84,19 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
         <span class="countdown"><span class="pulse"></span><span id="dateLabel">—</span> • <span id="countdown">—</span></span>
         <span class="badge b-gold" id="warStatus">SYNCING REAL TIME…</span>
         <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
-          <button id="btnRealtime" class="active">⏱ REAL TIME</button>
-          <button id="btnPlay">▶ FAST</button>
+          <button id="btnRealtime" class="active">⏱ REAL TIME (NO SKIP)</button>
           <button id="btnPause">⏸ PAUSE</button>
-          <button id="btnStep">⏭ DAY</button>
-          <button id="btnReset" class="dark">↺ RESET</button>
+          <button id="btnSound">🔊 SOUND ON</button>
+          <button id="btnSave">⬇ SAVE SVG</button>
+          <button id="btnFront">TOGGLE FRONT</button>
         </span>
       </div>
-      <div class="timeline-row">
-        <label style="font:700 9px 'IBM Plex Mono';letter-spacing:.08em">TIMELINE 8 SEPT → 1 OCT (23 DAYS WALL-CLOCK):</label>
-        <input type="range" id="daySlider" min="0" max="23" value="0" step="0.1">
-        <span class="badge" style="background:#fff;border:2px solid #111" id="dayNum">DAY 0.0</span>
-        <button id="btnSound">🔊 SOUND ON</button>
-        <button id="btnSave">⬇ SAVE SVG</button>
-        <button id="btnFront">TOGGLE FRONT</button>
+      <div class="timeline-row" style="background:#111;color:var(--gold);padding:6px 8px;border:2px solid #111">
+        <span style="font:800 9px 'IBM Plex Mono'">REAL-TIME PROGRESS</span>
+        <div style="flex:1;height:14px;background:#222;border:1px solid #444;position:relative;overflow:hidden"><div id="timeBar" style="height:100%;width:0%;background:repeating-linear-gradient(90deg,var(--red) 0 10px,#a51a1a 10px 20px);transition:width .6s"></div><span id="dayNum" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 10px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 6px;border:1px solid #fff">DAY 0.0</span></div>
+        <span class="badge" style="background:var(--red);color:#fff">NO SKIP • CHERNOBYL PROTOCOL</span>
       </div>
-      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">SEEDED RANDOM — same for everyone: front/battles/GDP seeded per day (deterministic). Real-time = 1 real day = 1 war day (wall-clock sync). Zoom to battle city (2.8×). War sounds: real CC0 artillery wavs at low vol. Ends 1 Oct armistice.</div>
+      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">SEEDED — same for everyone. Real-time locked: 1 real day = 1 war day. Skipping disabled (slider/fast/reset removed). Zoom to city battle (2.8×). Sounds: 9 real CC0 wavs (afterglow CC0 + distant Pixabay) low vol 0.18. Ends 1 Oct armistice.</div>
     </div>
   </div>
 
@@ -107,31 +104,36 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
     <div class="stat"><b>REVOLUTIONARIES — CONTROL & GDP</b><strong style="color:var(--red)" id="sRev">—</strong><span id="sRevSub">—</span><div class="delta" id="sRevGdp">GDP —</div></div>
     <div class="stat"><b>ERWIN — CONTROL & GDP</b><strong style="color:var(--blue)" id="sErw">—</strong><span id="sErwSub">—</span><div class="delta" id="sErwGdp">GDP —</div></div>
     <div class="stat"><b>FRONT LINE</b><strong id="sFront">—</strong><span id="sFrontSub">—</span><div class="delta" id="sFrontDelta">—</div></div>
-    <div class="stat"><b>CASUALTIES (RANDOM)</b><strong id="sCas">—</strong><span id="sCasSub">—</span><div class="delta" id="sCasDelta">—</div></div>
-    <div class="stat"><b>TOTAL GDP (SIM)</b><strong id="sGdp">—</strong><span>1936 RUBLES • BOTH FACTIONS</span><div class="delta" id="sGdpDelta">—</div></div>
+    <div class="stat"><b>CASUALTIES (SEEDED)</b><strong id="sCas">—</strong><span id="sCasSub">—</span><div class="delta" id="sCasDelta">—</div></div>
+    <div class="stat"><b>TOTAL GDP</b><strong id="sGdp">—</strong><span>1936 RUBLES • BOTH FACTIONS</span><div class="delta" id="sGdpDelta">—</div></div>
     <div class="stat"><b>WAR ECONOMY</b><strong id="sEco">—</strong><span id="sEcoSub">SUPPLY • MORALE</span><div class="delta" id="sEcoDelta">—</div></div>
+    <div class="stat"><b>INDUSTRY — OUTPUT</b><strong id="sInd">—</strong><span id="sIndSub">FACTORIES • STEEL</span><div class="delta" id="sIndDelta">—</div></div>
+    <div class="stat"><b>FUEL & LOGISTICS</b><strong id="sFuel">—</strong><span id="sFuelSub">OIL • RAIL CAPACITY</span><div class="delta" id="sFuelDelta">—</div></div>
+    <div class="stat"><b>MANPOWER</b><strong id="sMan">—</strong><span id="sManSub">RESERVES • RECRUITS</span><div class="delta" id="sManDelta">—</div></div>
   </div>
 
   <div class="war-panel">
     <div class="card"><div class="card-h"><span>⚔ BATTLE LOG — SEEDED (SAME FOR ALL)</span><small id="logMeta">SEEDED • CITY ZOOM</small></div><div class="log" id="warLog"></div></div>
     <div class="card"><div class="card-h"><span>🔊 REAL WAR SOUNDS • CC0</span><small>SELF-HOSTED • LOW VOLUME</small></div>
       <div style="padding:10px;background:var(--paper);font:600 10px 'IBM Plex Mono';line-height:1.6;display:grid;gap:6px">
-        <div>WIPED old loud synth. Now <b>real artillery</b> CC0 wavs (afterglow-artillery, 44.1 kHz). Self-hosted in <code>/sounds/</code> + jsDelivr fallback. Volume capped 0.22.</div>
-        <div>• <code>sounds/blast-small.wav</code> — light mortar (49KB)</div>
-        <div>• <code>sounds/blast-medium.wav</code> — medium barrage (80KB)</div>
-        <div>• <code>sounds/blast-large.wav</code> — heavy cannon (126KB)</div>
-        <div>• <code>sounds/blast-low.wav</code> — distant rumble (128KB) • <code>impact-soil.wav</code></div>
+        <div>WIPED loud synth. Now <b>9 real CC0 war wavs</b> (afterglow-artillery + Pixabay distant). Self-hosted <code>/sounds/</code>, low vol.</div>
+        <div>• <code>blast-small</code> light mortar • <code>blast-medium</code> barrage • <code>blast-large</code> heavy • <code>blast-low</code> distant • <code>impact-soil/rock/hull</code> • <code>fire-whoosh</code> • <code>launch-thruster</code> • <code>distant-war.mp3</code> (Pixabay)</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
           <audio id="aud1" preload="auto" src="./sounds/blast-small.wav"></audio>
           <audio id="aud2" preload="auto" src="./sounds/blast-medium.wav"></audio>
           <audio id="aud3" preload="auto" src="./sounds/blast-large.wav"></audio>
           <audio id="aud4" preload="auto" src="./sounds/impact-soil.wav"></audio>
+          <audio id="aud5" preload="auto" src="./sounds/fire-whoosh.wav"></audio>
+          <audio id="aud6" preload="auto" src="./sounds/impact-rock.wav"></audio>
+          <audio id="aud7" preload="auto" src="./sounds/launch-thruster.wav"></audio>
+          <audio id="aud8" preload="auto" src="./sounds/distant-war.mp3"></audio>
+          <audio id="aud9" preload="auto" src="./sounds/blast-low.wav"></audio>
         </div>
         <div style="display:flex;gap:6px">
           <button id="btnTestSound" style="appearance:none;background:#fff;border:2px solid #111;padding:5px 8px;font:700 9px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111">▶ TEST REAL SOUNDS (LOW VOL)</button>
-          <span style="font:600 9px 'IBM Plex Mono';color:#5a5242;align-self:center">Vol 0.22 • not 1.0 • no ear-rape</span>
+          <span style="font:600 9px 'IBM Plex Mono';color:#5a5242;align-self:center">Vol 0.18-0.22 • randomized picks • distant = quieter</span>
         </div>
-        <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">Auto-zoom: 2.8× to battle city for 3.8s. Random battles each day (Math.random).</div>
+        <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">Auto-zoom: 2.8× to battle city for 3.8s. Seeded — same for everyone.</div>
       </div>
     </div>
   </div>
@@ -164,22 +166,36 @@ let proj,path,mergedD,feats;
 let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=true, gBase=null;
 let casual=0, gdpTotal=1820, gdpRev=1238, gdpErw=582, lastLogDay=-1;
 const SOUNDS=[
-  {id:"aud1", vol:0.22}, // blast-small
-  {id:"aud2", vol:0.20}, // blast-medium
-  {id:"aud3", vol:0.18}, // blast-large heavy — quieter
-  {id:"aud4", vol:0.20}, // impact-soil
+  {id:"aud1", vol:0.18}, // blast-small light
+  {id:"aud2", vol:0.18}, // blast-medium
+  {id:"aud3", vol:0.16}, // blast-large heavy — quietest
+  {id:"aud4", vol:0.17}, // impact-soil
+  {id:"aud5", vol:0.19}, // fire-whoosh
+  {id:"aud6", vol:0.17}, // impact-rock
+  {id:"aud7", vol:0.15}, // launch-thruster distant
+  {id:"aud8", vol:0.16}, // distant-war pixabay
+  {id:"aud9", vol:0.15}, // blast-low distant rumble
 ];
 function playRealSound(variant){
   if(!soundOn) return;
-  // variant 0-3 or random
-  const pick = variant!=null ? SOUNDS[variant] : SOUNDS[Math.floor(Math.random()*SOUNDS.length)];
+  const pick = variant!=null ? SOUNDS[variant % SOUNDS.length] : SOUNDS[Math.floor(seeded01(Date.now()%100000)*SOUNDS.length)];
   const a=document.getElementById(pick.id);
   if(!a) return;
   try{
     a.pause(); a.currentTime=0; a.volume=pick.vol;
-    // play returns promise
     a.play().catch(()=>{});
   }catch(e){}
+}
+function playBattleSounds(outcome, attacker){
+  // layered, not loud — pick 1-2 wavs per battle, staggered low vol
+  if(outcome.includes("ADVANCE")){
+    playRealSound(2); setTimeout(()=> playRealSound(5), 180); setTimeout(()=> playRealSound(8), 420);
+  } else if(attacker==="REV"){
+    playRealSound(0); setTimeout(()=> playRealSound(4), 220);
+  } else {
+    playRealSound(1); setTimeout(()=> playRealSound(3), 260);
+  }
+  if(outcome==="STALEMATE") setTimeout(()=> playRealSound(6), 500);
 }
 const svg=d3.select("#map"), W=1000, H=560;
 function frontForFloat(f){
@@ -251,6 +267,19 @@ function render(f){
   document.getElementById("sErwGdp").textContent=`GDP ${gdpErw.toFixed(0)}B ₽`; document.getElementById("sErwGdp").className="delta "+(gdpErw>582?"up":"down");
   document.getElementById("sGdpDelta").textContent=gdpTotal>1820?`▲ +${(gdpTotal-1820).toFixed(0)}B vs 8 Sept`:`▼ ${(gdpTotal-1820).toFixed(0)}B`;
   document.getElementById("sEco").textContent=(revPct>72?"REV OFFENSIVE":erwPct>30?"CONTESTED":"ERW DEFENSIVE"); document.getElementById("sEcoSub").textContent=`SUPPLY ${Math.round(88 - f*0.9 + (seeded01(Math.floor(f)*888)-0.5)*6)}% • MORALE REV ${Math.round(68+f*0.6)} / ERW ${Math.round(62-f*0.4)}`;
+  // NEW SYSTEMS
+  const ind = Math.round(92 - f*1.1 + (seeded01(Math.floor(f)*121)-0.5)*8);
+  const fuel = Math.round(81 - f*1.4 + (seeded01(Math.floor(f)*323)-0.5)*10);
+  const manRev = Math.round(1450 - f*18 + (seeded01(Math.floor(f)*777)-0.5)*40);
+  const manErw = Math.round(980 - f*12 + (seeded01(Math.floor(f)*979)-0.5)*30);
+  document.getElementById("sInd").textContent=ind+"% CAPACITY"; document.getElementById("sIndSub").textContent=`REV ${Math.round(ind*0.68)}% • ERW ${Math.round(ind*0.32)}% • STEEL ${Math.round(420 - f*6)}kt`;
+  document.getElementById("sIndDelta").textContent= ind>88? "▲ STABLE" : ind>75? "→ STRAINED" : "▼ CRITICAL";
+  document.getElementById("sFuel").textContent=fuel+"% RESERVE"; document.getElementById("sFuelSub").textContent=`OIL ${Math.round(64 - f*1.2)}% • RAIL ${Math.round(78 - f*0.9)}%`;
+  document.getElementById("sFuelDelta").textContent= fuel>70? "→ ADEQUATE" : "▼ SHORTAGE";
+  document.getElementById("sMan").textContent=(manRev+manErw).toLocaleString()+"k"; document.getElementById("sManSub").textContent=`REV ${manRev}k • ERW ${manErw}k`;
+  document.getElementById("sManDelta").textContent= `−${Math.floor(18+seeded01(Math.floor(f)*654)*12)}/day`;
+  // progress bar
+  const bar=document.getElementById("timeBar"); if(bar) bar.style.width=(f/DAYS*100).toFixed(1)+"%";
   drawMap(front,f);
 }
 function drawMap(front,f){
@@ -336,11 +365,7 @@ function stepTo(f, withLog=true){
         const col=b.attacker==="REV"?"rev":"erw";
         log(`<b>${dateStr}</b> — <span class="${col}">${b.sector}</span> (${b.city}) • ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
         zoomToCity(b.city);
-        // real sounds low vol, pick variant based on outcome
-        if(b.outcome.includes("ADVANCE")) playRealSound(2); // large
-        else if(b.attacker==="REV") playRealSound(0); // small
-        else playRealSound(1); // medium
-        if(b.outcome==="STALEMATE") setTimeout(()=> playRealSound(3), 320);
+        playBattleSounds(b.outcome, b.attacker);
       });
       const flips=cityState.filter(c=>{
         const prevFront=frontForFloat(prevFloat), facPrev=factionAt(c.coords[0],c.coords[1],prevFront);
@@ -388,29 +413,23 @@ function stopAll(){ playing=false; realtime=false; if(timer) clearInterval(timer
 function bindControls(){
   document.getElementById("btnRealtime").onclick=()=>{
     realtime=true; playing=false; if(fastTimer) clearInterval(fastTimer);
-    document.getElementById("btnRealtime").classList.add("active"); document.getElementById("btnPlay").classList.remove("active");
+    document.getElementById("btnRealtime").classList.add("active");
     stepTo(realFloat(), false); startRealtimeTick();
   };
-  document.getElementById("btnPlay").onclick=()=>{
-    realtime=false; document.getElementById("btnRealtime").classList.remove("active"); document.getElementById("btnPlay").classList.add("active");
-    playFast();
-  };
-  document.getElementById("btnPause").onclick=()=>{ realtime=false; pauseFast(); document.getElementById("btnRealtime").classList.remove("active"); document.getElementById("btnPlay").classList.remove("active"); };
-  document.getElementById("btnStep").onclick=()=>{ realtime=false; pauseFast(); stepTo(Math.min(DAYS, curFloat+1), true); };
-  document.getElementById("btnReset").onclick=()=>{ stopAll(); realtime=false; lastDayLogged=-1; document.getElementById("warLog").innerHTML=""; log(`<b>RESET → 8 SEPT (SEEDED)</b> Same for everyone — no re-roll. Hit REAL TIME to resync wall-clock.`,true);
-    render(0); document.getElementById("daySlider").value=0; curFloat=0; };
-  document.getElementById("daySlider").oninput=(e)=>{ realtime=false; pauseFast(); document.getElementById("btnRealtime").classList.remove("active"); stepTo(parseFloat(e.target.value), true); };
+  document.getElementById("btnPause").onclick=()=>{ realtime=false; pauseFast(); };
+  // NO SKIP — slider/fast/step/reset removed (Chernobyl protocol)
   document.getElementById("btnSound").onclick=(e)=>{
     soundOn=!soundOn; e.target.textContent=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"; e.target.style.background=soundOn?"#111":"#fff"; e.target.style.color=soundOn?"var(--gold)":"#111";
-    if(soundOn) playRealSound(0);
+    if(soundOn) playBattleSounds("REV ADVANCE","REV");
   };
-  document.getElementById("btnTestSound").onclick=()=>{ soundOn=true; document.getElementById("btnSound").textContent="🔊 SOUND ON"; document.getElementById("btnSound").style.background="#111"; document.getElementById("btnSound").style.color="var(--gold)"; playRealSound(0); setTimeout(()=>playRealSound(1),420); setTimeout(()=>playRealSound(2),900); setTimeout(()=>playRealSound(3),1400); };
+  document.getElementById("btnTestSound").onclick=()=>{ soundOn=true; document.getElementById("btnSound").textContent="🔊 SOUND ON"; document.getElementById("btnSound").style.background="#111"; document.getElementById("btnSound").style.color="var(--gold)"; playRealSound(0); setTimeout(()=>playRealSound(1),280); setTimeout(()=>playRealSound(2),560); setTimeout(()=>playRealSound(3),850); setTimeout(()=>playRealSound(8),1050); };
   document.getElementById("btnSave").onclick=()=>{
     const src=new XMLSerializer().serializeToString(document.getElementById("map"));
     const blob=new Blob([`<?xml version="1.0" encoding="UTF-8"?>\n`+src],{type:"image/svg+xml"});
     const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`ussr-civilwar-day${curFloat.toFixed(1)}-1oct.svg`; a.click(); URL.revokeObjectURL(url);
   };
   document.getElementById("btnFront").onclick=()=>{ showFront=!showFront; const g=document.getElementById("frontG"); if(g) g.style.display=showFront?"block":"none"; };
+  // block any manual seek via devtools — no slider to hijack
 }
 init().catch(e=>{console.error(e); document.getElementById("topInfo").textContent="ERR "+e.message;});
 </script>
