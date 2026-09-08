@@ -163,9 +163,9 @@ function seeded01(seed){ let t=seed+=0x6D2B79F5; t=Math.imul(t ^ t>>>15, t|1); t
 const FRONT_JITTER = FRONT_START.map((_,i)=> (seeded01(42+i*1337)-0.5)*0.18);
 const FRONT_JITTER2 = FRONT_START.map((_,i)=> (seeded01(99+i*2713)-0.5)*0.10);
 const CITIES0=[
-  {name:"MOSCOW",coords:[37.6173,55.7558]},{name:"LENINGRAD",coords:[30.3351,59.9343]},{name:"NOVOSIBIRSK",coords:[82.9357,55.0084]},{name:"VLADIVOSTOK",coords:[131.8735,43.1056]},
-  {name:"MURMANSK",coords:[33.0827,68.9585]},{name:"ARCHANGELSK",coords:[40.5443,64.5393]},{name:"SVERDLOVSK",coords:[60.6122,56.8389]},{name:"OMSK",coords:[73.3686,54.9885]},
-  {name:"KIEV",coords:[30.5234,50.4501]},{name:"KHARKOV",coords:[36.2304,49.9935]},{name:"MINSK",coords:[27.5615,53.9045]},{name:"TIFLIS",coords:[44.8271,41.7151]},{name:"BAKU",coords:[49.8671,40.4093]},{name:"TASHKENT",coords:[69.2401,41.2995]},{name:"SAMARKAND",coords:[66.9597,39.6270]},{name:"ROSTOV",coords:[39.7015,47.2225]},
+  {name:"MOSCOW",coords:[37.6173,55.7558]},{name:"LENINGRAD",coords:[30.3351,59.9343]},{name:"KIEV",coords:[30.5234,50.4501]},{name:"MINSK",coords:[27.5615,53.9045]},{name:"KHARKOV",coords:[36.2304,49.9935]},{name:"ROSTOV",coords:[39.7015,47.2225]},{name:"TASHKENT",coords:[69.2401,41.2995]},{name:"SAMARKAND",coords:[66.9597,39.6270]},{name:"NOVOSIBIRSK",coords:[82.9357,55.0084]},{name:"VLADIVOSTOK",coords:[131.8735,43.1056]},
+  {name:"MURMANSK",coords:[33.0827,68.9585]},{name:"ARCHANGELSK",coords:[40.5443,64.5393]},{name:"SVERDLOVSK",coords:[60.6122,56.8389]},{name:"OMSK",coords:[73.3686,54.9885]},{name:"TIFLIS",coords:[44.8271,41.7151]},{name:"BAKU",coords:[49.8671,40.4093]},
+  {name:"RIGA",coords:[24.1052,56.9496]},{name:"VILNIUS",coords:[25.2797,54.6872]},{name:"TALLINN",coords:[24.7536,59.437]},{name:"KISHINEV",coords:[28.8638,47.0105]},{name:"BREST",coords:[23.6878,52.0976]},{name:"GOMEL",coords:[31.0114,52.4345]},{name:"VITEBSK",coords:[30.2019,55.1904]},{name:"SMOLENSK",coords:[32.045,54.7903]},{name:"BRYANSK",coords:[34.3687,53.2434]},{name:"KURSK",coords:[36.1939,51.7091]},{name:"VORONEZH",coords:[39.2003,51.672]},{name:"SARATOV",coords:[46.034,51.5406]},{name:"VOLGOGRAD",coords:[44.5167,48.708]},{name:"ASTRAKHAN",coords:[48.046,46.3479]},{name:"KRASNODAR",coords:[38.9873,45.0355]},{name:"STAVROPOL",coords:[41.9734,45.0428]},{name:"GROZNY",coords:[45.6982,43.3181]},{name:"MAKHACHKALA",coords:[47.5047,42.9849]},{name:"UFA",coords:[55.9587,54.7352]},{name:"CHELYABINSK",coords:[61.4297,55.1644]},{name:"PERM",coords:[56.2502,58.0105]},{name:"KAZAN",coords:[49.1233,55.7887]},{name:"GORKY",coords:[44.002,56.2965]},{name:"YAROSLAVL",coords:[39.884,57.6261]},{name:"KALININ",coords:[35.9042,56.8584]},{name:"VLADIMIR",coords:[40.4026,56.129]},{name:"RYAZAN",coords:[39.7449,54.629]},{name:"TULA",coords:[37.6177,54.1961]},{name:"OREL",coords:[36.0639,52.9703]},{name:"LIPETSK",coords:[39.5717,52.6031]},{name:"TAMBOV",coords:[41.4353,52.7224]},{name:"PENZA",coords:[45.015,53.195]},{name:"ULYANOVSK",coords:[48.4019,54.3282]},{name:"KUIBYSHEV",coords:[50.2212,53.2415]},{name:"ORENBURG",coords:[55.099,51.7682]},{name:"ORSK",coords:[58.5667,51.229]},{name:"MAGNITOGORSK",coords:[58.985,53.4186]},{name:"TYUMEN",coords:[65.5343,57.1531]},{name:"TOMSK",coords:[84.948,56.4846]},{name:"BARNAUL",coords:[83.7769,53.3606]},{name:"KEMEROVO",coords:[86.087,55.3552]},{name:"KRASNOYARSK",coords:[92.8932,56.0153]},{name:"IRKUTSK",coords:[104.296,52.2869]},{name:"YAKUTSK",coords:[129.701,62.0355]},{name:"KHABAROVSK",coords:[135.071,48.4802]},{name:"BLAGOVESHCHENSK",coords:[127.540,50.2907]},{name:"CHITA",coords:[113.5,52.034]},{name:"ULAN-UDE",coords:[107.608,51.8345]},{name:"PETROZAVODSK",coords:[34.363,61.788]},{name:"SYKTYVKAR",coords:[50.827,61.6685]},{name:"VOLOGDA",coords:[39.8938,59.2237]},{name:"NOVGOROD",coords:[31.2755,58.5214]},{name:"PSKOV",coords:[28.3318,57.8136]},{name:"KALININGRAD",coords:[20.4522,54.71]},{name:"SEVASTOPOL",coords:[33.5254,44.6167]},{name:"ODESSA",coords:[30.7233,46.4825]},{name:"NIKOLAYEV",coords:[32.002,46.975]},{name:"KHERSON",coords:[32.616,46.6354]},{name:"DNEPROPETROVSK",coords:[35.0462,48.4647]},{name:"DONETSK",coords:[37.8028,48.0159]},{name:"LUGANSK",coords:[39.3086,48.574]},{name:"ZAPOROZHYE",coords:[35.1396,47.8388]},{name:"POLTAVA",coords:[34.5514,49.5883]},{name:"CHERNIGOV",coords:[31.292,51.4982]},{name:"SUMY",coords:[34.8002,50.9077]},{name:"ZHYTOMYR",coords:[28.6587,50.2547]},{name:"VINNITSA",coords:[28.4687,49.2328]},{name:"FRUNZE",coords:[74.6037,42.8746]},{name:"ALMA-ATA",coords:[76.9286,43.222]},{name:"ASHKHABAD",coords:[58.38,37.95]},{name:"DUSHANBE",coords:[68.78,38.5598]},{name:"EREVAN",coords:[44.5021,40.1792]},
 ];
 const SECTORS=[
   {name:"BREST SECTOR",city:"MINSK"},{name:"KIEV AXIS",city:"KIEV"},{name:"KHARKOV SALIENT",city:"KHARKOV"},{name:"DONBAS",city:"KHARKOV"},{name:"ROSTOV GATE",city:"ROSTOV"},{name:"CAUCASUS PASS",city:"TIFLIS"},{name:"CASPAN FLANK",city:"BAKU"},{name:"TURKMEN FRONT",city:"SAMARKAND"},{name:"TASHKENT CORRIDOR",city:"TASHKENT"},{name:"BALKHASH LINE",city:"OMSK"},{name:"SAYAN RIDGE",city:"NOVOSIBIRSK"},{name:"BAIKAL SHORE",city:"NOVOSIBIRSK"},{name:"FAR EAST BEND",city:"VLADIVOSTOK"}
@@ -288,14 +288,59 @@ function renderHOI4(f){
 }
 let cityState=[];
 async function init(){
-  const raw=await d3.json(GEO_URL); feats=raw.features; proj=projectionFor(feats); path=d3.geoPath(proj);
-  mergedD=""; feats.forEach(f=> mergedD+=path(f)+" ");
-  document.getElementById("topInfo").textContent=feats.length+" PROVINCES • FRONT BY STATE BORDER • SEEDED";
+  const raw=await d3.json(GEO_URL); let origFeats=raw.features;
+  // Build dense provinces: hex grid clipped to USSR union → ALOT ALOT (200-300)
+  let union=null;
+  try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
+  let dense=null;
+  try{
+    const bbox= union ? turf.bbox(union) : [19,35,190,82];
+    const cellSide=95; // km → ~220-280 hexes for USSR size
+    const grid=turf.hexGrid(bbox, cellSide, {units:'kilometers', mask: union|| undefined});
+    // hexGrid with mask already clips, but we intersect to clean
+    dense=[];
+    for(const cell of grid.features){
+      try{
+        if(union && !turf.booleanIntersects(cell, union)) continue;
+        let inter = union ? turf.intersect(cell, union) : cell;
+        if(inter){
+          // turf.intersect may return Feature with polygon, push
+          if(inter.type==="FeatureCollection"){ inter.features.forEach(f=> dense.push(f)); }
+          else dense.push(inter);
+        }
+      }catch(e){}
+    }
+    if(dense && dense.length>100) feats=dense; else feats=origFeats;
+  }catch(e){ console.warn("dense provinces failed",e); feats=origFeats; }
+  proj=projectionFor(feats); path=d3.geoPath(proj);
+  mergedD=""; try{ mergedD=path(union|| {type:"FeatureCollection",features:feats}); }catch(e){ feats.forEach(f=> mergedD+=path(f)+" "); }
+  document.getElementById("topInfo").textContent=feats.length+" PROVINCES • "+CITIES0.length+" CITIES • FRONT BY STATE • SEEDED";
   const ds=document.getElementById("daySlider"); if(ds){ ds.max=DAYS; ds.step=0.1; }
+  // restore pravda log from localStorage (persists after refresh lmao)
+  try{
+    const saved=localStorage.getItem("pravdaLog");
+    if(saved){
+      const el=document.getElementById("warLog"); el.innerHTML=saved;
+      el.scrollTop=el.scrollHeight;
+    }
+    const sd=localStorage.getItem("pravdaLogDay");
+    if(sd!=null && !isNaN(parseFloat(sd))) lastDayLogged=Math.floor(parseFloat(sd));
+  }catch(e){}
+  // if empty, seed initial
+  if(!document.getElementById("warLog").innerHTML.trim()){
+    log(`<b>${fmtDate(WAR_START)} — WAR BEGINS (SEEDED — SAME FOR ALL)</b> <span class="rev">Revolutionaries</span> ~68% / <span class="erw">Erwin</span> ~32%. Front by province (${feats.length} states) — jagged, not smooth curve. Real war wavs low vol.`,true);
+  }
   curFloat=realFloat(); curDay=Math.floor(curFloat);
+  // if we restored log, ensure we don't re-log already logged days
+  if(lastDayLogged < Math.floor(curFloat)) {
+    // will be handled by first tick, but set baseline
+  } else {
+    lastDayLogged=Math.floor(curFloat);
+  }
   render(curFloat);
-  log(`<b>${fmtDate(WAR_START)} — WAR BEGINS (SEEDED — SAME FOR ALL)</b> <span class="rev">Revolutionaries</span> ~68% / <span class="erw">Erwin</span> ~32%. Front by province (84 states) — jagged, not smooth curve. Real war wavs low vol.`,true);
   bindControls(); startRealtimeTick();
+  // after first render, ensure log day sync
+  try{ localStorage.setItem("pravdaLogDay", String(curFloat)); }catch(e){}
 }
 function render(f){
   curFloat=f; curDay=Math.floor(f);
@@ -433,7 +478,13 @@ function battlesForDay(d){
   }
   return out;
 }
-function log(html,top=false){const el=document.getElementById("warLog"); const p=document.createElement("div"); p.innerHTML=html; p.style.borderBottom="1px solid #222"; p.style.padding="4px 0"; if(top) el.prepend(p); else el.appendChild(p); el.scrollTop=el.scrollHeight;}
+function log(html,top=false){
+  const el=document.getElementById("warLog"); const p=document.createElement("div"); p.innerHTML=html; p.style.borderBottom="1px solid #222"; p.style.padding="4px 0"; if(top) el.prepend(p); else el.appendChild(p);
+  // keep max 90 lines, persist to localStorage so survives refresh
+  while(el.children.length>90) el.removeChild(el.firstChild);
+  el.scrollTop=el.scrollHeight;
+  try{ localStorage.setItem("pravdaLog", el.innerHTML); localStorage.setItem("pravdaLogDay", String(curFloat)); }catch(e){}
+}
 let lastDayLogged=-1;
 function stepTo(f, withLog=true){
   const prevFloat=curFloat, prevDay=Math.floor(prevFloat);
