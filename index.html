@@ -349,28 +349,11 @@ function renderOngoingBattles(f){
 let cityState=[];
 async function init(){
   const raw=await d3.json(GEO_URL); let origFeats=raw.features;
-  // HOI4 provinces/states: subdivide each of 84 oblasts (states) into 2-4 provinces → ~220 provinces, states = 84
+  // FIX COOKED: back to 84 real oblasts as provinces (HOI4 states) — subdivision was bugged (holes/gaps)
   let union=null;
   try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
-  statesFeats=origFeats;
-  // generate provinces by splitting each state's bbox into quadrants (cheap, no heavy intersect)
-  let provinces=[];
-  for(const st of origFeats){
-    try{
-      const bb=turf.bbox(st);
-      const mx=(bb[0]+bb[2])/2, my=(bb[1]+bb[3])/2;
-      const quads=[[bb[0],bb[1],mx,my],[mx,bb[1],bb[2],my],[bb[0],my,mx,bb[3]],[mx,my,bb[2],bb[3]]];
-      let kept=0;
-      for(const q of quads){
-        const poly=turf.bboxPolygon(q);
-        const cent=[(q[0]+q[2])/2,(q[1]+q[3])/2];
-        try{ if(turf.booleanPointInPolygon(cent, st)) { provinces.push(poly); kept++; } }catch(e){}
-      }
-      if(kept===0) provinces.push(st);
-    }catch(e){ provinces.push(st); }
-  }
-  feats=provinces.length>80 ? provinces : origFeats;
-  window._statesFeats=statesFeats;
+  feats=origFeats;
+  window._statesFeats=origFeats;
   proj=projectionFor(feats); path=d3.geoPath(proj);
   mergedD=""; try{ mergedD=path(union|| {type:"FeatureCollection",features:feats}); }catch(e){ feats.forEach(f=> mergedD+=path(f)+" "); }
   // cache centroids/areas — OPTIMIZED: no recompute per frame
@@ -384,7 +367,7 @@ async function init(){
       return -1;
     });
   }catch(e){ provCentroids=[]; provAreas=[]; cityProvIdx=[]; }
-  document.getElementById("topInfo").textContent=feats.length+" PROVINCES • "+statesFeats.length+" STATES • "+CITIES0.length+" CITIES • HOI4";
+  document.getElementById("topInfo").textContent=feats.length+" OBLASTS/STATES • "+CITIES0.length+" CITIES • HOI4 • FIXED";
   const ds=document.getElementById("daySlider"); if(ds){ ds.max=DAYS; ds.step=0.1; }
   // restore pravda log from localStorage (persists after refresh lmao)
   try{
