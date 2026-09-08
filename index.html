@@ -132,23 +132,30 @@ async function init(){
   if(!raw||!raw.features) throw new Error("geojson failed");
   let origFeats=raw.features;
   try{ origFeats.forEach(fe=>{ const g=fe.geometry; if(!g||!g.coordinates) return; if(g.type==="Polygon") g.coordinates.forEach(r=> r.forEach(c=>{ if(c[0]>180) c[0]=179.9; })); else if(g.type==="MultiPolygon") g.coordinates.forEach(poly=> poly.forEach(r=> r.forEach(c=>{ if(c[0]>180) c[0]=179.9; })));});}catch(e){}
-  // FULL HOI4: generate ~240 square provinces (grid) inside USSR — we make them ourselves, not 84 only
-  let union=null; try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
+  // FIX ugly grid: Voronoi organic provinces (~180) we make ourselves — not square grid
+  let union=null;
+  try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
   let provinces=[];
   try{
     const bbox=union?turf.bbox(union):[19,35,179.9,82];
-    // square grid 85km → ~260 cells, filter to inside USSR via center point
-    const cellSide=85; const grid=turf.squareGrid(bbox, cellSide, {units:'kilometers'});
-    for(const cell of grid.features){
-      const cent=turf.centroid(cell);
-      try{ if(union && !turf.booleanPointInPolygon(cent, union)) continue; }catch(e){ continue; }
-      provinces.push(cell);
+    const rnd=turf.randomPoint(300, {bbox:bbox});
+    const ptsInside={type:"FeatureCollection", features: rnd.features.filter(f=>{ try{ return turf.booleanPointInPolygon(f, union); }catch(e){return false;}}).slice(0,180)};
+    if(ptsInside.features.length>80 && typeof turf.voronoi==="function"){
+      const vor=turf.voronoi(ptsInside, {bbox:bbox});
+      for(const cell of vor.features){
+        if(!cell||!cell.geometry) continue;
+        if(!turf.booleanIntersects(cell, union)) continue;
+        try{
+          const inter=turf.intersect(cell, union);
+          if(inter){
+            if(inter.type==="FeatureCollection") inter.features.forEach(f=> provinces.push(f));
+            else provinces.push(inter);
+          }
+        }catch(e){}
+      }
     }
-    // also keep original oblasts as fallback if grid fails
-    if(provinces.length>120) {
-      // clip provinces to USSR shape for clean edges (optional, keep square for HOI4 look)
-      feats=provinces;
-    } else feats=origFeats;
+    if(provinces.length>100) feats=provinces;
+    else feats=origFeats;
   }catch(e){ feats=origFeats; }
   statesFeats=origFeats;
   window._statesFeats=statesFeats;
