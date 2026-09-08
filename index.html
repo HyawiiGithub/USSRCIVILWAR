@@ -96,7 +96,7 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
         <div style="flex:1;height:14px;background:#222;border:1px solid #444;position:relative;overflow:hidden"><div id="timeBar" style="height:100%;width:0%;background:repeating-linear-gradient(90deg,var(--red) 0 10px,#a51a1a 10px 20px);transition:width .6s"></div><span id="dayNum" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 10px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 6px;border:1px solid #fff">DAY 0.0</span></div>
         <span class="badge" style="background:var(--red);color:#fff">NO SKIP • CHERNOBYL PROTOCOL</span>
       </div>
-      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">PROVINCE FRONT: 84 oblasts colored by centroid vs front line → jagged state-border front (not smooth curve). Seeded same for everyone. Real-time locked (no skip). Zoom 2.8×. Sounds 9 wavs low vol. Ends 1 Oct.</div>
+      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">CUSTOM PROVINCES: ~210 Voronoi provinces we made ourselves + 84 states — jagged front (not smooth). Seeded same for everyone. Real-time locked. Zoom 2.8×. Sounds 9 wavs. Ends 1 Oct.</div>
     </div>
   </div>
 
@@ -362,11 +362,40 @@ async function init(){
       else if(g.type==="MultiPolygon") g.coordinates.forEach(poly=> poly.forEach(r=> r.forEach(c=>{ if(c[0]>180) c[0]=179.9; })));
     });
   }catch(e){}
-  // CLEAN: 84 real oblasts as provinces — HOI4 states = same, but draw both for visibility
+  // CUSTOM PROVINCES: we make them ourselves — Voronoi ~200 provinces for USSR (HOI4-like), not just 84 oblasts
   let union=null;
   try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
-  feats=origFeats;
-  window._statesFeats=origFeats;
+  let provinces=[];
+  try{
+    const bbox=union ? turf.bbox(union) : [19,35,179.9,82];
+    // generate ~280 random points, keep ~210 inside USSR
+    const rnd=turf.randomPoint(320, {bbox:bbox});
+    const ptsInside={type:"FeatureCollection", features: rnd.features.filter(f=>{ try{ return turf.booleanPointInPolygon(f, union); }catch(e){return false;}}).slice(0,210)};
+    if(ptsInside.features.length>60 && typeof turf.voronoi==="function"){
+      const vor=turf.voronoi(ptsInside, {bbox:bbox});
+      for(const cell of vor.features){
+        if(!cell || !cell.geometry) continue;
+        if(union && !turf.booleanIntersects(cell, union)) continue;
+        try{
+          const inter=turf.intersect(cell, union);
+          if(inter){
+            if(inter.type==="FeatureCollection") inter.features.forEach(f=> provinces.push(f));
+            else provinces.push(inter);
+          } else {
+            // fallback keep cell if intersect fails but inside
+            provinces.push(cell);
+          }
+        }catch(e){}
+      }
+    }
+  }catch(e){ console.warn("voronoi provinces failed",e); }
+  if(provinces.length>90){
+    feats=provinces;
+    window._statesFeats=origFeats; // 84 states as thick overlay
+  } else {
+    feats=origFeats;
+    window._statesFeats=origFeats;
+  }
   proj=projectionFor(feats); path=d3.geoPath(proj);
   mergedD=""; try{ mergedD=path(union|| {type:"FeatureCollection",features:feats}); }catch(e){ feats.forEach(f=> mergedD+=path(f)+" "); }
   // cache centroids/areas — OPTIMIZED: no recompute per frame
@@ -380,7 +409,7 @@ async function init(){
       return -1;
     });
   }catch(e){ provCentroids=[]; provAreas=[]; cityProvIdx=[]; }
-  document.getElementById("topInfo").textContent=feats.length+" OBLASTS/STATES • "+CITIES0.length+" CITIES • HOI4 • FIXED";
+  document.getElementById("topInfo").textContent=feats.length+" PROVINCES • "+(window._statesFeats?.length||0)+" STATES • "+CITIES0.length+" CITIES • HOI4 CUSTOM";
   const ds=document.getElementById("daySlider"); if(ds){ ds.max=DAYS; ds.step=0.1; }
   // restore pravda log from localStorage (persists after refresh lmao)
   try{
