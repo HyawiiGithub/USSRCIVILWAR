@@ -187,7 +187,7 @@ const HOI4_ERW_BASE=[{t:"inf",n:18},{t:"tank",n:4},{t:"mot",n:3},{t:"cav",n:3}];
 const AIR_REV_BASE={fighters:420, cas:110, bombers:78, trans:16};
 const AIR_ERW_BASE={fighters:210, cas:58, bombers:36, trans:10};
 const WAR_START=new Date("2026-09-08T00:00:00Z"), WAR_END=new Date("2026-10-01T00:00:00Z"), DAYS=Math.round((WAR_END-WAR_START)/86400000);
-let proj,path,mergedD,feats, provCentroids=[], provAreas=[], cityProvIdx=[];
+let proj,path,mergedD,feats, statesFeats=[], provCentroids=[], provAreas=[], cityProvIdx=[];
 let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=false, gBase=null;
 let casual=0, gdpTotal=1820, gdpRev=1238, gdpErw=582, lastLogDay=-1;
 const SOUNDS=[
@@ -349,10 +349,28 @@ function renderOngoingBattles(f){
 let cityState=[];
 async function init(){
   const raw=await d3.json(GEO_URL); let origFeats=raw.features;
-  // HOTFIX: revert to original 84 real oblasts — hex grid was bugged/cooked (turf.hexGrid + 190° antimeridian + heavy) → use clean 84, still ALOT with 85 cities
+  // HOI4 provinces/states: subdivide each of 84 oblasts (states) into 2-4 provinces → ~220 provinces, states = 84
   let union=null;
   try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
-  feats=origFeats;
+  statesFeats=origFeats;
+  // generate provinces by splitting each state's bbox into quadrants (cheap, no heavy intersect)
+  let provinces=[];
+  for(const st of origFeats){
+    try{
+      const bb=turf.bbox(st);
+      const mx=(bb[0]+bb[2])/2, my=(bb[1]+bb[3])/2;
+      const quads=[[bb[0],bb[1],mx,my],[mx,bb[1],bb[2],my],[bb[0],my,mx,bb[3]],[mx,my,bb[2],bb[3]]];
+      let kept=0;
+      for(const q of quads){
+        const poly=turf.bboxPolygon(q);
+        const cent=[(q[0]+q[2])/2,(q[1]+q[3])/2];
+        try{ if(turf.booleanPointInPolygon(cent, st)) { provinces.push(poly); kept++; } }catch(e){}
+      }
+      if(kept===0) provinces.push(st);
+    }catch(e){ provinces.push(st); }
+  }
+  feats=provinces.length>80 ? provinces : origFeats;
+  window._statesFeats=statesFeats;
   proj=projectionFor(feats); path=d3.geoPath(proj);
   mergedD=""; try{ mergedD=path(union|| {type:"FeatureCollection",features:feats}); }catch(e){ feats.forEach(f=> mergedD+=path(f)+" "); }
   // cache centroids/areas — OPTIMIZED: no recompute per frame
@@ -366,7 +384,7 @@ async function init(){
       return -1;
     });
   }catch(e){ provCentroids=[]; provAreas=[]; cityProvIdx=[]; }
-  document.getElementById("topInfo").textContent=feats.length+" PROVINCES • "+CITIES0.length+" CITIES • FRONT BY STATE • SEEDED";
+  document.getElementById("topInfo").textContent=feats.length+" PROVINCES • "+statesFeats.length+" STATES • "+CITIES0.length+" CITIES • HOI4";
   const ds=document.getElementById("daySlider"); if(ds){ ds.max=DAYS; ds.step=0.1; }
   // restore pravda log from localStorage (persists after refresh lmao)
   try{
@@ -385,13 +403,22 @@ async function init(){
   curFloat=realFloat(); curDay=Math.floor(curFloat);
   // if we restored log, ensure we don't re-log already logged days
   if(lastDayLogged < Math.floor(curFloat)) {
-    // will be handled by first tick, but set baseline
   } else {
     lastDayLogged=Math.floor(curFloat);
   }
   render(curFloat);
+  // seed battle log for current day so not empty (no sound/zoom on init)
+  try{
+    const cb=battlesForDay(Math.floor(curFloat));
+    cb.forEach(b=>{
+      const col=b.attacker==="REV"?"rev":"erw";
+      const dateStr=fmtDate(new Date(WAR_START.getTime()+Math.floor(curFloat)*86400000));
+      const exists=document.getElementById("warLog").innerHTML.includes(b.sector);
+      if(!exists) log(`<b>${dateStr}</b> — <span class="${col}">${b.sector}</span> (${b.city}) • ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
+    });
+    if(curFloat<0.5) lastDayLogged=Math.floor(curFloat);
+  }catch(e){}
   bindControls(); startRealtimeTick();
-  // after first render, ensure log day sync
   try{ localStorage.setItem("pravdaLogDay", String(curFloat)); }catch(e){}
 }
 function render(f){
@@ -478,13 +505,18 @@ function drawMap(front,f){
   defs.append("clipPath").attr("id","ussrClip").append("path").attr("d",mergedD);
   svg.append("rect").attr("width",W).attr("height",H).attr("fill","#b8ad94");
   gBase=svg.append("g").attr("id","gBase");
-  // PROVINCE-BASED FRONT — OPTIMIZED: use cached provFacs (no geoCentroid per frame)
+  // PROVINCES (HOI4) + STATES — provinces thin, states thick (like HOI4)
   const provG=gBase.append("g").attr("id","provinces");
   const facs=window._provFacs||[];
   for(let i=0;i<feats.length;i++){
     const fac=facs[i]||"REV";
     const d=path(feats[i]);
-    provG.append("path").attr("d", d).attr("fill", fac==="REV"?"#8a0f14":"#1e3d64").attr("stroke","#111").attr("stroke-width",0.45).attr("opacity",0.98);
+    provG.append("path").attr("d", d).attr("fill", fac==="REV"?"#8a0f14":"#1e3d64").attr("stroke","#2a2a2a").attr("stroke-width",0.35).attr("opacity",0.98);
+  }
+  // states (original 84) thicker border — HOI4 style
+  const stateG=gBase.append("g").attr("id","states");
+  for(const st of (window._statesFeats||statesFeats||[])){
+    try{ const d=path(st); if(d) stateG.append("path").attr("d",d).attr("fill","none").attr("stroke","#111").attr("stroke-width",1.0).attr("opacity",0.95); }catch(e){}
   }
   // hatch overlay clipped to USSR for texture
   const hatchG=gBase.append("g").attr("clip-path","url(#ussrClip)");
@@ -523,7 +555,7 @@ function drawMap(front,f){
     g.on("mouseenter",()=>{tooltip.style.opacity="1"; tooltip.innerHTML=`<span style="color:${isRev?'#ff6b6b':'#8ec0ff'}">●</span> ${c.name} — ${isRev?'REVOLUTIONARIES':'ERWIN'}<br><span style="opacity:.7">Day ${f.toFixed(1)} • ${fmtDate(new Date(WAR_START.getTime()+f*86400000))}</span>`;})
      .on("mouseleave",()=>tooltip.style.opacity="0")
      .on("mousemove",()=>{const rect=mapBox.getBoundingClientRect(), svgRect=document.getElementById("map").getBoundingClientRect(); const sx=svgRect.left+(x/W)*svgRect.width, sy=svgRect.top+(y/H)*svgRect.height; tooltip.style.left=(sx-rect.left)+"px"; tooltip.style.top=(sy-rect.top)+"px";});
-    g.on("click",()=>{ zoomToCity(c.name); playBattleSounds("STALEMATE", c.faction); });
+    g.on("click",()=>{ zoomToCity(c.name); }); // no sound on city click (requested)
   });
   gBase.append("text").attr("x",W/2).attr("y",28).attr("text-anchor","middle").attr("font-family","Playfair Display").attr("font-weight",900).attr("font-size",15).attr("letter-spacing",".06em").attr("fill","#111").attr("opacity",0.92).text(`USSR • ${fmtDate(new Date(WAR_START.getTime()+f*86400000))} • DAY ${f.toFixed(1)}/${DAYS} • ${f>=DAYS?"ARMISTICE":"TILL 1 OCT"}`).attr("paint-order","stroke").attr("stroke","#e8dcc6").attr("stroke-width",4).attr("stroke-linejoin","round");
 }
@@ -535,7 +567,12 @@ function battlesForFloat(f){
 }
 // SEEDED RANDOM — same for everyone (deterministic per day), still feels random but synced
 function battlesForDay(d){
-  if(d<0) return []; if(d===0) return [];
+  if(d<0) return [];
+  if(d===0){
+    // day 0: initial skirmish so log not empty
+    const sec=SECTORS[Math.floor(seeded01(0*133)*SECTORS.length)];
+    return [{sector:sec.name, city:sec.city, attacker:"REV", outcome:"SKIRMISH", cas:84, coord:FRONT_START[3]}];
+  }
   const r0=seeded01(d*7919);
   const n = 2 + (r0<0.28?1:0);
   const out=[];
