@@ -244,7 +244,13 @@ function factionAt(lon,lat,front){
   else if(idx===0){const b=front[1]; if(b[0]!==best[0]){const f=(lon-best[0])/(b[0]-best[0]); latAt=best[1]+f*(b[1]-best[1]);}}
   return lat<latAt?"ERW":"REV";
 }
-function projectionFor(features){const fc={type:"FeatureCollection",features}; const p=d3.geoMercator().rotate([-11,0,0]); p.fitExtent([[18,18],[982,542]],fc); p.scale(p.scale()*1.02); return p;}
+function projectionFor(features){
+  // FIX bugged map: normalize 190° antimeridian + use freelance-style fixed center/scale (fitExtent bugged for 190)
+  const p=d3.geoMercator().center([0,0]).translate([500,295]).scale(620).rotate([-11,0,0]);
+  // still fit slightly if needed
+  try{ const fc={type:"FeatureCollection",features}; p.fitExtent([[14,14],[986,546]], fc); p.scale(p.scale()*1.02); }catch(e){}
+  return p;
+}
 function fmtDate(d){return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}).toUpperCase();}
 function realProgress(){const now=Date.now(), s=WAR_START.getTime(), e=WAR_END.getTime(); return Math.max(0,Math.min(1,(now-s)/(e-s)));}
 function realFloat(){return realProgress()*DAYS;}
@@ -349,7 +355,15 @@ function renderOngoingBattles(f){
 let cityState=[];
 async function init(){
   const raw=await d3.json(GEO_URL); let origFeats=raw.features;
-  // FIX COOKED: back to 84 real oblasts as provinces (HOI4 states) — subdivision was bugged (holes/gaps)
+  // FIX 190° antimeridian → clamp to 179.9 (Chukotka) so bbox not huge (-170→179 = 350° bug)
+  try{
+    origFeats.forEach(fe=>{
+      const g=fe.geometry; if(!g||!g.coordinates) return;
+      if(g.type==="Polygon") g.coordinates.forEach(r=> r.forEach(c=>{ if(c[0]>180) c[0]=179.9; }));
+      else if(g.type==="MultiPolygon") g.coordinates.forEach(poly=> poly.forEach(r=> r.forEach(c=>{ if(c[0]>180) c[0]=179.9; })));
+    });
+  }catch(e){}
+  // CLEAN: 84 real oblasts as provinces — HOI4 states = same, but draw both for visibility
   let union=null;
   try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
   feats=origFeats;
