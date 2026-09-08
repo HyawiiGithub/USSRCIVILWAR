@@ -349,21 +349,10 @@ function renderOngoingBattles(f){
 let cityState=[];
 async function init(){
   const raw=await d3.json(GEO_URL); let origFeats=raw.features;
-  // Build dense provinces — HOTFIX: larger hex (less count) + no intersect, clip via outer clipPath — fixes unoptimized + bugged
+  // HOTFIX: revert to original 84 real oblasts — hex grid was bugged/cooked (turf.hexGrid + 190° antimeridian + heavy) → use clean 84, still ALOT with 85 cities
   let union=null;
   try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
-  let dense=null;
-  try{
-    const bbox= union ? turf.bbox(union) : [19,35,190,82];
-    const cellSide=145; // km → ~110-130 hexes — HOTFIX: fewer, faster, still ALOT LOT
-    const grid=turf.hexGrid(bbox, cellSide, {units:'kilometers'});
-    dense=[];
-    for(const cell of grid.features){
-      if(union && !turf.booleanIntersects(cell, union)) continue;
-      dense.push(cell);
-    }
-    if(dense && dense.length>80) feats=dense; else feats=origFeats;
-  }catch(e){ console.warn("dense provinces failed",e); feats=origFeats; }
+  feats=origFeats;
   proj=projectionFor(feats); path=d3.geoPath(proj);
   mergedD=""; try{ mergedD=path(union|| {type:"FeatureCollection",features:feats}); }catch(e){ feats.forEach(f=> mergedD+=path(f)+" "); }
   // cache centroids/areas — OPTIMIZED: no recompute per frame
