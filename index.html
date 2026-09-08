@@ -96,7 +96,7 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
         <div style="flex:1;height:14px;background:#222;border:1px solid #444;position:relative;overflow:hidden"><div id="timeBar" style="height:100%;width:0%;background:repeating-linear-gradient(90deg,var(--red) 0 10px,#a51a1a 10px 20px);transition:width .6s"></div><span id="dayNum" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 10px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 6px;border:1px solid #fff">DAY 0.0</span></div>
         <span class="badge" style="background:var(--red);color:#fff">NO SKIP • CHERNOBYL PROTOCOL</span>
       </div>
-      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">SEEDED — same for everyone. Real-time locked: 1 real day = 1 war day. Skipping disabled (slider/fast/reset removed). Zoom to city battle (2.8×). Sounds: 9 real CC0 wavs (afterglow CC0 + distant Pixabay) low vol 0.18. Ends 1 Oct armistice.</div>
+      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">PROVINCE FRONT: 84 oblasts colored by centroid vs front line → jagged state-border front (not smooth curve). Seeded same for everyone. Real-time locked (no skip). Zoom 2.8×. Sounds 9 wavs low vol. Ends 1 Oct.</div>
     </div>
   </div>
 
@@ -163,7 +163,7 @@ const SECTORS=[
 ];
 const WAR_START=new Date("2026-09-08T00:00:00Z"), WAR_END=new Date("2026-10-01T00:00:00Z"), DAYS=Math.round((WAR_END-WAR_START)/86400000);
 let proj,path,mergedD,feats;
-let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=true, gBase=null;
+let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=false, gBase=null;
 let casual=0, gdpTotal=1820, gdpRev=1238, gdpErw=582, lastLogDay=-1;
 const SOUNDS=[
   {id:"aud1", vol:0.18}, // blast-small light
@@ -227,11 +227,11 @@ let cityState=[];
 async function init(){
   const raw=await d3.json(GEO_URL); feats=raw.features; proj=projectionFor(feats); path=d3.geoPath(proj);
   mergedD=""; feats.forEach(f=> mergedD+=path(f)+" ");
-  document.getElementById("topInfo").textContent=feats.length+" FEATURES • PURE SILHOUETTE • RANDOMIZED WAR";
-  document.getElementById("daySlider").max=DAYS; document.getElementById("daySlider").step=0.1;
+  document.getElementById("topInfo").textContent=feats.length+" PROVINCES • FRONT BY STATE BORDER • SEEDED";
+  const ds=document.getElementById("daySlider"); if(ds){ ds.max=DAYS; ds.step=0.1; }
   curFloat=realFloat(); curDay=Math.floor(curFloat);
   render(curFloat);
-  log(`<b>${fmtDate(WAR_START)} — WAR BEGINS (SEEDED — SAME FOR ALL)</b> <span class="rev">Revolutionaries</span> ~68% / <span class="erw">Erwin</span> ~32%. Seeded per day — everyone sees identical war. Real war wavs low vol.`,true);
+  log(`<b>${fmtDate(WAR_START)} — WAR BEGINS (SEEDED — SAME FOR ALL)</b> <span class="rev">Revolutionaries</span> ~68% / <span class="erw">Erwin</span> ~32%. Front by province (84 states) — jagged, not smooth curve. Real war wavs low vol.`,true);
   bindControls(); startRealtimeTick();
 }
 function render(f){
@@ -239,10 +239,24 @@ function render(f){
   const front=frontForFloat(f);
   const curDate=new Date(WAR_START.getTime()+f*86400000);
   cityState=CITIES0.map(c=>({...c,faction:factionAt(c.coords[0],c.coords[1],front)}));
+  // province control — jagged front by state: count provinces per faction
+  let provRev=0, provErw=0, areaRev=0, areaErw=0;
+  try{
+    feats.forEach(fe=>{
+      const cent=d3.geoCentroid(fe);
+      const fac=factionAt(cent[0], cent[1], front);
+      const a=turf.area(fe);
+      if(fac==="REV"){provRev++; areaRev+=a;} else {provErw++; areaErw+=a;}
+    });
+  }catch(e){ provRev=Math.round(feats.length*0.68); provErw=feats.length-provRev; }
   const revCities=cityState.filter(c=>c.faction==="REV").length, erwCities=cityState.length-revCities;
-  const wob=(seeded01(Math.floor(f)*911)-0.5)*1.4; // seeded daily drift — same for everyone
-  const baseRev=68+(f/DAYS)*10;
-  const revPct=Math.max(62,Math.min(84,Math.round(baseRev+wob))), erwPct=100-revPct;
+  // revPct from actual province AREA (not fake wob) — front truly moves provinces
+  const areaPct = areaRev+areaErw>0 ? Math.round(areaRev/(areaRev+areaErw)*100) : 68;
+  // blend areaPct with base progression so trend stays 68→78 but provinces decide exact
+  const baseRev=areaPct;
+  const revPct=Math.max(60,Math.min(84, baseRev)), erwPct=100-revPct;
+  // store for draw
+  window._provStats={provRev, provErw, areaRev, areaErw};
   casual=0; for(let i=0;i<=Math.floor(f);i++){ const r1=seeded01(i*1543), r2=seeded01(i*2909+1); casual+=900+Math.floor(r1*900)+(r2<0.33?400:0); }
   casual+=Math.floor((f-Math.floor(f))* (900+seeded01(Math.floor(f)*3333)*400));
   const prodRev=1.04, prodErw=0.92;
@@ -284,20 +298,23 @@ function render(f){
 }
 function drawMap(front,f){
   const frontD=path({type:"Feature",geometry:{type:"LineString",coordinates:front}});
-  const frontProj=front.map(c=>proj(c));
-  const FAR=4000, erwinPts=[...frontProj,[FAR,FAR],[-FAR,FAR],[-FAR,frontProj[0][1]]];
-  const erwinPolyD="M"+erwinPts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L ")+" Z";
   svg.selectAll("*").remove();
   const defs=svg.append("defs");
   defs.append("pattern").attr("id","paperHatch").attr("width",6).attr("height",6).attr("patternUnits","userSpaceOnUse").append("path").attr("d","M0 6 L6 0").attr("stroke","rgba(0,0,0,.07)").attr("stroke-width",0.7);
   defs.append("clipPath").attr("id","ussrClip").append("path").attr("d",mergedD);
   svg.append("rect").attr("width",W).attr("height",H).attr("fill","#b8ad94");
   gBase=svg.append("g").attr("id","gBase");
-  const gClip=gBase.append("g").attr("clip-path","url(#ussrClip)");
-  gClip.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","#8a0f14");
-  gClip.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","url(#paperHatch)").attr("opacity",0.5);
-  gClip.append("path").attr("d",erwinPolyD).attr("fill","#1e3d64").attr("opacity",0.98);
-  gClip.append("path").attr("d",erwinPolyD).attr("fill","none").attr("stroke","rgba(255,255,255,.07)").attr("stroke-width",0.8).attr("stroke-dasharray","4 6");
+  // PROVINCE-BASED FRONT: each of 84 oblasts colored by faction (centroid vs front) — jagged border follows state edges
+  const provG=gBase.append("g").attr("id","provinces");
+  feats.forEach(fe=>{
+    let fac="REV";
+    try{ const cent=d3.geoCentroid(fe); fac=factionAt(cent[0], cent[1], front); }catch(e){ fac="REV"; }
+    const d=path(fe);
+    provG.append("path").attr("d", d).attr("fill", fac==="REV"?"#8a0f14":"#1e3d64").attr("stroke","#111").attr("stroke-width",0.5).attr("opacity",0.98);
+  });
+  // hatch overlay clipped to USSR for texture
+  const hatchG=gBase.append("g").attr("clip-path","url(#ussrClip)");
+  hatchG.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","url(#paperHatch)").attr("opacity",0.22).attr("pointer-events","none");
   gBase.append("path").attr("d",mergedD).attr("fill","none").attr("stroke","#111").attr("stroke-width",2.6).attr("stroke-linejoin","round");
   gBase.append("path").attr("d",mergedD).attr("fill","none").attr("stroke","rgba(245,230,163,.35)").attr("stroke-width",0.8);
   const frontG=gBase.append("g").attr("id","frontG").style("display",showFront?"block":"none");
@@ -356,7 +373,7 @@ function log(html,top=false){const el=document.getElementById("warLog"); const p
 let lastDayLogged=-1;
 function stepTo(f, withLog=true){
   const prevFloat=curFloat, prevDay=Math.floor(prevFloat);
-  render(f); document.getElementById("daySlider").value=f.toFixed(1);
+  render(f); const ds=document.getElementById("daySlider"); if(ds) ds.value=f.toFixed(1);
   if(withLog){
     const newDay=Math.floor(f);
     for(let d=Math.max(lastDayLogged+1, prevDay+1); d<=newDay; d++){
