@@ -62,7 +62,7 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
 <header class="hdr">
   <div class="brand">
     <div class="stamp">★<small>CCCP</small></div>
-    <div><h1><i>USSR</i> CIVIL WAR</h1><p>Pure silhouette • No SSR borders • Real-time simulation • GDP + BATTLES • 8 Sept → 1 Oct</p></div>
+    <div><h1><i>USSR</i> CIVIL WAR</h1><p>Pure silhouette • No SSR borders • Randomized real-time simulation • 8 Sept → 1 Oct</p></div>
   </div>
   <div class="legend">
     <div class="item"><span class="dot dot-rev"></span> REV <span class="badge b-rev" id="revPct">—</span></div>
@@ -73,7 +73,7 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
 
 <div class="map-wrap">
   <div class="card">
-    <div class="card-h"><span>Pure USSR — Real-Time Civil War (till 1 Oct 2026)</span><small id="mapMeta">84→1 SILHOUETTE • ZOOM ON CITY BATTLES • GDP SIM</small></div>
+    <div class="card-h"><span>Pure USSR — Randomized Real-Time War (till 1 Oct)</span><small>84→1 SILHOUETTE • ZOOM ON CITY BATTLES • TRUE RANDOM</small></div>
     <div class="map-box" id="mapBox">
       <svg id="map" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
@@ -95,11 +95,11 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
         <label style="font:700 9px 'IBM Plex Mono';letter-spacing:.08em">TIMELINE 8 SEPT → 1 OCT (23 DAYS WALL-CLOCK):</label>
         <input type="range" id="daySlider" min="0" max="23" value="0" step="0.1">
         <span class="badge" style="background:#fff;border:2px solid #111" id="dayNum">DAY 0.0</span>
-        <button id="btnSound" class="dark">🔊 SOUND ON</button>
+        <button id="btnSound">🔊 SOUND ON</button>
         <button id="btnSave">⬇ SAVE SVG</button>
         <button id="btnFront">TOGGLE FRONT</button>
       </div>
-      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">Real-time: 1 real day = 1 war day. Auto-syncs to wall clock; also scrub or fast-play. Zoom animates to city battles. GDP ticks daily. Sounds: procedural WebAudio + Google/Pixabay fallback. War ends 1 Oct armistice.</div>
+      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">RANDOMIZED: each run = new front wobble + battles + GDP drift. Real-time = 1 real day = 1 war day (wall-clock sync). Zoom to battle city (2.8×). War sounds: real CC0 artillery wavs (self-hosted + jsDelivr) at low volume. Ends 1 Oct armistice.</div>
     </div>
   </div>
 
@@ -107,32 +107,37 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
     <div class="stat"><b>REVOLUTIONARIES — CONTROL & GDP</b><strong style="color:var(--red)" id="sRev">—</strong><span id="sRevSub">—</span><div class="delta" id="sRevGdp">GDP —</div></div>
     <div class="stat"><b>ERWIN — CONTROL & GDP</b><strong style="color:var(--blue)" id="sErw">—</strong><span id="sErwSub">—</span><div class="delta" id="sErwGdp">GDP —</div></div>
     <div class="stat"><b>FRONT LINE</b><strong id="sFront">—</strong><span id="sFrontSub">—</span><div class="delta" id="sFrontDelta">—</div></div>
-    <div class="stat"><b>CASUALTIES (SIM)</b><strong id="sCas">—</strong><span id="sCasSub">—</span><div class="delta" id="sCasDelta">—</div></div>
+    <div class="stat"><b>CASUALTIES (RANDOM)</b><strong id="sCas">—</strong><span id="sCasSub">—</span><div class="delta" id="sCasDelta">—</div></div>
     <div class="stat"><b>TOTAL GDP (SIM)</b><strong id="sGdp">—</strong><span>1936 RUBLES • BOTH FACTIONS</span><div class="delta" id="sGdpDelta">—</div></div>
     <div class="stat"><b>WAR ECONOMY</b><strong id="sEco">—</strong><span id="sEcoSub">SUPPLY • MORALE</span><div class="delta" id="sEcoDelta">—</div></div>
   </div>
 
   <div class="war-panel">
-    <div class="card"><div class="card-h"><span>⚔ BATTLE LOG — PRAVDA + ZOOM</span><small id="logMeta">REAL-TIME • CITY ZOOM</small></div><div class="log" id="warLog"></div></div>
-    <div class="card"><div class="card-h"><span>🔊 WAR SOUNDS • PROCEDURAL + GOOGLE</span><small>WEBAUDIO • PIXABAY FALLBACK</small></div>
+    <div class="card"><div class="card-h"><span>⚔ BATTLE LOG — RANDOMIZED</span><small id="logMeta">TRUE RANDOM • CITY ZOOM</small></div><div class="log" id="warLog"></div></div>
+    <div class="card"><div class="card-h"><span>🔊 REAL WAR SOUNDS • CC0</span><small>SELF-HOSTED • LOW VOLUME</small></div>
       <div style="padding:10px;background:var(--paper);font:600 10px 'IBM Plex Mono';line-height:1.6;display:grid;gap:6px">
-        <div>Primary: <b>WebAudio synthesis</b> (artillery boom, MG burst, explosion) — always works. Fallback hotlinks:</div>
-        <div>• Pixabay artillery <code>cdn.pixabay.com/audio/2021/08/04/audio_0625c1539c.mp3</code></div>
-        <div>• Google beep <code>actions.google.com/sounds/v1/alarms/beep_short.ogg</code></div>
-        <div>• Google storage <code>commondatastorage.googleapis.com/codeskulptor-assets/week7-bounce.m4a</code></div>
-        <div>• MDN CC0 <code>interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3</code></div>
+        <div>WIPED old loud synth. Now <b>real artillery</b> CC0 wavs (afterglow-artillery, 44.1 kHz). Self-hosted in <code>/sounds/</code> + jsDelivr fallback. Volume capped 0.22.</div>
+        <div>• <code>sounds/blast-small.wav</code> — light mortar (49KB)</div>
+        <div>• <code>sounds/blast-medium.wav</code> — medium barrage (80KB)</div>
+        <div>• <code>sounds/blast-large.wav</code> — heavy cannon (126KB)</div>
+        <div>• <code>sounds/blast-low.wav</code> — distant rumble (128KB) • <code>impact-soil.wav</code></div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
-          <audio id="audArt" controls preload="none" style="width:100%;height:26px" src="https://cdn.pixabay.com/audio/2021/08/04/audio_0625c1539c.mp3"></audio>
-          <audio id="audBeep" preload="none" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+          <audio id="aud1" preload="auto" src="./sounds/blast-small.wav"></audio>
+          <audio id="aud2" preload="auto" src="./sounds/blast-medium.wav"></audio>
+          <audio id="aud3" preload="auto" src="./sounds/blast-large.wav"></audio>
+          <audio id="aud4" preload="auto" src="./sounds/impact-soil.wav"></audio>
         </div>
-        <button id="btnTestSound" style="appearance:none;background:#fff;border:2px solid #111;padding:5px 8px;font:700 9px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111">▶ TEST WAR SOUNDS</button>
-        <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">Zoom: map auto-zooms to Kiev/Kharkov/Rostov/Caucasus/Tashkent when battle fires there (2.5×, 4s hold).</div>
+        <div style="display:flex;gap:6px">
+          <button id="btnTestSound" style="appearance:none;background:#fff;border:2px solid #111;padding:5px 8px;font:700 9px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111">▶ TEST REAL SOUNDS (LOW VOL)</button>
+          <span style="font:600 9px 'IBM Plex Mono';color:#5a5242;align-self:center">Vol 0.22 • not 1.0 • no ear-rape</span>
+        </div>
+        <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">Auto-zoom: 2.8× to battle city for 3.8s. Random battles each day (Math.random).</div>
       </div>
     </div>
   </div>
 
-  <div class="card" style="margin-top:10px"><div class="card-h"><span>HOW IT WORKS — REAL TIME</span><small>23 DAYS WALL-CLOCK</small></div>
-    <div style="padding:10px;background:var(--paper);font:500 11px 'IBM Plex Mono';line-height:1.6">Freelance map = per-SSR grey polygons + black strokes. This = <b>one merged USSR silhouette</b> (84→1) outer stroke only. Front is geo LineString lerp <code>START→END</code> over <b>real wall-clock 8 Sept → 1 Oct</b> (progress = (now - 8Sept)/23d). Front also wobbles; cities flip via point-in-south test. GDP = base 1,820B RUB × territory share × productivity + daily war-economy noise; shown per faction. Zoom via <code>gBase transform</code> to battle city. Audio via WebAudio oscillators (no 403) + Pixabay/Google fallback.</div>
+  <div class="card" style="margin-top:10px"><div class="card-h"><span>HOW IT WORKS — RANDOMIZED REAL TIME</span><small>NOT PRESIMULATED</small></div>
+    <div style="padding:10px;background:var(--paper);font:500 11px 'IBM Plex Mono';line-height:1.6">Old was deterministic <code>sin(d)*</code> — now <b>Math.random()</b> per battle + per front jitter (generated once at load). Each refresh = new war. Front = <code>START→END</code> wall-clock lerp + random jitter array (<code>±0.18°</code>). Battles: 2-3 random sectors/day, random attacker/outcome/casualties. GDP = 1820B × share × productivity − warDrag + random drift. All forked from freelance-ussr-map merged silhouette (84→1) pure outer stroke.</div>
   </div>
 </div>
 
@@ -142,6 +147,9 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
 const GEO_URL="./ussr.geojson";
 const FRONT_START=[[22.5,52.8],[26.5,51.5],[30.2,50.2],[34.0,49.1],[38.5,47.2],[42.8,44.6],[46.5,42.8],[51.2,41.5],[57.8,40.2],[65.2,41.0],[73.5,43.5],[82.0,47.0],[90.5,52.2],[103.0,55.5],[118.0,56.8],[132.5,54.5]];
 const FRONT_END=[[22.5,51.9],[26.5,50.6],[30.2,49.1],[34.0,47.8],[38.5,45.7],[42.8,43.1],[46.5,41.3],[51.2,40.0],[57.8,38.8],[65.2,39.7],[73.5,42.1],[82.0,45.6],[90.5,50.9],[103.0,54.2],[118.0,55.5],[132.5,53.6]];
+// RANDOM jitter per front point — generated ONCE at load, not deterministic sin
+const FRONT_JITTER = FRONT_START.map(()=> (Math.random()-0.5)*0.18);
+const FRONT_JITTER2 = FRONT_START.map(()=> (Math.random()-0.5)*0.10);
 const CITIES0=[
   {name:"MOSCOW",coords:[37.6173,55.7558]},{name:"LENINGRAD",coords:[30.3351,59.9343]},{name:"NOVOSIBIRSK",coords:[82.9357,55.0084]},{name:"VLADIVOSTOK",coords:[131.8735,43.1056]},
   {name:"MURMANSK",coords:[33.0827,68.9585]},{name:"ARCHANGELSK",coords:[40.5443,64.5393]},{name:"SVERDLOVSK",coords:[60.6122,56.8389]},{name:"OMSK",coords:[73.3686,54.9885]},
@@ -151,47 +159,25 @@ const SECTORS=[
   {name:"BREST SECTOR",city:"MINSK"},{name:"KIEV AXIS",city:"KIEV"},{name:"KHARKOV SALIENT",city:"KHARKOV"},{name:"DONBAS",city:"KHARKOV"},{name:"ROSTOV GATE",city:"ROSTOV"},{name:"CAUCASUS PASS",city:"TIFLIS"},{name:"CASPAN FLANK",city:"BAKU"},{name:"TURKMEN FRONT",city:"SAMARKAND"},{name:"TASHKENT CORRIDOR",city:"TASHKENT"},{name:"BALKHASH LINE",city:"OMSK"},{name:"SAYAN RIDGE",city:"NOVOSIBIRSK"},{name:"BAIKAL SHORE",city:"NOVOSIBIRSK"},{name:"FAR EAST BEND",city:"VLADIVOSTOK"}
 ];
 const WAR_START=new Date("2026-09-08T00:00:00Z"), WAR_END=new Date("2026-10-01T00:00:00Z"), DAYS=Math.round((WAR_END-WAR_START)/86400000);
-let proj,path,mergedD,feats,totalArea;
-let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=true, gBase=null, lastRealDay=-1;
+let proj,path,mergedD,feats;
+let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=true, gBase=null;
 let casual=0, gdpTotal=1820, gdpRev=1238, gdpErw=582, lastLogDay=-1;
-let audioCtx=null;
-function ensureAudio(){ if(!audioCtx) try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} return audioCtx; }
-function playWarSound(kind){
+const SOUNDS=[
+  {id:"aud1", vol:0.22}, // blast-small
+  {id:"aud2", vol:0.20}, // blast-medium
+  {id:"aud3", vol:0.18}, // blast-large heavy — quieter
+  {id:"aud4", vol:0.20}, // impact-soil
+];
+function playRealSound(variant){
   if(!soundOn) return;
-  const ctx=ensureAudio(); if(!ctx) return;
-  // also try fallback html audio for texture
-  try{ const a=document.getElementById("audArt"); if(kind==="artillery"||kind==="explosion"){ a.volume=0.35; a.currentTime=0; a.play().catch(()=>{});} }catch(e){}
+  // variant 0-3 or random
+  const pick = variant!=null ? SOUNDS[variant] : SOUNDS[Math.floor(Math.random()*SOUNDS.length)];
+  const a=document.getElementById(pick.id);
+  if(!a) return;
   try{
-    if(kind==="artillery"){
-      const o=ctx.createOscillator(), g=ctx.createGain(), f=ctx.createBiquadFilter();
-      o.type="sine"; o.frequency.setValueAtTime(90,ctx.currentTime); o.frequency.exponentialRampToValueAtTime(28,ctx.currentTime+0.6);
-      f.type="lowpass"; f.frequency.value=900;
-      const noise=ctx.createBufferSource(); const buf=ctx.createBuffer(1,ctx.sampleRate*0.6,ctx.sampleRate);
-      const data=buf.getChannelData(0); for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,1.5)*0.6;
-      noise.buffer=buf;
-      const ng=ctx.createGain(); ng.gain.setValueAtTime(0.7,ctx.currentTime); ng.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.6);
-      o.connect(f); f.connect(g); noise.connect(ng); g.connect(ctx.destination); ng.connect(ctx.destination);
-      g.gain.setValueAtTime(0.8,ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.7);
-      o.start(); o.stop(ctx.currentTime+0.7); noise.start(); noise.stop(ctx.currentTime+0.6);
-    } else if(kind==="gun"){
-      for(let i=0;i<5;i++){
-        const o=ctx.createOscillator(), g=ctx.createGain();
-        o.type="square"; o.frequency.value=720;
-        g.gain.setValueAtTime(0,ctx.currentTime+i*0.09); g.gain.linearRampToValueAtTime(0.22,ctx.currentTime+i*0.09+0.015); g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+i*0.09+0.08);
-        o.connect(g); g.connect(ctx.destination); o.start(ctx.currentTime+i*0.09); o.stop(ctx.currentTime+i*0.09+0.09);
-      }
-      // also beep
-      try{ const b=document.getElementById("audBeep"); b.volume=0.2; b.currentTime=0; b.play().catch(()=>{});}catch(e){}
-    } else if(kind==="explosion"){
-      const o=ctx.createOscillator(), g=ctx.createGain();
-      o.type="sawtooth"; o.frequency.setValueAtTime(120,ctx.currentTime); o.frequency.exponentialRampToValueAtTime(18,ctx.currentTime+0.9);
-      g.gain.setValueAtTime(1,ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.9);
-      const buf=ctx.createBuffer(1,ctx.sampleRate*0.9,ctx.sampleRate); const d=buf.getChannelData(0);
-      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,0.8)*0.9;
-      const n=ctx.createBufferSource(); n.buffer=buf; const ng=ctx.createGain(); ng.gain.setValueAtTime(0.9,ctx.currentTime); ng.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.9);
-      o.connect(g); n.connect(ng); g.connect(ctx.destination); ng.connect(ctx.destination);
-      o.start(); o.stop(ctx.currentTime+0.9); n.start(); n.stop(ctx.currentTime+0.9);
-    }
+    a.pause(); a.currentTime=0; a.volume=pick.vol;
+    // play returns promise
+    a.play().catch(()=>{});
   }catch(e){}
 }
 const svg=d3.select("#map"), W=1000, H=560;
@@ -200,8 +186,10 @@ function frontForFloat(f){
   return FRONT_START.map((c,i)=>{
     const e=FRONT_END[i];
     const baseLon=c[0]+(e[0]-c[0])*t, baseLat=c[1]+(e[1]-c[1])*t;
-    const wob=Math.sin(f*1.7+i*0.9)*0.12 + Math.cos(f*0.9+i*1.3)*0.08;
-    const push=(Math.floor(f)===7||Math.floor(f)===14)?0.22:0;
+    // randomized jitter (per-run, not sin)
+    const wob = FRONT_JITTER[i]*Math.sin(f*0.35) + FRONT_JITTER2[i]*Math.cos(f*0.22);
+    // small random push some days
+    const push = (Math.random()<0.08 ? (Math.random()-0.5)*0.30 : 0);
     return [baseLon, baseLat+wob+push];
   });
 }
@@ -221,15 +209,12 @@ let cityState=[];
 async function init(){
   const raw=await d3.json(GEO_URL); feats=raw.features; proj=projectionFor(feats); path=d3.geoPath(proj);
   mergedD=""; feats.forEach(f=> mergedD+=path(f)+" ");
-  try{ totalArea=turf.area(raw);}catch(e){totalArea=1;}
-  document.getElementById("topInfo").textContent=feats.length+" FEATURES • PURE SILHOUETTE • REAL-TIME WAR";
+  document.getElementById("topInfo").textContent=feats.length+" FEATURES • PURE SILHOUETTE • RANDOMIZED WAR";
   document.getElementById("daySlider").max=DAYS; document.getElementById("daySlider").step=0.1;
-  // start at real time
   curFloat=realFloat(); curDay=Math.floor(curFloat);
   render(curFloat);
-  log(`<b>${fmtDate(WAR_START)} — WAR BEGINS</b> <span class="rev">Revolutionaries</span> north/east ~68% / <span class="erw">Erwin</span> south ~32%. War runs <b>wall-clock till 1 OCT</b> (23 real days). Front animates smoothly; city battles auto-zoom.`,true);
-  bindControls();
-  startRealtimeTick();
+  log(`<b>${fmtDate(WAR_START)} — WAR BEGINS (RANDOM SEED)</b> <span class="rev">Revolutionaries</span> ~68% / <span class="erw">Erwin</span> ~32%. Each reload = new random front + battles. Real war wavs low vol.`,true);
+  bindControls(); startRealtimeTick();
 }
 function render(f){
   curFloat=f; curDay=Math.floor(f);
@@ -237,18 +222,14 @@ function render(f){
   const curDate=new Date(WAR_START.getTime()+f*86400000);
   cityState=CITIES0.map(c=>({...c,faction:factionAt(c.coords[0],c.coords[1],front)}));
   const revCities=cityState.filter(c=>c.faction==="REV").length, erwCities=cityState.length-revCities;
-  const baseRev=68+(f/DAYS)*10, wob=Math.sin(f*1.2)*1.1+(Math.floor(f)===7||Math.floor(f)===14?-1.2:0);
+  const baseRev=68+(f/DAYS)*10, wob=(Math.random()-0.5)*1.4; // small random daily drift, not sin
   const revPct=Math.max(62,Math.min(84,Math.round(baseRev+wob))), erwPct=100-revPct;
-  // GDP sim
-  casual=0; for(let i=0;i<=Math.floor(f);i++) casual+=900+Math.floor(Math.abs(Math.sin(i*2.1))*900)+(i%3===0?400:0);
-  casual+=Math.floor((f-Math.floor(f))*1100);
-  // GDP: base 1820B,Rev share, productivity
+  casual=0; for(let i=0;i<=Math.floor(f);i++) casual+=900+Math.floor(Math.random()*900)+(Math.random()<0.33?400:0);
+  casual+=Math.floor((f-Math.floor(f))* (900+Math.random()*400));
   const prodRev=1.04, prodErw=0.92;
-  const warDrag= (casual/80000)*18 + f*2.2; // war cost
-  gdpTotal=Math.max(1720, 1820 + f*4.2 - warDrag + Math.sin(f*0.7)*6);
-  gdpRev=gdpTotal*(revPct/100)*prodRev;
-  gdpErw=gdpTotal*(erwPct/100)*prodErw;
-  // normalize so sum approx total
+  const warDrag= (casual/80000)*18 + f*2.2;
+  gdpTotal=Math.max(1720, 1820 + f*4.2 - warDrag + (Math.random()-0.5)*8);
+  gdpRev=gdpTotal*(revPct/100)*prodRev; gdpErw=gdpTotal*(erwPct/100)*prodErw;
   const sum=gdpRev+gdpErw, adj=gdpTotal/sum; gdpRev*=adj; gdpErw*=adj;
   let frontLen=0; try{frontLen=Math.round(turf.length({type:"Feature",geometry:{type:"LineString",coordinates:front}},{units:"kilometers"}));}catch(e){frontLen=2840-Math.round(f*12);}
   document.getElementById("dateLabel").textContent=`${fmtDate(curDate)} — DAY ${f.toFixed(1)}/${DAYS}`;
@@ -259,14 +240,14 @@ function render(f){
   document.getElementById("sRev").textContent=revPct+"% USSR"; document.getElementById("sErw").textContent=erwPct+"% USSR";
   document.getElementById("sRevSub").textContent=`${revCities} CITIES • ${revPct>70?'ADVANCING':'HOLDING'}`; document.getElementById("sErwSub").textContent=`${erwCities} CITIES • ${erwPct<30?'RETREATING':'DEFENDING'}`;
   document.getElementById("sFront").textContent=frontLen.toLocaleString()+" KM"; document.getElementById("sFrontSub").textContent=`DAY ${f.toFixed(1)} • SHIFT ${(front[3][1]-FRONT_START[3][1]).toFixed(2)}°`;
-  document.getElementById("sFrontDelta").textContent= f>0? (f>curFloat-0.1?'→ LIVE':'↘ PUSH'): '—';
-  document.getElementById("sCas").textContent=casual.toLocaleString(); document.getElementById("sCasSub").textContent=`~${Math.round(casual/(f+0.6)).toLocaleString()}/DAY`;
-  document.getElementById("sCasDelta").textContent=`+${Math.floor(900+Math.abs(Math.sin(f*2))*600)}/tick`;
+  document.getElementById("sFrontDelta").textContent= f>0? (Math.random()>0.5?'→ LIVE':'↘ PUSH'): '—';
+  document.getElementById("sCas").textContent=casual.toLocaleString(); document.getElementById("sCasSub").textContent=`~${Math.round(casual/(f+0.6)).toLocaleString()}/DAY (RANDOM)`;
+  document.getElementById("sCasDelta").textContent=`+${Math.floor(700+Math.random()*600)}/tick`;
   document.getElementById("sGdp").textContent=gdpTotal.toFixed(0)+"B ₽"; document.getElementById("sGdpDelta").textContent=`REV ${gdpRev.toFixed(0)}B / ERW ${gdpErw.toFixed(0)}B`;
   document.getElementById("sRevGdp").textContent=`GDP ${gdpRev.toFixed(0)}B ₽`; document.getElementById("sRevGdp").className="delta "+(gdpRev>1238?"up":"down");
   document.getElementById("sErwGdp").textContent=`GDP ${gdpErw.toFixed(0)}B ₽`; document.getElementById("sErwGdp").className="delta "+(gdpErw>582?"up":"down");
   document.getElementById("sGdpDelta").textContent=gdpTotal>1820?`▲ +${(gdpTotal-1820).toFixed(0)}B vs 8 Sept`:`▼ ${(gdpTotal-1820).toFixed(0)}B`;
-  document.getElementById("sEco").textContent=(revPct>72?"REV OFFENSIVE":erwPct>30?"CONTESTED":"ERW DEFENSIVE"); document.getElementById("sEcoSub").textContent=`SUPPLY ${Math.round(88 - f*0.9 + Math.sin(f)*4)}% • MORALE REV ${Math.round(68+f*0.6)} / ERW ${Math.round(62-f*0.4)}`;
+  document.getElementById("sEco").textContent=(revPct>72?"REV OFFENSIVE":erwPct>30?"CONTESTED":"ERW DEFENSIVE"); document.getElementById("sEcoSub").textContent=`SUPPLY ${Math.round(88 - f*0.9 + (Math.random()-0.5)*6)}% • MORALE REV ${Math.round(68+f*0.6)} / ERW ${Math.round(62-f*0.4)}`;
   drawMap(front,f);
 }
 function drawMap(front,f){
@@ -317,21 +298,23 @@ function drawMap(front,f){
 }
 function battlesForFloat(f){
   const day=Math.floor(f), frac=f-day;
-  // if within 0.4 of next day, also show next day's battle partially
   const out=battlesForDay(day);
   if(frac>0.6 && day+1<=DAYS) out.push(...battlesForDay(day+1).slice(0,1));
   return out;
 }
+// TRUE RANDOM — not deterministic sin
 function battlesForDay(d){
   if(d<0) return []; if(d===0) return [];
-  const rnd=(n)=>{const x=Math.sin(d*12.9898+n*78.233)*43758.5453; return x-Math.floor(x);};
-  const n=2+(d%4===0?1:0); const out=[];
+  const n = 2 + (Math.random()<0.28?1:0);
+  const out=[];
   for(let i=0;i<n;i++){
-    const sec=SECTORS[Math.floor(rnd(i)*SECTORS.length)];
-    const attacker=rnd(i+5)>0.52?"REV":"ERW", outcome=rnd(i+9)>0.58?(attacker==="REV"?"REV ADVANCE":"ERW COUNTER"):"STALEMATE";
-    const cas=120+Math.floor(rnd(i+13)*420);
-    const idx=FRONT_START.findIndex((_,k)=> k%SECTORS.length===Math.floor(rnd(i)*SECTORS.length)%SECTORS.length);
-    const coord=FRONT_START[idx%FRONT_START.length];
+    const sec=SECTORS[Math.floor(Math.random()*SECTORS.length)];
+    const attacker=Math.random()>0.5?"REV":"ERW";
+    const roll=Math.random();
+    const outcome= roll>0.62 ? (attacker==="REV"?"REV ADVANCE":"ERW COUNTER") : roll>0.30?"STALEMATE":"SKIRMISH";
+    const cas=80+Math.floor(Math.random()*520);
+    const idx=Math.floor(Math.random()*FRONT_START.length);
+    const coord=FRONT_START[idx];
     out.push({sector:sec.name, city:sec.city, attacker, outcome, cas, coord});
   }
   return out;
@@ -348,8 +331,12 @@ function stepTo(f, withLog=true){
       battles.forEach(b=>{
         const col=b.attacker==="REV"?"rev":"erw";
         log(`<b>${dateStr}</b> — <span class="${col}">${b.sector}</span> (${b.city}) • ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
-        // zoom + sound on battle
-        zoomToCity(b.city); playWarSound(b.outcome.includes("ADVANCE")?"explosion": (b.attacker==="REV"?"artillery":"gun"));
+        zoomToCity(b.city);
+        // real sounds low vol, pick variant based on outcome
+        if(b.outcome.includes("ADVANCE")) playRealSound(2); // large
+        else if(b.attacker==="REV") playRealSound(0); // small
+        else playRealSound(1); // medium
+        if(b.outcome==="STALEMATE") setTimeout(()=> playRealSound(3), 320);
       });
       const flips=cityState.filter(c=>{
         const prevFront=frontForFloat(prevFloat), facPrev=factionAt(c.coords[0],c.coords[1],prevFront);
@@ -366,7 +353,6 @@ function zoomToCity(cityName){
   const [x,y]=proj(city.coords);
   const k=2.8;
   const tx=W/2 - x*k, ty=H/2 - y*k;
-  // cancel any ongoing transition
   try{ gBase.interrupt(); }catch(e){}
   gBase.transition().duration(900).ease(d3.easeCubicOut).attr("transform",`translate(${tx},${ty}) scale(${k})`);
   const badge=document.getElementById("zoomBadge"); badge.textContent=`◉ ZOOM: ${cityName} BATTLE`; badge.classList.add("on");
@@ -383,7 +369,6 @@ function startRealtimeTick(){
     if(Math.abs(rf - curFloat) > 0.005){
       stepTo(rf, true);
     }
-    // update wall-clock countdown every tick
     document.getElementById("countdown").textContent= rf>=DAYS?`ARMISTICE 1 OCT 2026`: `${(DAYS-rf).toFixed(1)} DAYS TO 1 OCT • ${Math.floor((1-realProgress())*24)}h`;
   }, 2000);
 }
@@ -392,7 +377,7 @@ function playFast(){
   playing=true; realtime=false;
   document.getElementById("warStatus").textContent="● FAST SIM";
   if(fastTimer) clearInterval(fastTimer);
-  fastTimer=setInterval(()=>{ if(curFloat>=DAYS){pauseFast();return;} stepTo(Math.min(DAYS, curFloat+0.25), true); }, 450);
+  fastTimer=setInterval(()=>{ if(curFloat>=DAYS){pauseFast();return;} stepTo(Math.min(DAYS, curFloat+0.25), true); }, 520);
 }
 function pauseFast(){ playing=false; if(fastTimer) clearInterval(fastTimer); fastTimer=null; document.getElementById("warStatus").textContent= curFloat>=DAYS?"☭ ARMISTICE":"PAUSED"; }
 function stopAll(){ playing=false; realtime=false; if(timer) clearInterval(timer); if(fastTimer) clearInterval(fastTimer); }
@@ -408,21 +393,21 @@ function bindControls(){
   };
   document.getElementById("btnPause").onclick=()=>{ realtime=false; pauseFast(); document.getElementById("btnRealtime").classList.remove("active"); document.getElementById("btnPlay").classList.remove("active"); };
   document.getElementById("btnStep").onclick=()=>{ realtime=false; pauseFast(); stepTo(Math.min(DAYS, curFloat+1), true); };
-  document.getElementById("btnReset").onclick=()=>{ stopAll(); realtime=false; lastDayLogged=-1; document.getElementById("warLog").innerHTML=""; log(`<b>RESET → 8 SEPT</b> Real-time paused. Scrub or hit REAL TIME to resync wall-clock.`,true); render(0); document.getElementById("daySlider").value=0; curFloat=0; };
+  document.getElementById("btnReset").onclick=()=>{ stopAll(); realtime=false; lastDayLogged=-1; document.getElementById("warLog").innerHTML=""; log(`<b>RESET → 8 SEPT (NEW RANDOM SEED)</b> Front jitter re-rolled. Hit REAL TIME to resync.`,true); // re-roll jitter
+    for(let i=0;i<FRONT_JITTER.length;i++){ FRONT_JITTER[i]=(Math.random()-0.5)*0.18; FRONT_JITTER2[i]=(Math.random()-0.5)*0.10; }
+    render(0); document.getElementById("daySlider").value=0; curFloat=0; };
   document.getElementById("daySlider").oninput=(e)=>{ realtime=false; pauseFast(); document.getElementById("btnRealtime").classList.remove("active"); stepTo(parseFloat(e.target.value), true); };
   document.getElementById("btnSound").onclick=(e)=>{
     soundOn=!soundOn; e.target.textContent=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"; e.target.style.background=soundOn?"#111":"#fff"; e.target.style.color=soundOn?"var(--gold)":"#111";
-    if(soundOn){ ensureAudio(); playWarSound("artillery"); }
+    if(soundOn) playRealSound(0);
   };
-  document.getElementById("btnTestSound").onclick=()=>{ ensureAudio(); soundOn=true; document.getElementById("btnSound").textContent="🔊 SOUND ON"; playWarSound("artillery"); setTimeout(()=>playWarSound("gun"),350); setTimeout(()=>playWarSound("explosion"),900); };
+  document.getElementById("btnTestSound").onclick=()=>{ soundOn=true; document.getElementById("btnSound").textContent="🔊 SOUND ON"; document.getElementById("btnSound").style.background="#111"; document.getElementById("btnSound").style.color="var(--gold)"; playRealSound(0); setTimeout(()=>playRealSound(1),420); setTimeout(()=>playRealSound(2),900); setTimeout(()=>playRealSound(3),1400); };
   document.getElementById("btnSave").onclick=()=>{
     const src=new XMLSerializer().serializeToString(document.getElementById("map"));
     const blob=new Blob([`<?xml version="1.0" encoding="UTF-8"?>\n`+src],{type:"image/svg+xml"});
     const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`ussr-civilwar-day${curFloat.toFixed(1)}-1oct.svg`; a.click(); URL.revokeObjectURL(url);
   };
   document.getElementById("btnFront").onclick=()=>{ showFront=!showFront; const g=document.getElementById("frontG"); if(g) g.style.display=showFront?"block":"none"; };
-  // unlock audio on first click anywhere
-  document.body.addEventListener("click", ()=>{ ensureAudio(); if(audioCtx&&audioCtx.state==="suspended") audioCtx.resume(); }, {once:true});
 }
 init().catch(e=>{console.error(e); document.getElementById("topInfo").textContent="ERR "+e.message;});
 </script>
