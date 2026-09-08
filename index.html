@@ -245,8 +245,10 @@ function factionAt(lon,lat,front){
   return lat<latAt?"ERW":"REV";
 }
 function projectionFor(features){
-  // HOTFIX bugged tiny map: use fixed freelance scale, no fitExtent (fitExtent bugged for 190)
-  return d3.geoMercator().center([0,0]).translate([500,285]).scale(680).rotate([-11,0,0]);
+  // FIX gone map: back to fitExtent with clamped 190→179.9 (so not huge), makes USSR fill
+  const p=d3.geoMercator().center([0,0]).translate([500,295]).scale(620).rotate([-11,0,0]);
+  try{ const fc={type:"FeatureCollection",features}; p.fitExtent([[14,14],[986,546]], fc); p.scale(p.scale()*1.02); }catch(e){}
+  return p;
 }
 function fmtDate(d){return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}).toUpperCase();}
 function realProgress(){const now=Date.now(), s=WAR_START.getTime(), e=WAR_END.getTime(); return Math.max(0,Math.min(1,(now-s)/(e-s)));}
