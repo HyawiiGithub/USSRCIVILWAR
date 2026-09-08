@@ -245,9 +245,9 @@ function factionAt(lon,lat,front){
   return lat<latAt?"ERW":"REV";
 }
 function projectionFor(features){
-  // FIX gone map: back to fitExtent with clamped 190→179.9 (so not huge), makes USSR fill
+  // FIX zoomed out: fitExtent then zoom 1.35x so USSR fills, not tiny
   const p=d3.geoMercator().center([0,0]).translate([500,295]).scale(620).rotate([-11,0,0]);
-  try{ const fc={type:"FeatureCollection",features}; p.fitExtent([[14,14],[986,546]], fc); p.scale(p.scale()*1.02); }catch(e){}
+  try{ const fc={type:"FeatureCollection",features}; p.fitExtent([[18,18],[982,542]], fc); p.scale(p.scale()*1.38); }catch(e){}
   return p;
 }
 function fmtDate(d){return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}).toUpperCase();}
@@ -501,19 +501,27 @@ function drawMap(front,f){
   defs.append("clipPath").attr("id","ussrClip").append("path").attr("d",mergedD);
   svg.append("rect").attr("width",W).attr("height",H).attr("fill","#b8ad94");
   gBase=svg.append("g").attr("id","gBase");
-  // PROVINCES + STATES — HOI4 USSR provinces (84 oblasts as provinces, 84 as states for now — visible)
+  // FIX everything blue + states limitation: back to smooth front (not province centroid) so front cuts through states, balanced
+  const frontProj=front.map(c=>proj(c));
+  const FAR=4000;
+  const erwinPts=[...frontProj,[FAR,FAR],[-FAR,FAR],[-FAR,frontProj[0][1]]];
+  const erwinPolyD="M"+erwinPts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L ")+" Z";
+  // provinces as neutral base (visible thin white), states thick black — HOI4
   const provG=gBase.append("g").attr("id","provinces");
-  const facs=window._provFacs||[];
   for(let i=0;i<feats.length;i++){
-    const fac=facs[i]||"REV";
     const d=path(feats[i]);
     if(!d) continue;
-    provG.append("path").attr("d", d).attr("fill", fac==="REV"?"#c0392b":"#1e3d64").attr("stroke","#ffffff").attr("stroke-width",1.1).attr("opacity",1);
+    provG.append("path").attr("d", d).attr("fill","#d8cab0").attr("stroke","#ffffff").attr("stroke-width",0.9).attr("opacity",1);
   }
   const stateG=gBase.append("g").attr("id","states");
   for(const st of (window._statesFeats||statesFeats||[])){
-    try{ const d=path(st); if(d) stateG.append("path").attr("d",d).attr("fill","none").attr("stroke","#000000").attr("stroke-width",2.2).attr("opacity",1); }catch(e){}
+    try{ const d=path(st); if(d) stateG.append("path").attr("d",d).attr("fill","none").attr("stroke","#111").attr("stroke-width",1.9).attr("opacity",0.98); }catch(e){}
   }
+  // smooth war front — balanced, not limited to states (like before but balanced 68/32)
+  const warG=gBase.append("g").attr("clip-path","url(#ussrClip)");
+  warG.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","#9e1a1f").attr("opacity",0.92); // REV bigger
+  warG.append("path").attr("d",erwinPolyD).attr("fill","#1e3d64").attr("opacity",0.96);
+  warG.append("path").attr("d",erwinPolyD).attr("fill","none").attr("stroke","rgba(255,255,255,.18)").attr("stroke-width",0.6).attr("stroke-dasharray","5 5");
   // hatch overlay clipped to USSR for texture
   const hatchG=gBase.append("g").attr("clip-path","url(#ussrClip)");
   hatchG.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","url(#paperHatch)").attr("opacity",0.22).attr("pointer-events","none");
