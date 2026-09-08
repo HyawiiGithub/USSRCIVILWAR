@@ -121,8 +121,14 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
     </div>
   </div>
 
+  <div class="card" style="margin-top:10px">
+    <div class="card-h"><span>⚔ ONGOING BATTLES — LIVE COMBAT (CLICK TO VIEW)</span><small id="ongoingMeta">SEEDED • HOI4 • SAME FOR ALL</small></div>
+    <div id="ongoingBattles" style="padding:8px;background:var(--paper);display:grid;gap:6px;max-height:360px;overflow:auto"></div>
+    <div style="padding:6px 8px;background:#111;color:var(--gold);font:600 9px 'IBM Plex Mono'">Click battle → zoom to city + hear combat. Bars = org/strength. Winner predicted via HOI4 soft/hard + air sup.</div>
+  </div>
+
   <div class="war-panel">
-    <div class="card"><div class="card-h"><span>⚔ BATTLE LOG — SEEDED (SAME FOR ALL)</span><small id="logMeta">SEEDED • CITY ZOOM</small></div><div class="log" id="warLog"></div></div>
+    <div class="card"><div class="card-h"><span>⚔ BATTLE LOG — SEEDED (SAME FOR ALL)</span><small id="logMeta">SEEDED • CITY ZOOM • PERSISTS</small></div><div class="log" id="warLog"></div></div>
     <div class="card"><div class="card-h"><span>🔊 REAL WAR SOUNDS • CC0</span><small>SELF-HOSTED • LOW VOLUME</small></div>
       <div style="padding:10px;background:var(--paper);font:600 10px 'IBM Plex Mono';line-height:1.6;display:grid;gap:6px">
         <div>WIPED loud synth. Now <b>9 real CC0 war wavs</b> (afterglow-artillery + Pixabay distant). Self-hosted <code>/sounds/</code>, low vol.</div>
@@ -181,7 +187,7 @@ const HOI4_ERW_BASE=[{t:"inf",n:18},{t:"tank",n:4},{t:"mot",n:3},{t:"cav",n:3}];
 const AIR_REV_BASE={fighters:420, cas:110, bombers:78, trans:16};
 const AIR_ERW_BASE={fighters:210, cas:58, bombers:36, trans:10};
 const WAR_START=new Date("2026-09-08T00:00:00Z"), WAR_END=new Date("2026-10-01T00:00:00Z"), DAYS=Math.round((WAR_END-WAR_START)/86400000);
-let proj,path,mergedD,feats;
+let proj,path,mergedD,feats, provCentroids=[], provAreas=[];
 let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=false, gBase=null;
 let casual=0, gdpTotal=1820, gdpRev=1238, gdpErw=582, lastLogDay=-1;
 const SOUNDS=[
@@ -286,34 +292,86 @@ function renderHOI4(f){
   airEl.innerHTML= airRow("REV AIRFORCE", h.revAir, `Air sup ${h.airSup}% (REV)`) + airRow("ERW AIRFORCE", h.erwAir, `Air sup ${100-h.airSup}% (ERW) • Bombings today: ${h.bombings} sorties`);
   if(meta) meta.textContent=`HOI4: ${h.revTotalN+h.erwTotalN} total divs • Deployed ${ (h.revMan+h.erwMan).toLocaleString()} men, ${h.revTanks+h.erwTanks} tanks, ${h.revArt+h.erwArt} art. Air ${h.revAir.fighters+h.erwAir.fighters} fighters, ${h.revAir.cas+h.erwAir.cas} CAS. Bombings ${h.bombings}/day degrade enemy industry/GDP. Same for everyone (seeded).`;
 }
+function renderOngoingBattles(f){
+  const el=document.getElementById("ongoingBattles"); if(!el) return;
+  const battles=battlesForDay(Math.floor(f));
+  const hoi=getHOI4(f);
+  // build ongoing list with combat calc
+  el.innerHTML="";
+  if(battles.length===0){
+    el.innerHTML=`<div style="padding:8px;border:2px dashed #111;background:#fff;font:600 10px 'IBM Plex Mono';text-align:center">No active battles — front consolidating</div>`;
+    return;
+  }
+  battles.forEach((b, idx)=>{
+    const day=Math.floor(f), seed=day*10000+idx*791;
+    const isRevAtk=b.attacker==="REV";
+    const atkAir=isRevAtk? hoi.revAir.cas : hoi.erwAir.cas;
+    const defAir=isRevAtk? hoi.erwAir.cas : hoi.revAir.cas;
+    // pull division avg stats
+    const atkDivs=isRevAtk? hoi.revDivs : hoi.erwDivs;
+    const defDivs=isRevAtk? hoi.erwDivs : hoi.revDivs;
+    const atkSoft= atkDivs.reduce((s,d)=>s+d.tmpl.soft*d.deployed,0)/Math.max(1, atkDivs.reduce((s,d)=>s+d.deployed,0));
+    const defSoft= defDivs.reduce((s,d)=>s+d.tmpl.soft*d.deployed,0)/Math.max(1, defDivs.reduce((s,d)=>s+d.deployed,0));
+    const airBonus=(atkAir-defAir)*0.18;
+    const atkRoll=seeded01(seed+1)*12, defRoll=seeded01(seed+2)*12;
+    const atkScore= atkSoft*0.62 + airBonus + atkRoll + (hoi.airSup>55? 6:0);
+    const defScore= defSoft*0.58 + defRoll + (hoi.airSup<45? 6:0);
+    const total=atkScore+defScore;
+    const atkPct=Math.round(atkScore/total*100), defPct=100-atkPct;
+    const winning= atkPct>defPct ? b.attacker : (b.attacker==="REV"?"ERW":"REV");
+    const winningName= winning==="REV"?"Revolutionaries":"Erwin";
+    const col=winning==="REV"?"#8a0f14":"#1e3d64";
+    const progress=Math.min(99, Math.round(((f - Math.floor(f))*100 + seeded01(seed+3)*18) % 92 + 8));
+    const div=document.createElement("div");
+    div.style.cssText="border:2px solid #111;padding:7px;background:#fff;box-shadow:2px 2px 0 #111;cursor:pointer";
+    div.innerHTML=`
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+        <div style="font:800 10px 'IBM Plex Mono'">${b.sector} <span style="font:600 9px;color:#5a5242">→ ${b.city}</span> <span style="background:${b.attacker==="REV"?"var(--red)":"var(--blue)"};color:#fff;padding:1px 4px;border:1px solid #111">${b.attacker==="REV"?"REV ATK":"ERW ATK"}</span></div>
+        <span style="font:700 9px 'IBM Plex Mono';color:${col}">${winningName} WINNING ${Math.max(atkPct,defPct)}%</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
+        <div>
+          <div style="font:700 8px 'IBM Plex Mono'">${b.attacker==="REV"?"REV":"ERW"} ATTACK ${atkScore.toFixed(0)} • CAS ${atkAir} • roll ${atkRoll.toFixed(0)}</div>
+          <div style="height:10px;background:#fff;border:1px solid #111;margin-top:2px"><div style="height:100%;width:${atkPct}%;background:${b.attacker==="REV"?"var(--red)":"var(--blue)"}"></div></div>
+        </div>
+        <div>
+          <div style="font:700 8px 'IBM Plex Mono'">${b.attacker==="REV"?"ERW":"REV"} DEFEND ${defScore.toFixed(0)} • CAS ${defAir} • roll ${defRoll.toFixed(0)}</div>
+          <div style="height:10px;background:#fff;border:1px solid #111;margin-top:2px"><div style="height:100%;width:${defPct}%;background:${b.attacker==="REV"?"var(--blue)":"var(--red)"}"></div></div>
+        </div>
+      </div>
+      <div style="height:8px;background:#222;border:1px solid #111;margin-top:6px;position:relative"><div style="height:100%;width:${progress}%;background:repeating-linear-gradient(90deg,var(--gold) 0 6px,#d8b24a 6px 12px);transition:width .4s"></div><span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:700 7px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 4px">COMBAT ${progress}% • ${b.outcome}</span></div>
+      <div style="font:600 8px 'IBM Plex Mono';color:#5a5242;margin-top:4px">${Math.round(atkScore)} vs ${Math.round(defScore)} • ${b.cas} cas. • click to zoom → ${b.city}</div>
+    `;
+    div.onclick=()=>{ zoomToCity(b.city); playBattleSounds(b.outcome, b.attacker); };
+    el.appendChild(div);
+  });
+}
 let cityState=[];
 async function init(){
   const raw=await d3.json(GEO_URL); let origFeats=raw.features;
-  // Build dense provinces: hex grid clipped to USSR union → ALOT ALOT (200-300)
+  // Build dense provinces — OPTIMIZED: hex grid without expensive intersect, clip via outer clipPath
   let union=null;
   try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
   let dense=null;
   try{
     const bbox= union ? turf.bbox(union) : [19,35,190,82];
-    const cellSide=95; // km → ~220-280 hexes for USSR size
-    const grid=turf.hexGrid(bbox, cellSide, {units:'kilometers', mask: union|| undefined});
-    // hexGrid with mask already clips, but we intersect to clean
+    const cellSide=110; // km → ~160-190 hexes — optimized, still ALOT ALOT
+    const grid=turf.hexGrid(bbox, cellSide, {units:'kilometers'});
     dense=[];
     for(const cell of grid.features){
-      try{
-        if(union && !turf.booleanIntersects(cell, union)) continue;
-        let inter = union ? turf.intersect(cell, union) : cell;
-        if(inter){
-          // turf.intersect may return Feature with polygon, push
-          if(inter.type==="FeatureCollection"){ inter.features.forEach(f=> dense.push(f)); }
-          else dense.push(inter);
-        }
-      }catch(e){}
+      // quick bbox filter then booleanIntersects (no intersect clipping — outer clipPath handles overhang)
+      if(union && !turf.booleanIntersects(cell, union)) continue;
+      dense.push(cell);
     }
     if(dense && dense.length>100) feats=dense; else feats=origFeats;
   }catch(e){ console.warn("dense provinces failed",e); feats=origFeats; }
   proj=projectionFor(feats); path=d3.geoPath(proj);
   mergedD=""; try{ mergedD=path(union|| {type:"FeatureCollection",features:feats}); }catch(e){ feats.forEach(f=> mergedD+=path(f)+" "); }
+  // cache centroids/areas — OPTIMIZED: no recompute per frame
+  try{
+    provCentroids=feats.map(fe=>{ try{ return d3.geoCentroid(fe); }catch(e){ try{ return turf.centroid(fe).geometry.coordinates; }catch(e2){ return [0,0]; } } });
+    provAreas=feats.map(fe=>{ try{ return turf.area(fe); }catch(e){ return 1; } });
+  }catch(e){ provCentroids=[]; provAreas=[]; }
   document.getElementById("topInfo").textContent=feats.length+" PROVINCES • "+CITIES0.length+" CITIES • FRONT BY STATE • SEEDED";
   const ds=document.getElementById("daySlider"); if(ds){ ds.max=DAYS; ds.step=0.1; }
   // restore pravda log from localStorage (persists after refresh lmao)
@@ -346,25 +404,41 @@ function render(f){
   curFloat=f; curDay=Math.floor(f);
   const front=frontForFloat(f);
   const curDate=new Date(WAR_START.getTime()+f*86400000);
-  cityState=CITIES0.map(c=>({...c,faction:factionAt(c.coords[0],c.coords[1],front)}));
-  // province control — jagged front by state: count provinces per faction
+  // province control — use cached centroids/areas (optimized)
   let provRev=0, provErw=0, areaRev=0, areaErw=0;
+  let provFacs=[];
   try{
-    feats.forEach(fe=>{
-      const cent=d3.geoCentroid(fe);
+    for(let i=0;i<feats.length;i++){
+      const cent=provCentroids[i]|| d3.geoCentroid(feats[i]);
       const fac=factionAt(cent[0], cent[1], front);
-      const a=turf.area(fe);
+      provFacs[i]=fac;
+      const a=provAreas[i]||1;
       if(fac==="REV"){provRev++; areaRev+=a;} else {provErw++; areaErw+=a;}
-    });
-  }catch(e){ provRev=Math.round(feats.length*0.68); provErw=feats.length-provRev; }
+    }
+  }catch(e){ provRev=Math.round(feats.length*0.68); provErw=feats.length-provRev; provFacs=feats.map(()=> "REV"); }
+  // city ownership — FIX BUG: use containing province faction, not direct front line, so city matches map color
+  cityState=CITIES0.map(c=>{
+    let fac="REV";
+    try{
+      const pt=turf.point(c.coords);
+      let found=-1;
+      for(let i=0;i<feats.length;i++){
+        try{ if(turf.booleanPointInPolygon(pt, feats[i])){ found=i; break; } }catch(e){}
+      }
+      if(found>=0) fac=provFacs[found];
+      else fac=factionAt(c.coords[0], c.coords[1], front);
+    }catch(e){ fac=factionAt(c.coords[0], c.coords[1], front); }
+    return {...c, faction:fac};
+  });
   const revCities=cityState.filter(c=>c.faction==="REV").length, erwCities=cityState.length-revCities;
   // revPct from actual province AREA (not fake wob) — front truly moves provinces
   const areaPct = areaRev+areaErw>0 ? Math.round(areaRev/(areaRev+areaErw)*100) : 68;
   // blend areaPct with base progression so trend stays 68→78 but provinces decide exact
   const baseRev=areaPct;
   const revPct=Math.max(60,Math.min(84, baseRev)), erwPct=100-revPct;
-  // store for draw
+  // store for draw (optimized)
   window._provStats={provRev, provErw, areaRev, areaErw};
+  window._provFacs=provFacs;
   casual=0; for(let i=0;i<=Math.floor(f);i++){ const r1=seeded01(i*1543), r2=seeded01(i*2909+1); casual+=900+Math.floor(r1*900)+(r2<0.33?400:0); }
   casual+=Math.floor((f-Math.floor(f))* (900+seeded01(Math.floor(f)*3333)*400));
   const prodRev=1.04, prodErw=0.92;
@@ -403,6 +477,7 @@ function render(f){
   // progress bar
   const bar=document.getElementById("timeBar"); if(bar) bar.style.width=(f/DAYS*100).toFixed(1)+"%";
   try{ renderHOI4(f); }catch(e){}
+  try{ renderOngoingBattles(f); }catch(e){}
   drawMap(front,f);
 }
 function drawMap(front,f){
@@ -413,14 +488,14 @@ function drawMap(front,f){
   defs.append("clipPath").attr("id","ussrClip").append("path").attr("d",mergedD);
   svg.append("rect").attr("width",W).attr("height",H).attr("fill","#b8ad94");
   gBase=svg.append("g").attr("id","gBase");
-  // PROVINCE-BASED FRONT: each of 84 oblasts colored by faction (centroid vs front) — jagged border follows state edges
+  // PROVINCE-BASED FRONT — OPTIMIZED: use cached provFacs (no geoCentroid per frame)
   const provG=gBase.append("g").attr("id","provinces");
-  feats.forEach(fe=>{
-    let fac="REV";
-    try{ const cent=d3.geoCentroid(fe); fac=factionAt(cent[0], cent[1], front); }catch(e){ fac="REV"; }
-    const d=path(fe);
-    provG.append("path").attr("d", d).attr("fill", fac==="REV"?"#8a0f14":"#1e3d64").attr("stroke","#111").attr("stroke-width",0.5).attr("opacity",0.98);
-  });
+  const facs=window._provFacs||[];
+  for(let i=0;i<feats.length;i++){
+    const fac=facs[i]||"REV";
+    const d=path(feats[i]);
+    provG.append("path").attr("d", d).attr("fill", fac==="REV"?"#8a0f14":"#1e3d64").attr("stroke","#111").attr("stroke-width",0.45).attr("opacity",0.98);
+  }
   // hatch overlay clipped to USSR for texture
   const hatchG=gBase.append("g").attr("clip-path","url(#ussrClip)");
   hatchG.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","url(#paperHatch)").attr("opacity",0.22).attr("pointer-events","none");
