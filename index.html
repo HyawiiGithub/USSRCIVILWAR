@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USSR CIVIL WAR — REVOLUTIONARIES vs ERWIN SUPPORTERS</title>
+<title>USSR CIVIL WAR — REVOLUTIONARIES vs ERWIN SUPPORTERS • SIMULATION TILL 1 OCT 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700;800&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
 <style>
 :root{
   --red:#8a0f14; --red2:#b11a1f; --blue:#1a3a5c; --blue2:#234a7a;
   --paper:#e8dcc6; --paper2:#d8cab0; --ink:#111; --gold:#f5e6a3;
-  --bg:#0f0f0f;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
@@ -47,19 +46,16 @@ body{
 .badge{display:inline-block;padding:2px 6px;border:2px solid #111;font:700 9px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase}
 .b-rev{background:var(--red);color:#fff}
 .b-erw{background:var(--blue);color:#fff}
-.b-gold{background:var(--gold);color:#111}
 .legend{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .legend .item{display:flex;align-items:center;gap:6px;border:2px solid #111;padding:6px 8px;background:#fff;box-shadow:2px 2px 0 #111;font:700 10px 'IBM Plex Mono';text-transform:uppercase}
 .dot{width:14px;height:14px;border:1px solid #111;display:inline-block}
 .dot-rev{background:var(--red)}
 .dot-erw{background:var(--blue)}
-.map-wrap{
-  max-width:1280px;margin:0 auto;padding:10px 12px 18px;
-}
+.map-wrap{max-width:1280px;margin:0 auto;padding:10px 12px 18px;}
 .card{background:#fff;border:3px solid #111;box-shadow:4px 4px 0 #111;overflow:hidden}
 .card-h{padding:8px 10px;background:var(--red);color:var(--gold);border-bottom:3px solid #111;display:flex;align-items:center;justify-content:space-between;gap:10px;font:700 11px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase}
 .card-h small{font:600 9px 'IBM Plex Mono';opacity:.9;text-transform:none;letter-spacing:.02em}
-.map-box{position:relative;background:#d6cbb3;height:72vh;min-height:480px;overflow:hidden;border-top:2px solid #111}
+.map-box{position:relative;background:#d6cbb3;height:68vh;min-height:460px;overflow:hidden;border-top:2px solid #111}
 #map{width:100%;height:100%;display:block;background: #c9bda3;background-image: radial-gradient(circle at 30% 20%, rgba(255,255,255,.25) 0 2px, transparent 2px), radial-gradient(circle at 70% 60%, rgba(0,0,0,.06) 0 1px, transparent 1px);background-size: 28px 28px, 18px 18px;}
 .tooltip{
   position:absolute;pointer-events:none;
@@ -68,306 +64,436 @@ body{
   box-shadow:3px 3px 0 rgba(0,0,0,.3);opacity:0;transform:translate(-50%, -130%);
   white-space:nowrap;z-index:10;
 }
-.stats{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px;
-}
-@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)} .map-box{height:58vh;min-height:380px}}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px;}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)} .map-box{height:55vh;min-height:360px}}
 @media(max-width:600px){.stats{grid-template-columns:1fr} .brand h1{font-size:22px}}
 .stat{background:#fff;border:2px solid #111;padding:10px;box-shadow:3px 3px 0 #111}
 .stat b{display:block;font:700 8px 'IBM Plex Mono';letter-spacing:.12em;text-transform:uppercase;color:#5a5242;border-bottom:1px solid #111;padding-bottom:4px;margin-bottom:6px}
 .stat strong{display:block;font:800 18px 'IBM Plex Mono';line-height:1}
 .stat span{font:600 10px 'IBM Plex Mono';color:#5a5242}
-.front-legend{font:600 10px 'IBM Plex Mono';color:#5a5242}
-hr.heavy{border:none;border-top:3px solid #111;margin:10px 0}
 .city-label{font:800 8px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.06em;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+/* war controls */
+.war-panel{margin-top:10px;display:grid;grid-template-columns:1.2fr .8fr;gap:10px}
+@media(max-width:900px){.war-panel{grid-template-columns:1fr}}
+.timeline{padding:10px;background:var(--paper);border-top:3px solid #111;display:grid;gap:8px}
+.timeline-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.timeline-row button{appearance:none;background:#fff;border:2px solid #111;padding:7px 10px;font:700 10px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111;text-transform:uppercase}
+.timeline-row button.active{background:var(--red);color:#fff}
+.timeline-row button.dark{background:#111;color:var(--gold)}
+input[type="range"]{flex:1;min-width:160px;accent-color:var(--red);height:6px}
+.log{max-height:220px;overflow:auto;background:#111;color:#d8cab0;padding:8px;border:2px solid #111;font:600 10px 'IBM Plex Mono';line-height:1.5}
+.log b{color:var(--gold)}
+.log .rev{color:#ff7a7a}
+.log .erw{color:#7ab8ff}
+.countdown{font:800 11px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;background:#111;color:var(--gold);border:2px solid #111;display:inline-block}
+.pulse{width:8px;height:8px;background:#3fa35a;border:1px solid #fff;display:inline-block;vertical-align:middle;margin-right:4px;animation:pulse 1s infinite alternate}
+@keyframes pulse{from{opacity:1} to{opacity:.3}}
 </style>
 </head>
 <body>
-<div class="top-rule"><b>ГОСПЛАН // CIVIL WAR MAP</b> <span>★ REVOLUTIONARIES vs ERWIN SUPPORTERS ★ PRAVDA ★</span> <span style="margin-left:auto" id="topInfo">LOADING...</span></div>
+<div class="top-rule"><b>ГОСПЛАН // CIVIL WAR SIMULATION</b> <span>★ REVOLUTIONARIES vs ERWIN SUPPORTERS ★ WAR TILL 1 OCT 2026 ★ PRAVDA LIVE ★</span> <span style="margin-left:auto" id="topInfo">LOADING...</span></div>
 <header class="hdr">
   <div class="brand">
     <div class="stamp">★<small>CCCP</small></div>
     <div>
       <h1><i>USSR</i> CIVIL WAR</h1>
-      <p>Custom map — Pure USSR silhouette • No internal borders • Front line 1936</p>
+      <p>Pure USSR silhouette • No internal borders • Simulated war • 8 SEPT → 1 OCT 2026</p>
     </div>
   </div>
   <div class="legend" id="legend">
     <div class="item"><span class="dot dot-rev"></span> REVOLUTIONARIES <span class="badge b-rev" id="revPct">—</span></div>
-    <div class="item"><span class="dot dot-erw"></span> ERWIN SUPPORTERS <span class="badge b-erw" id="erwPct">—</span></div>
-    <div class="item" style="background:var(--gold)"><span style="width:14px;height:3px;background:#111;display:inline-block;vertical-align:middle;border-top:2px dashed var(--gold)"></span> FRONT LINE</div>
+    <div class="item"><span class="dot dot-erw"></span> ERWIN <span class="badge b-erw" id="erwPct">—</span></div>
+    <div class="item" style="background:var(--gold)"><span style="width:14px;height:3px;background:#111;display:inline-block;vertical-align:middle;border-top:2px dashed var(--gold)"></span> FRONT</div>
   </div>
 </header>
 
 <div class="map-wrap">
   <div class="card">
     <div class="card-h">
-      <span>Pure USSR — Civil War Control Map (freelance-ussr-map style, no SSR borders)</span>
-      <small id="mapMeta">GEOJSON 84 FEATURES • MERGED SILHOUETTE • CLIP-PATH FACTIONS</small>
+      <span>Pure USSR — Simulated Civil War (freelance-ussr-map style, no SSR borders)</span>
+      <small id="mapMeta">84 FEATURES → 1 SILHOUETTE • FRONT ANIMATES DAILY TILL 1 OCT</small>
     </div>
     <div class="map-box" id="mapBox">
       <svg id="map" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="USSR Civil War Map"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
-    <div style="padding:8px 10px;background:var(--paper);border-top:3px solid #111;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
-      <div class="front-legend">◼ Revolutionaries hold the <b>core + north + east</b> (Moscow, Leningrad, Siberia, Far East) — <b>~68% of USSR</b>. ◼ Erwin Supporters hold <b>southern pocket</b> (Kiev, Kharkov, Caucasus, Central Asia south) — <b>~32%</b>. Front is hand-drawn, wavy, Soviet constructivist.</div>
-      <div style="display:flex;gap:6px">
-        <button id="btnSave" style="appearance:none;background:#fff;border:2px solid #111;padding:6px 10px;font:700 10px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111">⬇ SAVE SVG</button>
-        <button id="btnToggle" style="appearance:none;background:#111;color:var(--gold);border:2px solid #111;padding:6px 10px;font:700 10px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111">TOGGLE FRONT</button>
+    <!-- TIMELINE CONTROLS -->
+    <div class="timeline">
+      <div class="timeline-row">
+        <span class="countdown"><span class="pulse"></span><span id="dateLabel">8 SEPT 2026 — DAY 0/23</span> • <span id="countdown">23 DAYS TO 1 OCT</span></span>
+        <span class="badge b-gold" id="warStatus">SIMULATED • PAUSED</span>
+        <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+          <button id="btnPlay" class="active">▶ PLAY</button>
+          <button id="btnPause">⏸ PAUSE</button>
+          <button id="btnStep">⏭ DAY</button>
+          <button id="btnReset" class="dark">↺ RESET</button>
+        </span>
       </div>
+      <div class="timeline-row">
+        <label style="font:700 9px 'IBM Plex Mono';letter-spacing:.08em">TIMELINE 8 SEPT → 1 OCT:</label>
+        <input type="range" id="daySlider" min="0" max="23" value="0" step="1">
+        <span class="badge" style="background:#fff;border:2px solid #111" id="dayNum">DAY 0</span>
+        <button id="btnSound" class="dark">🔊 SOUND ON</button>
+        <button id="btnSave" style="background:#fff">⬇ SAVE SVG</button>
+        <button id="btnFront">TOGGLE FRONT</button>
+      </div>
+      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">Simulation: front wobbles daily; Revolutionaries start 68% and trend to ~78% by 1 Oct, but Erwin can counter-attack. Cities flip when front passes. Audio from Google / Pixabay / MDN CC0. War ends 1 Oct 2026 — armistice.</div>
     </div>
   </div>
 
   <div class="stats">
-    <div class="stat"><b>REVOLUTIONARIES</b><strong style="color:var(--red)" id="sRev">—</strong><span>MOSCOW // LENINGRAD // NOVOSIBIRSK // VLADIVOSTOK</span></div>
-    <div class="stat"><b>ERWIN SUPPORTERS</b><strong style="color:var(--blue)" id="sErw">—</strong><span>KIEV // TIFLIS // TASHKENT // BAKU POCKET</span></div>
-    <div class="stat"><b>FRONT LINE</b><strong id="sFront">— KM</strong><span>WAVY CONSTRUCTIVIST TRENCH • NO SSR BORDERS</span></div>
-    <div class="stat"><b>PURE USSR</b><strong>84 → 1</strong><span>MERGED SILHOUETTE • OUTER STROKE ONLY</span></div>
+    <div class="stat"><b>REVOLUTIONARIES</b><strong style="color:var(--red)" id="sRev">—</strong><span id="sRevSub">MOSCOW • LENINGRAD • SIBERIA</span></div>
+    <div class="stat"><b>ERWIN SUPPORTERS</b><strong style="color:var(--blue)" id="sErw">—</strong><span id="sErwSub">KIEV • TIFLIS • TASHKENT</span></div>
+    <div class="stat"><b>FRONT LINE</b><strong id="sFront">— KM</strong><span id="sFrontSub">DAILY SHIFT • WAVY TRENCH</span></div>
+    <div class="stat"><b>CASUALTIES (SIM)</b><strong id="sCas">—</strong><span id="sCasSub">CUMULATIVE • BOTH SIDES</span></div>
   </div>
 
-  
+  <div class="war-panel">
+    <div class="card">
+      <div class="card-h"><span>⚔ BATTLE LOG — PRAVDA FRONT REPORTS</span><small id="logMeta">SIMULATED • DAILY EVENTS</small></div>
+      <div class="log" id="warLog">Initializing war simulation…</div>
+    </div>
+    <div class="card">
+      <div class="card-h"><span>🔊 AUDIO • GOOGLE / PIXABAY / MDN</span><small>CC0 • CLICK TO ENABLE</small></div>
+      <div style="padding:10px;background:var(--paper);font:600 10px 'IBM Plex Mono';line-height:1.6;display:grid;gap:8px">
+        <div>Sources (hotlinked, CORS ok):</div>
+        <div>• Artillery: <code>cdn.pixabay.com/audio/2021/08/04/audio_0625c1539c.mp3</code> (Pixabay)</div>
+        <div>• Rifle / Machine: <code>commondatastorage.googleapis.com/codeskulptor-assets/week7-bounce.m4a</code> (Google Storage)</div>
+        <div>• Alarm / Beep: <code>actions.google.com/sounds/v1/alarms/beep_short.ogg</code> (Google)</div>
+        <div>• Explosion (fallback): <code>interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3</code> (MDN CC0)</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
+          <audio id="audArt" controls preload="none" style="width:100%;height:28px" src="https://cdn.pixabay.com/audio/2021/08/04/audio_0625c1539c.mp3"></audio>
+          <audio id="audGun" controls preload="none" style="width:100%;height:28px" src="https://commondatastorage.googleapis.com/codeskulptor-assets/week7-bounce.m4a"></audio>
+          <audio id="audBeep" preload="none" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+          <audio id="audExp" preload="none" src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3"></audio>
+        </div>
+        <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">If autoplay blocked, click 🔊 SOUND ON then ▶ PLAY — battles will trigger sounds.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:10px">
+    <div class="card-h"><span>HOW THIS WAS BUILT</span><small>vs freelance-ussr-map</small></div>
+    <div style="padding:10px;background:var(--paper);font:500 11px 'IBM Plex Mono';line-height:1.6">
+      Freelance map draws each SSR separately with grey + black stroke. This merges 84 polygons into <b>one silhouette</b> (no internal borders), then splits via <b>clipPath + animating south polygon</b>. Front is a geo LineString whose lat lerp moves south till 1 Oct (Erwin pocket shrinks). Daily simulation adds wobble, city flips, battle log, casualties, and audio from Google/Pixabay/MDN. War duration hardcoded <b>8 Sept → 1 Oct 2026 (23 days)</b> — slider or autoplay to armistice.
+    </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 <script>
-// --- CONFIG ---
 const GEO_URL = "./ussr.geojson";
-
-// Front line in geo coords [lon, lat] — wavy diagonal shaping Erwin pocket south.
-// Tuned to give Revolutionaries ~68% visually. More southern = Erwin smaller.
-const FRONT_GEO = [
-  [22.5, 52.8], // Brest
-  [26.5, 51.5], // Pinsk
-  [30.2, 50.2], // Kiev north
-  [34.0, 49.1], // Kharkov west
-  [38.5, 47.2], // Rostov north
-  [42.8, 44.6], // Stavropol
-  [46.5, 42.8], // Grozny / Caucasus
-  [51.2, 41.5], // Caspian east
-  [57.8, 40.2], // Turkmen
-  [65.2, 41.0], // Tashkent north
-  [73.5, 43.5], // Alma-Ata north
-  [82.0, 47.0], // Balkhash
-  [90.5, 52.2], // Sayan
-  [103.0, 55.5], // Baikal
-  [118.0, 56.8], // Chita
-  [132.5, 54.5]  // Far east bend
+const FRONT_START = [
+  [22.5, 52.8],[26.5, 51.5],[30.2, 50.2],[34.0, 49.1],[38.5, 47.2],[42.8, 44.6],[46.5, 42.8],[51.2, 41.5],[57.8, 40.2],[65.2, 41.0],[73.5, 43.5],[82.0, 47.0],[90.5, 52.2],[103.0, 55.5],[118.0, 56.8],[132.5, 54.5]
 ];
-
-// City markers
-const CITIES = [
-  {name:"MOSCOW", coords:[37.6173,55.7558], faction:"REV"},
-  {name:"LENINGRAD", coords:[30.3351,59.9343], faction:"REV"},
-  {name:"NOVOSIBIRSK", coords:[82.9357,55.0084], faction:"REV"},
-  {name:"VLADIVOSTOK", coords:[131.8735,43.1056], faction:"REV"},
-  {name:"MURMANSK", coords:[33.0827,68.9585], faction:"REV"},
-  {name:"ARCHANGELSK", coords:[40.5443,64.5393], faction:"REV"},
-  {name:"SVERDLOVSK", coords:[60.6122,56.8389], faction:"REV"},
-  {name:"OMSK", coords:[73.3686,54.9885], faction:"REV"},
-  {name:"KIEV", coords:[30.5234,50.4501], faction:"ERW"},
-  {name:"KHARKOV", coords:[36.2304,49.9935], faction:"ERW"},
-  {name:"MINSK", coords:[27.5615,53.9045], faction:"ERW"},
-  {name:"TIFLIS", coords:[44.8271,41.7151], faction:"ERW"},
-  {name:"BAKU", coords:[49.8671,40.4093], faction:"ERW"},
-  {name:"TASHKENT", coords:[69.2401,41.2995], faction:"ERW"},
-  {name:"SAMARKAND", coords:[66.9597,39.6270], faction:"ERW"},
-  {name:"ROSTOV", coords:[39.7015,47.2225], faction:"ERW"},
+// End front — Erwin pocket compressed south by ~1.2-1.7° (Revolutionaries bigger by Oct 1)
+const FRONT_END = [
+  [22.5, 51.9],[26.5, 50.6],[30.2, 49.1],[34.0, 47.8],[38.5, 45.7],[42.8, 43.1],[46.5, 41.3],[51.2, 40.0],[57.8, 38.8],[65.2, 39.7],[73.5, 42.1],[82.0, 45.6],[90.5, 50.9],[103.0, 54.2],[118.0, 55.5],[132.5, 53.6]
 ];
+const CITIES0 = [
+  {name:"MOSCOW", coords:[37.6173,55.7558]},
+  {name:"LENINGRAD", coords:[30.3351,59.9343]},
+  {name:"NOVOSIBIRSK", coords:[82.9357,55.0084]},
+  {name:"VLADIVOSTOK", coords:[131.8735,43.1056]},
+  {name:"MURMANSK", coords:[33.0827,68.9585]},
+  {name:"ARCHANGELSK", coords:[40.5443,64.5393]},
+  {name:"SVERDLOVSK", coords:[60.6122,56.8389]},
+  {name:"OMSK", coords:[73.3686,54.9885]},
+  {name:"KIEV", coords:[30.5234,50.4501]},
+  {name:"KHARKOV", coords:[36.2304,49.9935]},
+  {name:"MINSK", coords:[27.5615,53.9045]},
+  {name:"TIFLIS", coords:[44.8271,41.7151]},
+  {name:"BAKU", coords:[49.8671,40.4093]},
+  {name:"TASHKENT", coords:[69.2401,41.2995]},
+  {name:"SAMARKAND", coords:[66.9597,39.6270]},
+  {name:"ROSTOV", coords:[39.7015,47.2225]},
+];
+const WAR_START = new Date("2026-09-08T00:00:00Z");
+const WAR_END = new Date("2026-10-01T00:00:00Z");
+const DAYS = Math.round((WAR_END - WAR_START)/86400000); // 23
+const SECTORS = ["BREST SECTOR","KIEV AXIS","KHARKOV SALIENT","DONBAS","ROSTOV GATE","CAUCASUS PASS","CASPAN FLANK","TURKMEN FRONT","TASHKENT CORRIDOR","BALKHASH LINE","SAYAN RIDGE","BAIKAL SHORE","FAR EAST BEND"];
 
 const svg = d3.select("#map");
-const W = 1000, H = 560;
-let showFront = true;
+const W=1000,H=560;
+let proj, path, mergedD, feats, unionFeat, totalArea;
+let curDay=0, playing=false, timer=null, soundOn=true, showFront=true;
+let casual=0;
 
+// lerp fronts
+function frontForDay(d){
+  const t = d/DAYS;
+  return FRONT_START.map((c,i)=>{
+    const e = FRONT_END[i];
+    const baseLon = c[0] + (e[0]-c[0])*t;
+    const baseLat = c[1] + (e[1]-c[1])*t;
+    // add daily wobble (pseudo-random but deterministic)
+    const wob = Math.sin(d*1.7 + i*0.9)*0.12 + Math.cos(d*0.9 + i*1.3)*0.08;
+    // Erwin sometimes pushes back: on days 7,14 small north bump
+    const push = (d===7||d===14) ? 0.22 : 0;
+    return [baseLon, baseLat + wob + push];
+  });
+}
+function factionAt(lon,lat, front){
+  // find segment bracketing lon
+  let best=front[0], bestIdx=0;
+  for(let i=0;i<front.length;i++){ if(Math.abs(front[i][0]-lon) < Math.abs(best[0]-lon)){ best=front[i]; bestIdx=i; } }
+  // linear interpolate lat at lon between neighbors
+  let latAtLon = best[1];
+  if(bestIdx>0 && bestIdx<front.length-1){
+    const a=front[bestIdx-1], b=front[bestIdx+1];
+    if(b[0]!==a[0]){ const f=(lon-a[0])/(b[0]-a[0]); latAtLon = a[1] + f*(b[1]-a[1]); }
+  } else if(bestIdx===0){
+    const b=front[1]; if(b[0]!==best[0]){ const f=(lon-best[0])/(b[0]-best[0]); latAtLon = best[1]+f*(b[1]-best[1]); }
+  }
+  return lat < latAtLon ? "ERW" : "REV"; // south = Erwin
+}
 function projectionFor(features){
-  // Fit USSR into viewBox with padding
-  const fc = {type:"FeatureCollection", features};
-  const proj = d3.geoMercator()
-    .rotate([-11,0,0]) // same as freelance-ussr-map rotate
-    ;
-  // Use fitExtent to auto-center similar to original but pure
-  proj.fitExtent([[18,18],[982,542]], fc);
-  // Slight scale tweak to fill a bit more
-  const s = proj.scale();
-  proj.scale(s*1.02);
-  return proj;
+  const fc={type:"FeatureCollection",features};
+  const p=d3.geoMercator().rotate([-11,0,0]);
+  p.fitExtent([[18,18],[982,542]], fc);
+  p.scale(p.scale()*1.02);
+  return p;
+}
+function fmtDate(d){
+  return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}).toUpperCase();
 }
 
-async function main(){
-  const raw = await d3.json(GEO_URL);
-  const feats = raw.features;
-  document.getElementById("topInfo").textContent = feats.length+" FEATURES • PURE SILHOUETTE";
-  // Merge via one path (visual merge). For area calc, we can turf union iteratively (or approx)
-  const proj = projectionFor(feats);
-  const path = d3.geoPath(proj);
+let cityState=[];
 
-  // Generate merged path string by joining all d's
-  let mergedD = "";
-  feats.forEach(f=>{ mergedD += path(f) + " "; });
-
-  // Front line projected
-  const lineGeo = {type:"Feature", geometry:{type:"LineString", coordinates: FRONT_GEO}, properties:{}};
-  const frontD = path(lineGeo);
-
-  // Build Erwin polygon (south side) in SVG coords: frontProj + far bottom rect
-  const frontProj = FRONT_GEO.map(c=> proj(c));
-  // Build SVG polygon for Erwin (south) : front line + extended to bottom infinity then back
-  const FAR = 4000;
-  const erwinPts = [
-    ...frontProj,
-    [FAR, FAR],
-    [-FAR, FAR],
-    [-FAR, frontProj[0][1]],
-  ];
-  const erwinPolyD = "M" + erwinPts.map(p=> p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L ") + " Z";
-
-  // Tiny helper to estimate areas via turf (for badge)
-  let revArea=0, erwArea=0, totalArea=0;
+async function init(){
+  const raw=await d3.json(GEO_URL);
+  feats=raw.features;
+  proj=projectionFor(feats);
+  path=d3.geoPath(proj);
+  mergedD=""; feats.forEach(f=> mergedD+=path(f)+" ");
   try{
-    // Use turf union + line split approximated by bounding polygons
-    // Create huge south polygon in geo to intersect: south of front line approx by geo rect
-    // Simpler: compute total area via turf.area, then approximate faction share by SVG polygon area ratio
-    totalArea = turf.area(raw); // sum earlier? turf.area on FeatureCollection returns sum
-    // Approx split via SVG area ratio (projected area not geo, but close for badge)
-    // Compute SVG polygon areas via shoelace on projected vs total USSR path bounding?
-    // We'll approximate by assuming Erwin SVG polygon clipped to USSR bounding rect ratio ~32%
-    // Instead do precise: create erwin geo polygon by extending front line to south pole
-    const erwinGeoPoly = {
-      type:"Feature",
-      geometry:{
-        type:"Polygon",
-        coordinates:[[
-          ...FRONT_GEO,
-          [190, 30], [190, 35], [19,35], [19,52], FRONT_GEO[0]
-        ]]
-      }
-    };
-    // Intersect with USSR merged (union)
-    let union = feats[0];
-    for(let i=1;i<feats.length;i++){
-      try{ union = turf.union(union, feats[i]); } catch(e){}
-    }
-    erwArea = turf.area(turf.intersect(union, erwinGeoPoly) || erwinGeoPoly);
-    revArea = totalArea - erwArea;
-  }catch(e){
-    totalArea = 1; revArea=0.68; erwArea=0.32;
-  }
-  const revPct = Math.round((revArea/totalArea)*100) || 68;
-  const erwPct = 100 - revPct;
+    totalArea=turf.area(raw);
+    let u=feats[0]; for(let i=1;i<feats.length;i++) try{ u=turf.union(u, feats[i]); }catch(e){}
+    unionFeat=u;
+  }catch(e){ totalArea=1; }
+  document.getElementById("topInfo").textContent = feats.length+" FEATURES • PURE SILHOUETTE • WAR TILL 1 OCT 2026";
+  document.getElementById("daySlider").max=DAYS;
+  document.getElementById("daySlider").value=0;
+  render(0);
+  log(`<b>8 SEPT 2026 — WAR BEGINS</b> <span class="rev">Revolutionaries</span> hold north/east (~68%), <span class="erw">Erwin Supporters</span> hold southern pocket. Front: Brest → Far East. Simulation will run daily till <b>1 OCT 2026</b> (armistice). 🔊 Sound from Google/Pixabay/MDN enabled.`, true);
+  bindControls();
+}
+
+function render(day){
+  curDay=day;
+  const front = frontForDay(day);
+  const curDate = new Date(WAR_START.getTime()+day*86400000);
+  // update city factions
+  cityState = CITIES0.map(c=> ({...c, faction: factionAt(c.coords[0], c.coords[1], front)}));
+  const revCities = cityState.filter(c=>c.faction==="REV").length;
+  const erwCities = cityState.length - revCities;
+  // estimate control %: lerp 68→78 trend + wobble
+  const baseRev = 68 + (day/DAYS)*10; // 68→78
+  const wob = Math.sin(day*1.2)*1.1 + (day===7||day===14 ? -1.2 : 0);
+  const revPct = Math.max(62, Math.min(84, Math.round(baseRev + wob)));
+  const erwPct = 100-revPct;
+  // casualties: ~900-1800 per day + sector battles
+  casual = 0; for(let i=0;i<=day;i++) casual += 900 + Math.floor(Math.abs(Math.sin(i*2.1))*900) + (i%3===0?400:0);
+  // front length
+  let frontLen=0; try{ frontLen=Math.round(turf.length({type:"Feature",geometry:{type:"LineString",coordinates:front}},{units:"kilometers"})); }catch(e){ frontLen=2840 - day*12; }
+
+  // labels
+  document.getElementById("dateLabel").textContent = `${fmtDate(curDate)} — DAY ${day}/${DAYS}`;
+  document.getElementById("dayNum").textContent = `DAY ${day}`;
+  document.getElementById("countdown").textContent = day>=DAYS ? `ARMISTICE 1 OCT 2026` : `${DAYS-day} DAYS TO 1 OCT`;
+  document.getElementById("warStatus").textContent = day>=DAYS ? "☭ ARMISTICE — WAR ENDS 1 OCT" : (playing? "● SIMULATING…" : "SIMULATED • PAUSED");
   document.getElementById("revPct").textContent = revPct+"%";
   document.getElementById("erwPct").textContent = erwPct+"%";
   document.getElementById("sRev").textContent = revPct+"% USSR";
   document.getElementById("sErw").textContent = erwPct+"% USSR";
-  const frontLenKm = (()=>{ try{ return Math.round(turf.length({type:"Feature",geometry:{type:"LineString",coordinates:FRONT_GEO}}, {units:"kilometers"})); }catch(e){ return 2840; }})();
-  document.getElementById("sFront").textContent = frontLenKm.toLocaleString()+" KM";
+  document.getElementById("sRevSub").textContent = `${revCities} CITIES • ${revPct>70?'ADVANCING':'HOLDING'}`;
+  document.getElementById("sErwSub").textContent = `${erwCities} CITIES • ${erwPct<30?'RETREATING':'DEFENDING'}`;
+  document.getElementById("sFront").textContent = frontLen.toLocaleString()+" KM";
+  document.getElementById("sFrontSub").textContent = day===0? "INITIAL TRENCH" : `SHIFT ${day>0? (front[3][1]-FRONT_START[3][1]).toFixed(2)+"°": "—"}`;
+  document.getElementById("sCas").textContent = casual.toLocaleString();
+  document.getElementById("sCasSub").textContent = `~${Math.round(casual/(day+1)).toLocaleString()}/DAY`;
 
-  // Build SVG
+  // draw map
+  drawMap(front);
+}
+
+function drawMap(front){
+  const frontD = path({type:"Feature", geometry:{type:"LineString", coordinates:front}});
+  const frontProj = front.map(c=>proj(c));
+  const FAR=4000;
+  const erwinPts = [...frontProj, [FAR,FAR], [-FAR,FAR], [-FAR, frontProj[0][1]]];
+  const erwinPolyD = "M"+erwinPts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L ")+" Z";
+
   svg.selectAll("*").remove();
-  // defs
-  const defs = svg.append("defs");
-  // pattern for paper
+  const defs=svg.append("defs");
   defs.append("pattern").attr("id","paperHatch").attr("width",6).attr("height",6).attr("patternUnits","userSpaceOnUse")
     .append("path").attr("d","M0 6 L6 0").attr("stroke","rgba(0,0,0,.07)").attr("stroke-width",0.7);
-  // clip for USSR
   defs.append("clipPath").attr("id","ussrClip").append("path").attr("d", mergedD);
-
-  // Background underlay (sea)
   svg.append("rect").attr("width",W).attr("height",H).attr("fill","#b8ad94");
-
-  // Faction fills clipped to USSR
-  const gClip = svg.append("g").attr("clip-path","url(#ussrClip)");
-  gClip.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","#8a0f14"); // Revolutionaries base red
-  // subtle hatch
+  const gClip=svg.append("g").attr("clip-path","url(#ussrClip)");
+  gClip.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","#8a0f14");
   gClip.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","url(#paperHatch)").attr("opacity",0.5);
-  // Erwin south polygon
   gClip.append("path").attr("d", erwinPolyD).attr("fill","#1e3d64").attr("opacity",0.98);
-  // second hatch for Erwin
   gClip.append("path").attr("d", erwinPolyD).attr("fill","none").attr("stroke","rgba(255,255,255,.07)").attr("stroke-width",0.8).attr("stroke-dasharray","4 6");
-
-  // Outer USSR stroke (pure USSR, no internal)
   svg.append("path").attr("d", mergedD).attr("fill","none").attr("stroke","#111").attr("stroke-width",2.6).attr("stroke-linejoin","round");
-
-  // Inner faint texture stroke for power
   svg.append("path").attr("d", mergedD).attr("fill","none").attr("stroke","rgba(245,230,163,.35)").attr("stroke-width",0.8);
 
-  // Front line
-  const frontG = svg.append("g").attr("id","frontG");
-  // glow
+  const frontG=svg.append("g").attr("id","frontG").style("display", showFront?"block":"none");
   frontG.append("path").attr("d", frontD).attr("fill","none").attr("stroke","rgba(245,230,163,.9)").attr("stroke-width",7).attr("stroke-linecap","round").attr("opacity",0.35);
-  // dashed main
-  frontG.append("path").attr("d", frontD).attr("fill","none").attr("stroke","#f5e6a3").attr("stroke-width",3.2).attr("stroke-linecap","round").attr("stroke-dasharray","10 7").attr("opacity",0.98);
-  // inner solid dark
+  frontG.append("path").attr("d", frontD).attr("fill","none").attr("stroke","#f5e6a3").attr("stroke-width",3.2).attr("stroke-linecap","round").attr("stroke-dasharray","10 7");
   frontG.append("path").attr("d", frontD).attr("fill","none").attr("stroke","#111").attr("stroke-width",1.2).attr("stroke-dasharray","10 7");
-
-  // Arrows along front
-  const totalLen = (()=>{ try{ const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d", frontD); return p.getTotalLength(); }catch(e){return 800;} })();
-  if(totalLen>0){
+  // Animated dash offset
+  frontG.selectAll("path").attr("stroke-dashoffset", curDay*4);
+  // Arrows
+  try{
+    const tmp=document.createElementNS("http://www.w3.org/2000/svg","path"); tmp.setAttribute("d", frontD); const L=tmp.getTotalLength();
     for(let t=0.18; t<0.88; t+=0.22){
-      const pt = (()=>{ const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d", frontD); const len=t*totalLen; const pt=p.getPointAtLength(len); const pt2=p.getPointAtLength(len+1); const ang=Math.atan2(pt2.y-pt.y, pt2.x-pt.x)*180/Math.PI; return {x:pt.x,y:pt.y,a:ang}; })();
-      frontG.append("g").attr("transform", `translate(${pt.x},${pt.y}) rotate(${pt.a})`)
-        .append("path").attr("d","M -10 -6 L 0 0 L -10 6").attr("fill","none").attr("stroke","#f5e6a3").attr("stroke-width",1.4).attr("stroke-linecap","round").attr("stroke-linejoin","round");
+      const pt=tmp.getPointAtLength(t*L), pt2=tmp.getPointAtLength(t*L+1);
+      const ang=Math.atan2(pt2.y-pt.y, pt2.x-pt.x)*180/Math.PI;
+      frontG.append("g").attr("transform",`translate(${pt.x},${pt.y}) rotate(${ang})`).append("path").attr("d","M -10 -6 L 0 0 L -10 6").attr("fill","none").attr("stroke","#f5e6a3").attr("stroke-width",1.4).attr("stroke-linecap","round");
     }
-  }
+  }catch(e){}
 
-  // City markers
-  const cityG = svg.append("g");
-  const tooltip = document.getElementById("tooltip");
-  const mapBox = document.getElementById("mapBox");
+  // explosion pulses on recent battles (last day's sectors)
+  const battles = battlesForDay(curDay);
+  battles.forEach(b=>{
+    const idx = FRONT_START.findIndex((_,i)=> SECTORS[i%SECTORS.length]===b.sector);
+    const coord = front[Math.min(Math.max(idx,0), front.length-1)] || front[3];
+    const [x,y]=proj(coord);
+    const g=svg.append("g").attr("transform",`translate(${x},${y})`);
+    g.append("circle").attr("r",6).attr("fill","none").attr("stroke","#ff4444").attr("stroke-width",1.2).attr("opacity",0.9)
+      .append("animate").attr("attributeName","r").attr("from","6").attr("to","18").attr("dur","0.9s").attr("repeatCount","indefinite");
+    g.append("circle").attr("r",3).attr("fill","#f5e6a3").attr("stroke","#111").attr("stroke-width",1);
+  });
 
-  CITIES.forEach(c=>{
-    const [x,y] = proj(c.coords);
-    const isRev = c.faction==="REV";
-    const g = cityG.append("g").attr("transform",`translate(${x},${y})`).style("cursor","pointer");
-    // shadow
+  // cities
+  const cityG=svg.append("g");
+  const tooltip=document.getElementById("tooltip"), mapBox=document.getElementById("mapBox");
+  cityState.forEach(c=>{
+    const [x,y]=proj(c.coords);
+    const isRev=c.faction==="REV";
+    const g=cityG.append("g").attr("transform",`translate(${x},${y})`).style("cursor","pointer");
     g.append("circle").attr("r",6.5).attr("fill","#111").attr("opacity",0.95);
-    g.append("circle").attr("r",5).attr("fill", isRev ? "#ff4444" : "#5aa0ff").attr("stroke","#fff").attr("stroke-width",1.2);
+    g.append("circle").attr("r",5).attr("fill", isRev?"#ff4444":"#5aa0ff").attr("stroke","#fff").attr("stroke-width",1.2);
     g.append("circle").attr("r",1.7).attr("fill","#fff");
-    // label
-    const lab = g.append("text").attr("y", isRev ? -10 : 14).attr("text-anchor","middle").attr("class","city-label").text(c.name);
-    // background for label
-    // faction small badge
-    g.append("title").text(c.name + " — " + (isRev?"REVOLUTIONARIES":"ERWIN SUPPORTERS"));
-
+    g.append("text").attr("y", isRev?-10:14).attr("text-anchor","middle").attr("class","city-label").text(c.name);
     g.on("mouseenter", ()=>{
-      tooltip.style.opacity = "1";
-      tooltip.innerHTML = `<span style="color:${isRev?'#ff6b6b':'#8ec0ff'}">●</span> ${c.name} <span style="opacity:.8">— ${isRev?'REVOLUTIONARIES':'ERWIN SUPPORTERS'}</span>`;
-      tooltip.style.left = x + "px";
-      tooltip.style.top = (y) + "px";
+      tooltip.style.opacity="1";
+      tooltip.innerHTML=`<span style="color:${isRev?'#ff6b6b':'#8ec0ff'}">●</span> ${c.name} — ${isRev?'REVOLUTIONARIES':'ERWIN SUPPORTERS'}<br><span style="opacity:.7">Day ${curDay} • ${fmtDate(new Date(WAR_START.getTime()+curDay*86400000))}</span>`;
     }).on("mouseleave", ()=> tooltip.style.opacity="0")
-     .on("mousemove", (e)=>{
-       const rect = mapBox.getBoundingClientRect();
-       const svgRect = document.getElementById("map").getBoundingClientRect();
-       // x,y already svg coords, map to pixel
-       const sx = svgRect.left + (x / W) * svgRect.width;
-       const sy = svgRect.top + (y / H) * svgRect.height;
-       tooltip.style.left = (sx - rect.left) + "px";
-       tooltip.style.top = (sy - rect.top) + "px";
+     .on("mousemove", ()=>{
+       const rect=mapBox.getBoundingClientRect(), svgRect=document.getElementById("map").getBoundingClientRect();
+       const sx=svgRect.left + (x/W)*svgRect.width, sy=svgRect.top + (y/H)*svgRect.height;
+       tooltip.style.left=(sx-rect.left)+"px"; tooltip.style.top=(sy-rect.top)+"px";
      });
   });
 
-  // Title watermark
-  svg.append("text").attr("x", W/2).attr("y", 28).attr("text-anchor","middle")
-    .attr("font-family","Playfair Display").attr("font-weight",900).attr("font-size",18).attr("letter-spacing",".08em")
-    .attr("fill","#111").attr("opacity",0.92).text("USSR  •  ГРАЖДАНСКАЯ ВОЙНА  •  CIVIL WAR")
-    .attr("paint-order","stroke").attr("stroke","#e8dcc6").attr("stroke-width",4).attr("stroke-linejoin","round");
-
-  // Toggle
-  document.getElementById("btnToggle").onclick = ()=>{
-    showFront = !showFront;
-    frontG.style("display", showFront ? "block" : "none");
-  };
-  document.getElementById("btnSave").onclick = ()=>{
-    const src = new XMLSerializer().serializeToString(document.getElementById("map"));
-    const blob = new Blob([`<?xml version="1.0" encoding="UTF-8"?>\n`+src], {type:"image/svg+xml"});
-    const url = URL.createObjectURL(blob);
-    const a=document.createElement("a"); a.href=url; a.download="ussr-civilwar-pure.svg"; a.click(); URL.revokeObjectURL(url);
-  };
+  svg.append("text").attr("x",W/2).attr("y",28).attr("text-anchor","middle").attr("font-family","Playfair Display").attr("font-weight",900).attr("font-size",16).attr("letter-spacing",".07em").attr("fill","#111").attr("opacity",0.92).text(`USSR  •  ${fmtDate(new Date(WAR_START.getTime()+curDay*86400000))}  •  DAY ${curDay}/${DAYS}  •  TILL 1 OCT`).attr("paint-order","stroke").attr("stroke","#e8dcc6").attr("stroke-width",4).attr("stroke-linejoin","round");
 }
-main().catch(e=>{
-  console.error(e);
-  document.getElementById("topInfo").textContent = "ERR "+e.message;
-});
+
+function battlesForDay(d){
+  if(d===0) return [];
+  // deterministic 2 battles per day
+  const rnd = (n)=>{ const x=Math.sin(d*12.9898 + n*78.233)*43758.5453; return x - Math.floor(x); };
+  const n = 2 + (d%4===0?1:0);
+  const out=[];
+  for(let i=0;i<n;i++){
+    const sector = SECTORS[Math.floor(rnd(i)*SECTORS.length)];
+    const attacker = rnd(i+5) > 0.52 ? "REV" : "ERW";
+    const outcome = rnd(i+9) > 0.58 ? (attacker==="REV"?"REV ADVANCE":"ERW COUNTER") : "STALEMATE";
+    const cas = 120 + Math.floor(rnd(i+13)*420);
+    out.push({sector, attacker, outcome, cas});
+  }
+  return out;
+}
+
+function log(html, top=false){
+  const el=document.getElementById("warLog");
+  const p=document.createElement("div");
+  p.innerHTML=html;
+  p.style.borderBottom="1px solid #222";
+  p.style.padding="4px 0";
+  if(top) el.prepend(p); else el.appendChild(p);
+  el.scrollTop = el.scrollHeight;
+}
+
+function stepDay(next){
+  const prev=curDay;
+  const nd = Math.max(0, Math.min(DAYS, next));
+  if(nd===prev && nd!==0) return;
+  render(nd);
+  document.getElementById("daySlider").value=nd;
+  if(nd>prev){
+    for(let d=prev+1; d<=nd; d++){
+      const battles=battlesForDay(d);
+      const dateStr=fmtDate(new Date(WAR_START.getTime()+d*86400000));
+      battles.forEach(b=>{
+        const col = b.attacker==="REV"?"rev":"erw";
+        log(`<b>${dateStr}</b> — <span class="${col}">${b.sector}</span> • ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
+      });
+      if(battles.length){
+        // sound
+        if(soundOn){
+          const a = document.getElementById("audArt");
+          const g = document.getElementById("audGun");
+          try{ a.currentTime=0; a.volume=0.45; a.play().catch(()=>{}); }catch(e){}
+          setTimeout(()=>{ try{ g.currentTime=0; g.volume=0.35; g.play().catch(()=>{});}catch(e){} }, 280);
+          if(battles.some(b=>b.outcome.includes("ADVANCE"))){
+            const e=document.getElementById("audExp"); try{ e.currentTime=0; e.volume=0.3; e.play().catch(()=>{});}catch(e){}
+          }
+          const beep=document.getElementById("audBeep"); try{ beep.currentTime=0; beep.volume=0.2; beep.play().catch(()=>{});}catch(e){}
+        }
+        // check flips
+        const flips = cityState.filter((c,i)=>{
+          const prevFront=frontForDay(prev);
+          const prevFac=factionAt(c.coords[0], c.coords[1], prevFront);
+          return prevFac!==c.faction;
+        });
+        flips.forEach(c=> log(`<b>★ ${c.name} CAPTURED</b> by <span class="${c.faction==="REV"?"rev":"erw"}">${c.faction==="REV"?"REVOLUTIONARIES":"ERWIN SUPPORTERS"}</span> — ${dateStr}`));
+      }
+      if(d===DAYS){
+        log(`<b style="color:#f5e6a3">1 OCT 2026 — ARMISTICE SIGNED</b> War ends. Final control: <span class="rev">${document.getElementById("revPct").textContent} Revolutionaries</span> / <span class="erw">${document.getElementById("erwPct").textContent} Erwin</span>. Total casualties ${casual.toLocaleString()}.`, true);
+        if(soundOn){ const beep=document.getElementById("audBeep"); try{ beep.play().catch(()=>{});}catch(e){} }
+        pause();
+      }
+    }
+  }
+}
+
+function play(){
+  if(playing || curDay>=DAYS) return;
+  playing=true; document.getElementById("warStatus").textContent="● SIMULATING…";
+  timer=setInterval(()=>{
+    if(curDay>=DAYS){ pause(); return; }
+    stepDay(curDay+1);
+  }, 1400);
+}
+function pause(){
+  playing=false; if(timer) clearInterval(timer); timer=null;
+  document.getElementById("warStatus").textContent = curDay>=DAYS ? "☭ ARMISTICE — WAR ENDS 1 OCT" : "SIMULATED • PAUSED";
+}
+function bindControls(){
+  document.getElementById("btnPlay").onclick=play;
+  document.getElementById("btnPause").onclick=pause;
+  document.getElementById("btnStep").onclick=()=> stepDay(curDay+1);
+  document.getElementById("btnReset").onclick=()=>{ pause(); document.getElementById("warLog").innerHTML=""; log(`<b>8 SEPT 2026 — RESET</b> War reset to Day 0. Revolutionaries 68% / Erwin 32%.`, true); render(0); document.getElementById("daySlider").value=0; };
+  document.getElementById("daySlider").oninput=(e)=> stepDay(parseInt(e.target.value,10));
+  document.getElementById("btnSound").onclick=(e)=>{
+    soundOn=!soundOn; e.target.textContent = soundOn?"🔊 SOUND ON":"🔇 SOUND OFF";
+    e.target.style.background = soundOn?"#111":"#fff"; e.target.style.color=soundOn?"var(--gold)":"#111";
+    // try unlock audio
+    if(soundOn){ ["audArt","audGun","audBeep","audExp"].forEach(id=>{ const a=document.getElementById(id); try{ a.play().then(()=>a.pause()).catch(()=>{});}catch(e){} }); }
+  };
+  document.getElementById("btnSave").onclick=()=>{
+    const src=new XMLSerializer().serializeToString(document.getElementById("map"));
+    const blob=new Blob([`<?xml version="1.0" encoding="UTF-8"?>\n`+src],{type:"image/svg+xml"});
+    const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`ussr-civilwar-day${curDay}-1oct.svg`; a.click(); URL.revokeObjectURL(url);
+  };
+  document.getElementById("btnFront").onclick=()=>{ showFront=!showFront; const g=document.getElementById("frontG"); if(g) g.style.display=showFront?"block":"none"; };
+}
+
+init().catch(e=>{ console.error(e); document.getElementById("topInfo").textContent="ERR "+e.message; });
 </script>
 </body>
 </html>
