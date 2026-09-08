@@ -112,6 +112,15 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
     <div class="stat"><b>MANPOWER</b><strong id="sMan">—</strong><span id="sManSub">RESERVES • RECRUITS</span><div class="delta" id="sManDelta">—</div></div>
   </div>
 
+  <div class="card" style="margin-top:10px">
+    <div class="card-h"><span>HOI4 — DIVISIONS • TANKS • AIRFORCE • DEPLOYED TROOPS</span><small>SEMI-REALISTIC • AIR BOMBINGS + LAND</small></div>
+    <div style="padding:10px;background:var(--paper);display:grid;gap:10px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="hoi4Divs"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="hoi4Air"></div>
+      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242" id="hoi4Meta">HOI4 formula: org, strength, equipment, air superiority affect front push. Bombings reduce enemy industry.</div>
+    </div>
+  </div>
+
   <div class="war-panel">
     <div class="card"><div class="card-h"><span>⚔ BATTLE LOG — SEEDED (SAME FOR ALL)</span><small id="logMeta">SEEDED • CITY ZOOM</small></div><div class="log" id="warLog"></div></div>
     <div class="card"><div class="card-h"><span>🔊 REAL WAR SOUNDS • CC0</span><small>SELF-HOSTED • LOW VOLUME</small></div>
@@ -161,6 +170,16 @@ const CITIES0=[
 const SECTORS=[
   {name:"BREST SECTOR",city:"MINSK"},{name:"KIEV AXIS",city:"KIEV"},{name:"KHARKOV SALIENT",city:"KHARKOV"},{name:"DONBAS",city:"KHARKOV"},{name:"ROSTOV GATE",city:"ROSTOV"},{name:"CAUCASUS PASS",city:"TIFLIS"},{name:"CASPAN FLANK",city:"BAKU"},{name:"TURKMEN FRONT",city:"SAMARKAND"},{name:"TASHKENT CORRIDOR",city:"TASHKENT"},{name:"BALKHASH LINE",city:"OMSK"},{name:"SAYAN RIDGE",city:"NOVOSIBIRSK"},{name:"BAIKAL SHORE",city:"NOVOSIBIRSK"},{name:"FAR EAST BEND",city:"VLADIVOSTOK"}
 ];
+const DIV_TEMPLATES=[
+  {id:"inf", name:"Strelkovaya (9 INF)", icon:"🪖", man:9000, art:36, tanks:0, soft:142, hard:12, org:60, cost:0.8},
+  {id:"tank", name:"Tankovaya (T-26/BT)", icon:"🛡️", man:4200, art:12, tanks:120, soft:48, hard:85, org:45, cost:2.4},
+  {id:"mot", name:"Motostrelki", icon:"🚚", man:6500, art:24, tanks:20, soft:110, hard:28, org:55, cost:1.4},
+  {id:"cav", name:"Kavaleriya", icon:"🐎", man:5500, art:12, tanks:0, soft:78, hard:8, org:65, cost:0.6},
+];
+const HOI4_REV_BASE=[{t:"inf",n:34},{t:"tank",n:8},{t:"mot",n:6},{t:"cav",n:4}];
+const HOI4_ERW_BASE=[{t:"inf",n:18},{t:"tank",n:4},{t:"mot",n:3},{t:"cav",n:3}];
+const AIR_REV_BASE={fighters:420, cas:110, bombers:78, trans:16};
+const AIR_ERW_BASE={fighters:210, cas:58, bombers:36, trans:10};
 const WAR_START=new Date("2026-09-08T00:00:00Z"), WAR_END=new Date("2026-10-01T00:00:00Z"), DAYS=Math.round((WAR_END-WAR_START)/86400000);
 let proj,path,mergedD,feats;
 let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=false, gBase=null;
@@ -223,6 +242,50 @@ function projectionFor(features){const fc={type:"FeatureCollection",features}; c
 function fmtDate(d){return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}).toUpperCase();}
 function realProgress(){const now=Date.now(), s=WAR_START.getTime(), e=WAR_END.getTime(); return Math.max(0,Math.min(1,(now-s)/(e-s)));}
 function realFloat(){return realProgress()*DAYS;}
+function getHOI4(f){
+  const day=Math.floor(f);
+  // attrition seeded
+  let revDivs=[], erwDivs=[];
+  let revMan=0, erwMan=0, revTanks=0, erwTanks=0, revArt=0, erwArt=0;
+  HOI4_REV_BASE.forEach(b=>{
+    const tmpl=DIV_TEMPLATES.find(x=>x.id===b.t); const losses= seeded01(day*700 + b.t.charCodeAt(0))*0.08;
+    const str= Math.max(0.55, 1 - losses - f*0.006);
+    const n=b.n;
+    revDivs.push({tmpl, n, str, deployed: Math.round(n*str)});
+    revMan+= Math.round(tmpl.man*n*str); revTanks+= Math.round(tmpl.tanks*n*str); revArt+= Math.round(tmpl.art*n*str);
+  });
+  HOI4_ERW_BASE.forEach(b=>{
+    const tmpl=DIV_TEMPLATES.find(x=>x.id===b.t); const losses= seeded01(day*900 + b.t.charCodeAt(0)+5)*0.09;
+    const str= Math.max(0.5, 1 - losses - f*0.008);
+    const n=b.n;
+    erwDivs.push({tmpl, n, str, deployed: Math.round(n*str)});
+    erwMan+= Math.round(tmpl.man*n*str); erwTanks+= Math.round(tmpl.tanks*n*str); erwArt+= Math.round(tmpl.art*n*str);
+  });
+  const revTotalN=HOI4_REV_BASE.reduce((s,b)=>s+b.n,0), erwTotalN=HOI4_ERW_BASE.reduce((s,b)=>s+b.n,0);
+  // air — fighters attrition + production
+  const revAir={fighters: Math.round(AIR_REV_BASE.fighters* Math.max(0.6, 1 - seeded01(day*111)*0.12 - f*0.005)), cas: Math.round(AIR_REV_BASE.cas* Math.max(0.65, 1 - seeded01(day*222)*0.10 - f*0.004)), bombers: Math.round(AIR_REV_BASE.bombers* Math.max(0.6, 1 - seeded01(day*333)*0.11 - f*0.003))};
+  const erwAir={fighters: Math.round(AIR_ERW_BASE.fighters* Math.max(0.55, 1 - seeded01(day*444+1)*0.13 - f*0.006)), cas: Math.round(AIR_ERW_BASE.cas* Math.max(0.6, 1 - seeded01(day*555+1)*0.11 - f*0.005)), bombers: Math.round(AIR_ERW_BASE.bombers* Math.max(0.55, 1 - seeded01(day*666+1)*0.12 - f*0.004))};
+  const airSup = Math.round( 50 + (revAir.fighters - erwAir.fighters)/(revAir.fighters+erwAir.fighters)*50 + (seeded01(day*777)-0.5)*6 );
+  // bombings per day — CAS + bombers do damage to industry/manpower
+  const bombings = Math.round( (revAir.cas*0.18 + revAir.bombers*0.35 + erwAir.cas*0.18 + erwAir.bombers*0.35) + seeded01(day*888)*12 );
+  return {revDivs, erwDivs, revTotalN, erwTotalN, revMan, erwMan, revTanks, erwTanks, revArt, erwArt, revAir, erwAir, airSup: Math.max(12,Math.min(88,airSup)), bombings};
+}
+function renderHOI4(f){
+  const h=getHOI4(f);
+  const divEl=document.getElementById("hoi4Divs"), airEl=document.getElementById("hoi4Air"), meta=document.getElementById("hoi4Meta");
+  if(!divEl||!airEl) return;
+  const divRow=(label, data, totalN, man, tanks, art, color)=>{
+    const rows=data.map(d=> `${d.tmpl.icon} ${d.tmpl.name} ×${d.n} → <b>${d.deployed} deployed</b> ${(d.str*100).toFixed(0)}% str`).join("<br>");
+    const avgStr=(data.reduce((s,d)=>s+d.str*d.n,0)/totalN*100).toFixed(0);
+    return `<div style="border:2px solid #111;padding:8px;background:${color==="REV"?"#fff5f5":"#f0f6ff"};box-shadow:2px 2px 0 #111"><div style="font:800 10px 'IBM Plex Mono';color:${color==="REV"?"var(--red)":"var(--blue)"}">${label} — ${totalN} DIVS • ${man.toLocaleString()} men • ${tanks} tanks • ${art} art • ORG ${avgStr}%</div><div style="font:600 9px 'IBM Plex Mono';margin-top:4px;line-height:1.5">${rows}</div></div>`;
+  };
+  divEl.innerHTML= divRow("REVOLUTIONARIES", h.revDivs, h.revTotalN, h.revMan, h.revTanks, h.revArt, "REV") + divRow("ERWIN SUPPORTERS", h.erwDivs, h.erwTotalN, h.erwMan, h.erwTanks, h.erwArt, "ERW");
+  const airRow=(label, air, supLabel)=>{
+    return `<div style="border:2px solid #111;padding:8px;background:#fff;box-shadow:2px 2px 0 #111"><div style="font:800 10px 'IBM Plex Mono'">${label}</div><div style="font:600 10px 'IBM Plex Mono';margin-top:4px">✈ Fighters ${air.fighters} • CAS ${air.cas} • Bombers ${air.bombers}<br><span style="color:#5a5242">${supLabel}</span></div></div>`;
+  };
+  airEl.innerHTML= airRow("REV AIRFORCE", h.revAir, `Air sup ${h.airSup}% (REV)`) + airRow("ERW AIRFORCE", h.erwAir, `Air sup ${100-h.airSup}% (ERW) • Bombings today: ${h.bombings} sorties`);
+  if(meta) meta.textContent=`HOI4: ${h.revTotalN+h.erwTotalN} total divs • Deployed ${ (h.revMan+h.erwMan).toLocaleString()} men, ${h.revTanks+h.erwTanks} tanks, ${h.revArt+h.erwArt} art. Air ${h.revAir.fighters+h.erwAir.fighters} fighters, ${h.revAir.cas+h.erwAir.cas} CAS. Bombings ${h.bombings}/day degrade enemy industry/GDP. Same for everyone (seeded).`;
+}
 let cityState=[];
 async function init(){
   const raw=await d3.json(GEO_URL); feats=raw.features; proj=projectionFor(feats); path=d3.geoPath(proj);
@@ -294,6 +357,7 @@ function render(f){
   document.getElementById("sManDelta").textContent= `−${Math.floor(18+seeded01(Math.floor(f)*654)*12)}/day`;
   // progress bar
   const bar=document.getElementById("timeBar"); if(bar) bar.style.width=(f/DAYS*100).toFixed(1)+"%";
+  try{ renderHOI4(f); }catch(e){}
   drawMap(front,f);
 }
 function drawMap(front,f){
