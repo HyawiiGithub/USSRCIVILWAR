@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USSR CIVIL WAR — REVOLUTIONARIES vs ERWIN • REAL TIME till 1 OCT 2026</title>
+<title>USSR CIVIL WAR ÔÇö REVOLUTIONARIES vs ERWIN ÔÇó REAL TIME till 1 OCT 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700;800&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
 <style>
 :root{--red:#8a0f14;--blue:#1a3a5c;--paper:#e8dcc6;--ink:#111;--gold:#f5e6a3}
@@ -58,62 +58,62 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
 </style>
 </head>
 <body>
-<div class="top-rule"><b>ГОСПЛАН // REAL-TIME WAR</b> <span>★ REVOLUTIONARIES vs ERWIN ★ REAL TIME TILL 1 OCT 2026 ★ PRAVDA LIVE ★</span> <span style="margin-left:auto" id="topInfo">LOADING...</span></div>
+<div class="top-rule"><b>ðôð×ðíðƒðøðÉðØ // REAL-TIME WAR</b> <span>Ôÿà REVOLUTIONARIES vs ERWIN Ôÿà REAL TIME TILL 1 OCT 2026 Ôÿà PRAVDA LIVE Ôÿà</span> <span style="margin-left:auto" id="topInfo">LOADING...</span></div>
 <header class="hdr">
   <div class="brand">
-    <div class="stamp">★<small>CCCP</small></div>
-    <div><h1><i>USSR</i> CIVIL WAR</h1><p>Pure silhouette • No SSR borders • Seeded simulation — same for everyone • 8 Sept → 1 Oct</p></div>
+    <div class="stamp">Ôÿà<small>CCCP</small></div>
+    <div><h1><i>USSR</i> CIVIL WAR</h1><p>Pure silhouette ÔÇó No SSR borders ÔÇó Seeded simulation ÔÇö same for everyone ÔÇó 8 Sept ÔåÆ 1 Oct</p></div>
   </div>
   <div class="legend">
-    <div class="item"><span class="dot dot-rev"></span> REV <span class="badge b-rev" id="revPct">—</span></div>
-    <div class="item"><span class="dot dot-erw"></span> ERW <span class="badge b-erw" id="erwPct">—</span></div>
+    <div class="item"><span class="dot dot-rev"></span> REV <span class="badge b-rev" id="revPct">ÔÇö</span></div>
+    <div class="item"><span class="dot dot-erw"></span> ERW <span class="badge b-erw" id="erwPct">ÔÇö</span></div>
     <div class="item" style="background:var(--gold)"><span style="width:14px;height:3px;background:#111;display:inline-block;vertical-align:middle;border-top:2px dashed var(--gold)"></span> FRONT</div>
   </div>
 </header>
 
 <div class="map-wrap">
   <div class="card">
-    <div class="card-h"><span>Pure USSR — Seeded Real-Time War (till 1 Oct) — SAME FOR EVERYONE</span><small>84→1 SILHOUETTE • ZOOM ON CITY BATTLES • SEEDED</small></div>
+    <div class="card-h"><span>Pure USSR ÔÇö Seeded Real-Time War (till 1 Oct) ÔÇö SAME FOR EVERYONE</span><small>84ÔåÆ1 SILHOUETTE ÔÇó ZOOM ON CITY BATTLES ÔÇó SEEDED</small></div>
     <div class="map-box" id="mapBox">
       <svg id="map" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
-      <div class="zoom-badge" id="zoomBadge">◉ ZOOM: CITY BATTLE</div>
+      <div class="zoom-badge" id="zoomBadge">Ôùë ZOOM: CITY BATTLE</div>
     </div>
     <div class="timeline">
       <div class="timeline-row">
-        <span class="countdown"><span class="pulse"></span><span id="dateLabel">—</span> • <span id="countdown">—</span></span>
-        <span class="badge b-gold" id="warStatus">SYNCING REAL TIME…</span>
+        <span class="countdown"><span class="pulse"></span><span id="dateLabel">ÔÇö</span> ÔÇó <span id="countdown">ÔÇö</span></span>
+        <span class="badge b-gold" id="warStatus">SYNCING REAL TIMEÔÇª</span>
         <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
-          <button id="btnRealtime" class="active">⏱ REAL TIME (NO SKIP)</button>
-          <button id="btnPause">⏸ PAUSE</button>
-          <button id="btnSound">🔊 SOUND ON</button>
-          <button id="btnSave">⬇ SAVE SVG</button>
+          <button id="btnRealtime" class="active">ÔÅ▒ REAL TIME (NO SKIP)</button>
+          <button id="btnPause">ÔÅ© PAUSE</button>
+          <button id="btnSound">­ƒöè SOUND ON</button>
+          <button id="btnSave">Ô¼ç SAVE SVG</button>
           <button id="btnFront">TOGGLE FRONT</button>
         </span>
       </div>
       <div class="timeline-row" style="background:#111;color:var(--gold);padding:6px 8px;border:2px solid #111">
         <span style="font:800 9px 'IBM Plex Mono'">REAL-TIME PROGRESS</span>
         <div style="flex:1;height:14px;background:#222;border:1px solid #444;position:relative;overflow:hidden"><div id="timeBar" style="height:100%;width:0%;background:repeating-linear-gradient(90deg,var(--red) 0 10px,#a51a1a 10px 20px);transition:width .6s"></div><span id="dayNum" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 10px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 6px;border:1px solid #fff">DAY 0.0</span></div>
-        <span class="badge" style="background:var(--red);color:#fff">NO SKIP • CHERNOBYL PROTOCOL</span>
+        <span class="badge" style="background:var(--red);color:#fff">NO SKIP ÔÇó CHERNOBYL PROTOCOL</span>
       </div>
-      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">CUSTOM PROVINCES: ~210 Voronoi provinces we made ourselves + 84 states — jagged front (not smooth). Seeded same for everyone. Real-time locked. Zoom 2.8×. Sounds 9 wavs. Ends 1 Oct.</div>
+      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">PROVINCE FRONT: 84 oblasts colored by centroid vs front line ÔåÆ jagged state-border front (not smooth curve). Seeded same for everyone. Real-time locked (no skip). Zoom 2.8├ù. Sounds 9 wavs low vol. Ends 1 Oct.</div>
     </div>
   </div>
 
   <div class="stats">
-    <div class="stat"><b>REVOLUTIONARIES — CONTROL & GDP</b><strong style="color:var(--red)" id="sRev">—</strong><span id="sRevSub">—</span><div class="delta" id="sRevGdp">GDP —</div></div>
-    <div class="stat"><b>ERWIN — CONTROL & GDP</b><strong style="color:var(--blue)" id="sErw">—</strong><span id="sErwSub">—</span><div class="delta" id="sErwGdp">GDP —</div></div>
-    <div class="stat"><b>FRONT LINE</b><strong id="sFront">—</strong><span id="sFrontSub">—</span><div class="delta" id="sFrontDelta">—</div></div>
-    <div class="stat"><b>CASUALTIES (SEEDED)</b><strong id="sCas">—</strong><span id="sCasSub">—</span><div class="delta" id="sCasDelta">—</div></div>
-    <div class="stat"><b>TOTAL GDP</b><strong id="sGdp">—</strong><span>1936 RUBLES • BOTH FACTIONS</span><div class="delta" id="sGdpDelta">—</div></div>
-    <div class="stat"><b>WAR ECONOMY</b><strong id="sEco">—</strong><span id="sEcoSub">SUPPLY • MORALE</span><div class="delta" id="sEcoDelta">—</div></div>
-    <div class="stat"><b>INDUSTRY — OUTPUT</b><strong id="sInd">—</strong><span id="sIndSub">FACTORIES • STEEL</span><div class="delta" id="sIndDelta">—</div></div>
-    <div class="stat"><b>FUEL & LOGISTICS</b><strong id="sFuel">—</strong><span id="sFuelSub">OIL • RAIL CAPACITY</span><div class="delta" id="sFuelDelta">—</div></div>
-    <div class="stat"><b>MANPOWER</b><strong id="sMan">—</strong><span id="sManSub">RESERVES • RECRUITS</span><div class="delta" id="sManDelta">—</div></div>
+    <div class="stat"><b>REVOLUTIONARIES ÔÇö CONTROL & GDP</b><strong style="color:var(--red)" id="sRev">ÔÇö</strong><span id="sRevSub">ÔÇö</span><div class="delta" id="sRevGdp">GDP ÔÇö</div></div>
+    <div class="stat"><b>ERWIN ÔÇö CONTROL & GDP</b><strong style="color:var(--blue)" id="sErw">ÔÇö</strong><span id="sErwSub">ÔÇö</span><div class="delta" id="sErwGdp">GDP ÔÇö</div></div>
+    <div class="stat"><b>FRONT LINE</b><strong id="sFront">ÔÇö</strong><span id="sFrontSub">ÔÇö</span><div class="delta" id="sFrontDelta">ÔÇö</div></div>
+    <div class="stat"><b>CASUALTIES (SEEDED)</b><strong id="sCas">ÔÇö</strong><span id="sCasSub">ÔÇö</span><div class="delta" id="sCasDelta">ÔÇö</div></div>
+    <div class="stat"><b>TOTAL GDP</b><strong id="sGdp">ÔÇö</strong><span>1936 RUBLES ÔÇó BOTH FACTIONS</span><div class="delta" id="sGdpDelta">ÔÇö</div></div>
+    <div class="stat"><b>WAR ECONOMY</b><strong id="sEco">ÔÇö</strong><span id="sEcoSub">SUPPLY ÔÇó MORALE</span><div class="delta" id="sEcoDelta">ÔÇö</div></div>
+    <div class="stat"><b>INDUSTRY ÔÇö OUTPUT</b><strong id="sInd">ÔÇö</strong><span id="sIndSub">FACTORIES ÔÇó STEEL</span><div class="delta" id="sIndDelta">ÔÇö</div></div>
+    <div class="stat"><b>FUEL & LOGISTICS</b><strong id="sFuel">ÔÇö</strong><span id="sFuelSub">OIL ÔÇó RAIL CAPACITY</span><div class="delta" id="sFuelDelta">ÔÇö</div></div>
+    <div class="stat"><b>MANPOWER</b><strong id="sMan">ÔÇö</strong><span id="sManSub">RESERVES ÔÇó RECRUITS</span><div class="delta" id="sManDelta">ÔÇö</div></div>
   </div>
 
   <div class="card" style="margin-top:10px">
-    <div class="card-h"><span>HOI4 — DIVISIONS • TANKS • AIRFORCE • DEPLOYED TROOPS</span><small>SEMI-REALISTIC • AIR BOMBINGS + LAND</small></div>
+    <div class="card-h"><span>HOI4 ÔÇö DIVISIONS ÔÇó TANKS ÔÇó AIRFORCE ÔÇó DEPLOYED TROOPS</span><small>SEMI-REALISTIC ÔÇó AIR BOMBINGS + LAND</small></div>
     <div style="padding:10px;background:var(--paper);display:grid;gap:10px">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="hoi4Divs"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="hoi4Air"></div>
@@ -122,17 +122,17 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
   </div>
 
   <div class="card" style="margin-top:10px">
-    <div class="card-h"><span>⚔ ONGOING BATTLES — LIVE COMBAT (CLICK TO VIEW)</span><small id="ongoingMeta">SEEDED • HOI4 • SAME FOR ALL</small></div>
+    <div class="card-h"><span>ÔÜö ONGOING BATTLES ÔÇö LIVE COMBAT (CLICK TO VIEW)</span><small id="ongoingMeta">SEEDED ÔÇó HOI4 ÔÇó SAME FOR ALL</small></div>
     <div id="ongoingBattles" style="padding:8px;background:var(--paper);display:grid;gap:6px;max-height:360px;overflow:auto"></div>
-    <div style="padding:6px 8px;background:#111;color:var(--gold);font:600 9px 'IBM Plex Mono'">Click battle → zoom to city + hear combat. Bars = org/strength. Winner predicted via HOI4 soft/hard + air sup.</div>
+    <div style="padding:6px 8px;background:#111;color:var(--gold);font:600 9px 'IBM Plex Mono'">Click battle ÔåÆ zoom to city + hear combat. Bars = org/strength. Winner predicted via HOI4 soft/hard + air sup.</div>
   </div>
 
   <div class="war-panel">
-    <div class="card"><div class="card-h"><span>⚔ BATTLE LOG — SEEDED (SAME FOR ALL)</span><small id="logMeta">SEEDED • CITY ZOOM • PERSISTS</small></div><div class="log" id="warLog"></div></div>
-    <div class="card"><div class="card-h"><span>🔊 REAL WAR SOUNDS • CC0</span><small>SELF-HOSTED • LOW VOLUME</small></div>
+    <div class="card"><div class="card-h"><span>ÔÜö BATTLE LOG ÔÇö SEEDED (SAME FOR ALL)</span><small id="logMeta">SEEDED ÔÇó CITY ZOOM ÔÇó PERSISTS</small></div><div class="log" id="warLog"></div></div>
+    <div class="card"><div class="card-h"><span>­ƒöè REAL WAR SOUNDS ÔÇó CC0</span><small>SELF-HOSTED ÔÇó LOW VOLUME</small></div>
       <div style="padding:10px;background:var(--paper);font:600 10px 'IBM Plex Mono';line-height:1.6;display:grid;gap:6px">
         <div>WIPED loud synth. Now <b>9 real CC0 war wavs</b> (afterglow-artillery + Pixabay distant). Self-hosted <code>/sounds/</code>, low vol.</div>
-        <div>• <code>blast-small</code> light mortar • <code>blast-medium</code> barrage • <code>blast-large</code> heavy • <code>blast-low</code> distant • <code>impact-soil/rock/hull</code> • <code>fire-whoosh</code> • <code>launch-thruster</code> • <code>distant-war.mp3</code> (Pixabay)</div>
+        <div>ÔÇó <code>blast-small</code> light mortar ÔÇó <code>blast-medium</code> barrage ÔÇó <code>blast-large</code> heavy ÔÇó <code>blast-low</code> distant ÔÇó <code>impact-soil/rock/hull</code> ÔÇó <code>fire-whoosh</code> ÔÇó <code>launch-thruster</code> ÔÇó <code>distant-war.mp3</code> (Pixabay)</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
           <audio id="aud1" preload="auto" src="./sounds/blast-small.wav"></audio>
           <audio id="aud2" preload="auto" src="./sounds/blast-medium.wav"></audio>
@@ -145,16 +145,16 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
           <audio id="aud9" preload="auto" src="./sounds/blast-low.wav"></audio>
         </div>
         <div style="display:flex;gap:6px">
-          <button id="btnTestSound" style="appearance:none;background:#fff;border:2px solid #111;padding:5px 8px;font:700 9px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111">▶ TEST REAL SOUNDS (LOW VOL)</button>
-          <span style="font:600 9px 'IBM Plex Mono';color:#5a5242;align-self:center">Vol 0.18-0.22 • randomized picks • distant = quieter</span>
+          <button id="btnTestSound" style="appearance:none;background:#fff;border:2px solid #111;padding:5px 8px;font:700 9px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111">ÔûÂ TEST REAL SOUNDS (LOW VOL)</button>
+          <span style="font:600 9px 'IBM Plex Mono';color:#5a5242;align-self:center">Vol 0.18-0.22 ÔÇó randomized picks ÔÇó distant = quieter</span>
         </div>
-        <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">Auto-zoom: 2.8× to battle city for 3.8s. Seeded — same for everyone.</div>
+        <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">Auto-zoom: 2.8├ù to battle city for 3.8s. Seeded ÔÇö same for everyone.</div>
       </div>
     </div>
   </div>
 
-  <div class="card" style="margin-top:10px"><div class="card-h"><span>HOW IT WORKS — SEEDED (SAME FOR EVERYONE)</span><small>DETERMINISTIC</small></div>
-    <div style="padding:10px;background:var(--paper);font:500 11px 'IBM Plex Mono';line-height:1.6">Seeded PRNG <code>mulberry32</code> per day: <code>seeded01(day*...)</code> — same battles/front/GDP for every visitor on same wall-clock day (real-time 8 Sept → 1 Oct). Front = <code>START→END</code> wall-clock lerp + seeded jitter (<code>±0.18°</code>). No per-client <code>Math.random()</code>. Forked from freelance-ussr-map merged silhouette (84→1) pure outer stroke.</div>
+  <div class="card" style="margin-top:10px"><div class="card-h"><span>HOW IT WORKS ÔÇö SEEDED (SAME FOR EVERYONE)</span><small>DETERMINISTIC</small></div>
+    <div style="padding:10px;background:var(--paper);font:500 11px 'IBM Plex Mono';line-height:1.6">Seeded PRNG <code>mulberry32</code> per day: <code>seeded01(day*...)</code> ÔÇö same battles/front/GDP for every visitor on same wall-clock day (real-time 8 Sept ÔåÆ 1 Oct). Front = <code>STARTÔåÆEND</code> wall-clock lerp + seeded jitter (<code>┬▒0.18┬░</code>). No per-client <code>Math.random()</code>. Forked from freelance-ussr-map merged silhouette (84ÔåÆ1) pure outer stroke.</div>
   </div>
 </div>
 
@@ -164,7 +164,7 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
 const GEO_URL="./ussr.geojson";
 const FRONT_START=[[22.5,52.8],[26.5,51.5],[30.2,50.2],[34.0,49.1],[38.5,47.2],[42.8,44.6],[46.5,42.8],[51.2,41.5],[57.8,40.2],[65.2,41.0],[73.5,43.5],[82.0,47.0],[90.5,52.2],[103.0,55.5],[118.0,56.8],[132.5,54.5]];
 const FRONT_END=[[22.5,51.9],[26.5,50.6],[30.2,49.1],[34.0,47.8],[38.5,45.7],[42.8,43.1],[46.5,41.3],[51.2,40.0],[57.8,38.8],[65.2,39.7],[73.5,42.1],[82.0,45.6],[90.5,50.9],[103.0,54.2],[118.0,55.5],[132.5,53.6]];
-// SEEDED jitter — same for everyone (deterministic, not per-client random)
+// SEEDED jitter ÔÇö same for everyone (deterministic, not per-client random)
 function seeded01(seed){ let t=seed+=0x6D2B79F5; t=Math.imul(t ^ t>>>15, t|1); t^=t+Math.imul(t ^ t>>>7, t|61); return ((t ^ t>>>14)>>>0)/4294967296; }
 const FRONT_JITTER = FRONT_START.map((_,i)=> (seeded01(42+i*1337)-0.5)*0.18);
 const FRONT_JITTER2 = FRONT_START.map((_,i)=> (seeded01(99+i*2713)-0.5)*0.10);
@@ -177,10 +177,10 @@ const SECTORS=[
   {name:"BREST SECTOR",city:"MINSK"},{name:"KIEV AXIS",city:"KIEV"},{name:"KHARKOV SALIENT",city:"KHARKOV"},{name:"DONBAS",city:"KHARKOV"},{name:"ROSTOV GATE",city:"ROSTOV"},{name:"CAUCASUS PASS",city:"TIFLIS"},{name:"CASPAN FLANK",city:"BAKU"},{name:"TURKMEN FRONT",city:"SAMARKAND"},{name:"TASHKENT CORRIDOR",city:"TASHKENT"},{name:"BALKHASH LINE",city:"OMSK"},{name:"SAYAN RIDGE",city:"NOVOSIBIRSK"},{name:"BAIKAL SHORE",city:"NOVOSIBIRSK"},{name:"FAR EAST BEND",city:"VLADIVOSTOK"}
 ];
 const DIV_TEMPLATES=[
-  {id:"inf", name:"Strelkovaya (9 INF)", icon:"🪖", man:9000, art:36, tanks:0, soft:142, hard:12, org:60, cost:0.8},
-  {id:"tank", name:"Tankovaya (T-26/BT)", icon:"🛡️", man:4200, art:12, tanks:120, soft:48, hard:85, org:45, cost:2.4},
-  {id:"mot", name:"Motostrelki", icon:"🚚", man:6500, art:24, tanks:20, soft:110, hard:28, org:55, cost:1.4},
-  {id:"cav", name:"Kavaleriya", icon:"🐎", man:5500, art:12, tanks:0, soft:78, hard:8, org:65, cost:0.6},
+  {id:"inf", name:"Strelkovaya (9 INF)", icon:"­ƒ¬û", man:9000, art:36, tanks:0, soft:142, hard:12, org:60, cost:0.8},
+  {id:"tank", name:"Tankovaya (T-26/BT)", icon:"­ƒøí´©Å", man:4200, art:12, tanks:120, soft:48, hard:85, org:45, cost:2.4},
+  {id:"mot", name:"Motostrelki", icon:"­ƒÜÜ", man:6500, art:24, tanks:20, soft:110, hard:28, org:55, cost:1.4},
+  {id:"cav", name:"Kavaleriya", icon:"­ƒÉÄ", man:5500, art:12, tanks:0, soft:78, hard:8, org:65, cost:0.6},
 ];
 const HOI4_REV_BASE=[{t:"inf",n:34},{t:"tank",n:8},{t:"mot",n:6},{t:"cav",n:4}];
 const HOI4_ERW_BASE=[{t:"inf",n:18},{t:"tank",n:4},{t:"mot",n:3},{t:"cav",n:3}];
@@ -193,7 +193,7 @@ let casual=0, gdpTotal=1820, gdpRev=1238, gdpErw=582, lastLogDay=-1;
 const SOUNDS=[
   {id:"aud1", vol:0.18}, // blast-small light
   {id:"aud2", vol:0.18}, // blast-medium
-  {id:"aud3", vol:0.16}, // blast-large heavy — quietest
+  {id:"aud3", vol:0.16}, // blast-large heavy ÔÇö quietest
   {id:"aud4", vol:0.17}, // impact-soil
   {id:"aud5", vol:0.19}, // fire-whoosh
   {id:"aud6", vol:0.17}, // impact-rock
@@ -212,7 +212,7 @@ function playRealSound(variant){
   }catch(e){}
 }
 function playBattleSounds(outcome, attacker){
-  // layered, not loud — pick 1-2 wavs per battle, staggered low vol
+  // layered, not loud ÔÇö pick 1-2 wavs per battle, staggered low vol
   if(outcome.includes("ADVANCE")){
     playRealSound(2); setTimeout(()=> playRealSound(5), 180); setTimeout(()=> playRealSound(8), 420);
   } else if(attacker==="REV"){
@@ -229,7 +229,7 @@ function frontForFloat(f){
   return FRONT_START.map((c,i)=>{
     const e=FRONT_END[i];
     const baseLon=c[0]+(e[0]-c[0])*t, baseLat=c[1]+(e[1]-c[1])*t;
-    // seeded jitter — same for everyone
+    // seeded jitter ÔÇö same for everyone
     const wob = FRONT_JITTER[i]*Math.sin(f*0.35) + FRONT_JITTER2[i]*Math.cos(f*0.22);
     const r1=seeded01(day*1000 + i*917), r2=seeded01(day*2000 + i*677);
     const push = (r1<0.08 ? (r2-0.5)*0.30 : 0);
@@ -273,11 +273,11 @@ function getHOI4(f){
     erwMan+= Math.round(tmpl.man*n*str); erwTanks+= Math.round(tmpl.tanks*n*str); erwArt+= Math.round(tmpl.art*n*str);
   });
   const revTotalN=HOI4_REV_BASE.reduce((s,b)=>s+b.n,0), erwTotalN=HOI4_ERW_BASE.reduce((s,b)=>s+b.n,0);
-  // air — fighters attrition + production
+  // air ÔÇö fighters attrition + production
   const revAir={fighters: Math.round(AIR_REV_BASE.fighters* Math.max(0.6, 1 - seeded01(day*111)*0.12 - f*0.005)), cas: Math.round(AIR_REV_BASE.cas* Math.max(0.65, 1 - seeded01(day*222)*0.10 - f*0.004)), bombers: Math.round(AIR_REV_BASE.bombers* Math.max(0.6, 1 - seeded01(day*333)*0.11 - f*0.003))};
   const erwAir={fighters: Math.round(AIR_ERW_BASE.fighters* Math.max(0.55, 1 - seeded01(day*444+1)*0.13 - f*0.006)), cas: Math.round(AIR_ERW_BASE.cas* Math.max(0.6, 1 - seeded01(day*555+1)*0.11 - f*0.005)), bombers: Math.round(AIR_ERW_BASE.bombers* Math.max(0.55, 1 - seeded01(day*666+1)*0.12 - f*0.004))};
   const airSup = Math.round( 50 + (revAir.fighters - erwAir.fighters)/(revAir.fighters+erwAir.fighters)*50 + (seeded01(day*777)-0.5)*6 );
-  // bombings per day — CAS + bombers do damage to industry/manpower
+  // bombings per day ÔÇö CAS + bombers do damage to industry/manpower
   const bombings = Math.round( (revAir.cas*0.18 + revAir.bombers*0.35 + erwAir.cas*0.18 + erwAir.bombers*0.35) + seeded01(day*888)*12 );
   return {revDivs, erwDivs, revTotalN, erwTotalN, revMan, erwMan, revTanks, erwTanks, revArt, erwArt, revAir, erwAir, airSup: Math.max(12,Math.min(88,airSup)), bombings};
 }
@@ -286,16 +286,16 @@ function renderHOI4(f){
   const divEl=document.getElementById("hoi4Divs"), airEl=document.getElementById("hoi4Air"), meta=document.getElementById("hoi4Meta");
   if(!divEl||!airEl) return;
   const divRow=(label, data, totalN, man, tanks, art, color)=>{
-    const rows=data.map(d=> `${d.tmpl.icon} ${d.tmpl.name} ×${d.n} → <b>${d.deployed} deployed</b> ${(d.str*100).toFixed(0)}% str`).join("<br>");
+    const rows=data.map(d=> `${d.tmpl.icon} ${d.tmpl.name} ├ù${d.n} ÔåÆ <b>${d.deployed} deployed</b> ${(d.str*100).toFixed(0)}% str`).join("<br>");
     const avgStr=(data.reduce((s,d)=>s+d.str*d.n,0)/totalN*100).toFixed(0);
-    return `<div style="border:2px solid #111;padding:8px;background:${color==="REV"?"#fff5f5":"#f0f6ff"};box-shadow:2px 2px 0 #111"><div style="font:800 10px 'IBM Plex Mono';color:${color==="REV"?"var(--red)":"var(--blue)"}">${label} — ${totalN} DIVS • ${man.toLocaleString()} men • ${tanks} tanks • ${art} art • ORG ${avgStr}%</div><div style="font:600 9px 'IBM Plex Mono';margin-top:4px;line-height:1.5">${rows}</div></div>`;
+    return `<div style="border:2px solid #111;padding:8px;background:${color==="REV"?"#fff5f5":"#f0f6ff"};box-shadow:2px 2px 0 #111"><div style="font:800 10px 'IBM Plex Mono';color:${color==="REV"?"var(--red)":"var(--blue)"}">${label} ÔÇö ${totalN} DIVS ÔÇó ${man.toLocaleString()} men ÔÇó ${tanks} tanks ÔÇó ${art} art ÔÇó ORG ${avgStr}%</div><div style="font:600 9px 'IBM Plex Mono';margin-top:4px;line-height:1.5">${rows}</div></div>`;
   };
   divEl.innerHTML= divRow("REVOLUTIONARIES", h.revDivs, h.revTotalN, h.revMan, h.revTanks, h.revArt, "REV") + divRow("ERWIN SUPPORTERS", h.erwDivs, h.erwTotalN, h.erwMan, h.erwTanks, h.erwArt, "ERW");
   const airRow=(label, air, supLabel)=>{
-    return `<div style="border:2px solid #111;padding:8px;background:#fff;box-shadow:2px 2px 0 #111"><div style="font:800 10px 'IBM Plex Mono'">${label}</div><div style="font:600 10px 'IBM Plex Mono';margin-top:4px">✈ Fighters ${air.fighters} • CAS ${air.cas} • Bombers ${air.bombers}<br><span style="color:#5a5242">${supLabel}</span></div></div>`;
+    return `<div style="border:2px solid #111;padding:8px;background:#fff;box-shadow:2px 2px 0 #111"><div style="font:800 10px 'IBM Plex Mono'">${label}</div><div style="font:600 10px 'IBM Plex Mono';margin-top:4px">Ô£ê Fighters ${air.fighters} ÔÇó CAS ${air.cas} ÔÇó Bombers ${air.bombers}<br><span style="color:#5a5242">${supLabel}</span></div></div>`;
   };
-  airEl.innerHTML= airRow("REV AIRFORCE", h.revAir, `Air sup ${h.airSup}% (REV)`) + airRow("ERW AIRFORCE", h.erwAir, `Air sup ${100-h.airSup}% (ERW) • Bombings today: ${h.bombings} sorties`);
-  if(meta) meta.textContent=`HOI4: ${h.revTotalN+h.erwTotalN} total divs • Deployed ${ (h.revMan+h.erwMan).toLocaleString()} men, ${h.revTanks+h.erwTanks} tanks, ${h.revArt+h.erwArt} art. Air ${h.revAir.fighters+h.erwAir.fighters} fighters, ${h.revAir.cas+h.erwAir.cas} CAS. Bombings ${h.bombings}/day degrade enemy industry/GDP. Same for everyone (seeded).`;
+  airEl.innerHTML= airRow("REV AIRFORCE", h.revAir, `Air sup ${h.airSup}% (REV)`) + airRow("ERW AIRFORCE", h.erwAir, `Air sup ${100-h.airSup}% (ERW) ÔÇó Bombings today: ${h.bombings} sorties`);
+  if(meta) meta.textContent=`HOI4: ${h.revTotalN+h.erwTotalN} total divs ÔÇó Deployed ${ (h.revMan+h.erwMan).toLocaleString()} men, ${h.revTanks+h.erwTanks} tanks, ${h.revArt+h.erwArt} art. Air ${h.revAir.fighters+h.erwAir.fighters} fighters, ${h.revAir.cas+h.erwAir.cas} CAS. Bombings ${h.bombings}/day degrade enemy industry/GDP. Same for everyone (seeded).`;
 }
 function renderOngoingBattles(f){
   const el=document.getElementById("ongoingBattles"); if(!el) return;
@@ -304,7 +304,7 @@ function renderOngoingBattles(f){
   // build ongoing list with combat calc
   el.innerHTML="";
   if(battles.length===0){
-    el.innerHTML=`<div style="padding:8px;border:2px dashed #111;background:#fff;font:600 10px 'IBM Plex Mono';text-align:center">No active battles — front consolidating</div>`;
+    el.innerHTML=`<div style="padding:8px;border:2px dashed #111;background:#fff;font:600 10px 'IBM Plex Mono';text-align:center">No active battles ÔÇö front consolidating</div>`;
     return;
   }
   battles.forEach((b, idx)=>{
@@ -331,21 +331,21 @@ function renderOngoingBattles(f){
     div.style.cssText="border:2px solid #111;padding:7px;background:#fff;box-shadow:2px 2px 0 #111;cursor:pointer";
     div.innerHTML=`
       <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
-        <div style="font:800 10px 'IBM Plex Mono'">${b.sector} <span style="font:600 9px;color:#5a5242">→ ${b.city}</span> <span style="background:${b.attacker==="REV"?"var(--red)":"var(--blue)"};color:#fff;padding:1px 4px;border:1px solid #111">${b.attacker==="REV"?"REV ATK":"ERW ATK"}</span></div>
+        <div style="font:800 10px 'IBM Plex Mono'">${b.sector} <span style="font:600 9px;color:#5a5242">ÔåÆ ${b.city}</span> <span style="background:${b.attacker==="REV"?"var(--red)":"var(--blue)"};color:#fff;padding:1px 4px;border:1px solid #111">${b.attacker==="REV"?"REV ATK":"ERW ATK"}</span></div>
         <span style="font:700 9px 'IBM Plex Mono';color:${col}">${winningName} WINNING ${Math.max(atkPct,defPct)}%</span>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
         <div>
-          <div style="font:700 8px 'IBM Plex Mono'">${b.attacker==="REV"?"REV":"ERW"} ATTACK ${atkScore.toFixed(0)} • CAS ${atkAir} • roll ${atkRoll.toFixed(0)}</div>
+          <div style="font:700 8px 'IBM Plex Mono'">${b.attacker==="REV"?"REV":"ERW"} ATTACK ${atkScore.toFixed(0)} ÔÇó CAS ${atkAir} ÔÇó roll ${atkRoll.toFixed(0)}</div>
           <div style="height:10px;background:#fff;border:1px solid #111;margin-top:2px"><div style="height:100%;width:${atkPct}%;background:${b.attacker==="REV"?"var(--red)":"var(--blue)"}"></div></div>
         </div>
         <div>
-          <div style="font:700 8px 'IBM Plex Mono'">${b.attacker==="REV"?"ERW":"REV"} DEFEND ${defScore.toFixed(0)} • CAS ${defAir} • roll ${defRoll.toFixed(0)}</div>
+          <div style="font:700 8px 'IBM Plex Mono'">${b.attacker==="REV"?"ERW":"REV"} DEFEND ${defScore.toFixed(0)} ÔÇó CAS ${defAir} ÔÇó roll ${defRoll.toFixed(0)}</div>
           <div style="height:10px;background:#fff;border:1px solid #111;margin-top:2px"><div style="height:100%;width:${defPct}%;background:${b.attacker==="REV"?"var(--blue)":"var(--red)"}"></div></div>
         </div>
       </div>
-      <div style="height:8px;background:#222;border:1px solid #111;margin-top:6px;position:relative"><div style="height:100%;width:${progress}%;background:repeating-linear-gradient(90deg,var(--gold) 0 6px,#d8b24a 6px 12px);transition:width .4s"></div><span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:700 7px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 4px">COMBAT ${progress}% • ${b.outcome}</span></div>
-      <div style="font:600 8px 'IBM Plex Mono';color:#5a5242;margin-top:4px">${Math.round(atkScore)} vs ${Math.round(defScore)} • ${b.cas} cas. • click to zoom → ${b.city}</div>
+      <div style="height:8px;background:#222;border:1px solid #111;margin-top:6px;position:relative"><div style="height:100%;width:${progress}%;background:repeating-linear-gradient(90deg,var(--gold) 0 6px,#d8b24a 6px 12px);transition:width .4s"></div><span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:700 7px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 4px">COMBAT ${progress}% ÔÇó ${b.outcome}</span></div>
+      <div style="font:600 8px 'IBM Plex Mono';color:#5a5242;margin-top:4px">${Math.round(atkScore)} vs ${Math.round(defScore)} ÔÇó ${b.cas} cas. ÔÇó click to zoom ÔåÆ ${b.city}</div>
     `;
     div.onclick=()=>{ zoomToCity(b.city); playBattleSounds(b.outcome, b.attacker); };
     el.appendChild(div);
@@ -354,7 +354,7 @@ function renderOngoingBattles(f){
 let cityState=[];
 async function init(){
   const raw=await d3.json(GEO_URL); let origFeats=raw.features;
-  // FIX 190° antimeridian → clamp to 179.9 (Chukotka) so bbox not huge (-170→179 = 350° bug)
+  // FIX 190┬░ antimeridian ÔåÆ clamp to 179.9 (Chukotka) so bbox not huge (-170ÔåÆ179 = 350┬░ bug)
   try{
     origFeats.forEach(fe=>{
       const g=fe.geometry; if(!g||!g.coordinates) return;
@@ -362,54 +362,25 @@ async function init(){
       else if(g.type==="MultiPolygon") g.coordinates.forEach(poly=> poly.forEach(r=> r.forEach(c=>{ if(c[0]>180) c[0]=179.9; })));
     });
   }catch(e){}
-  // CUSTOM PROVINCES: we make them ourselves — Voronoi ~200 provinces for USSR (HOI4-like), not just 84 oblasts
+  // CLEAN: 84 real oblasts as provinces ÔÇö HOI4 states = same, but draw both for visibility
   let union=null;
   try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
-  let provinces=[];
-  try{
-    const bbox=union ? turf.bbox(union) : [19,35,179.9,82];
-    // generate ~280 random points, keep ~210 inside USSR
-    const rnd=turf.randomPoint(320, {bbox:bbox});
-    const ptsInside={type:"FeatureCollection", features: rnd.features.filter(f=>{ try{ return turf.booleanPointInPolygon(f, union); }catch(e){return false;}}).slice(0,210)};
-    if(ptsInside.features.length>60 && typeof turf.voronoi==="function"){
-      const vor=turf.voronoi(ptsInside, {bbox:bbox});
-      for(const cell of vor.features){
-        if(!cell || !cell.geometry) continue;
-        if(union && !turf.booleanIntersects(cell, union)) continue;
-        try{
-          const inter=turf.intersect(cell, union);
-          if(inter){
-            if(inter.type==="FeatureCollection") inter.features.forEach(f=> provinces.push(f));
-            else provinces.push(inter);
-          } else {
-            // fallback keep cell if intersect fails but inside
-            provinces.push(cell);
-          }
-        }catch(e){}
-      }
-    }
-  }catch(e){ console.warn("voronoi provinces failed",e); }
-  if(provinces.length>90){
-    feats=provinces;
-    window._statesFeats=origFeats; // 84 states as thick overlay
-  } else {
-    feats=origFeats;
-    window._statesFeats=origFeats;
-  }
+  feats=origFeats;
+  window._statesFeats=origFeats;
   proj=projectionFor(feats); path=d3.geoPath(proj);
   mergedD=""; try{ mergedD=path(union|| {type:"FeatureCollection",features:feats}); }catch(e){ feats.forEach(f=> mergedD+=path(f)+" "); }
-  // cache centroids/areas — OPTIMIZED: no recompute per frame
+  // cache centroids/areas ÔÇö OPTIMIZED: no recompute per frame
   try{
     provCentroids=feats.map(fe=>{ try{ return d3.geoCentroid(fe); }catch(e){ try{ return turf.centroid(fe).geometry.coordinates; }catch(e2){ return [0,0]; } } });
     provAreas=feats.map(fe=>{ try{ return turf.area(fe); }catch(e){ return 1; } });
-    // cache city → province index (fixes bugged city ownership + speeds up)
+    // cache city ÔåÆ province index (fixes bugged city ownership + speeds up)
     cityProvIdx=CITIES0.map(c=>{
       const pt=turf.point(c.coords);
       for(let i=0;i<feats.length;i++){ try{ if(turf.booleanPointInPolygon(pt, feats[i])) return i; }catch(e){} }
       return -1;
     });
   }catch(e){ provCentroids=[]; provAreas=[]; cityProvIdx=[]; }
-  document.getElementById("topInfo").textContent=feats.length+" PROVINCES • "+(window._statesFeats?.length||0)+" STATES • "+CITIES0.length+" CITIES • HOI4 CUSTOM";
+  document.getElementById("topInfo").textContent=feats.length+" OBLASTS/STATES ÔÇó "+CITIES0.length+" CITIES ÔÇó HOI4 ÔÇó FIXED";
   const ds=document.getElementById("daySlider"); if(ds){ ds.max=DAYS; ds.step=0.1; }
   // restore pravda log from localStorage (persists after refresh lmao)
   try{
@@ -423,7 +394,7 @@ async function init(){
   }catch(e){}
   // if empty, seed initial
   if(!document.getElementById("warLog").innerHTML.trim()){
-    log(`<b>${fmtDate(WAR_START)} — WAR BEGINS (SEEDED — SAME FOR ALL)</b> <span class="rev">Revolutionaries</span> ~68% / <span class="erw">Erwin</span> ~32%. Front by province (${feats.length} states) — jagged, not smooth curve. Real war wavs low vol.`,true);
+    log(`<b>${fmtDate(WAR_START)} ÔÇö WAR BEGINS (SEEDED ÔÇö SAME FOR ALL)</b> <span class="rev">Revolutionaries</span> ~68% / <span class="erw">Erwin</span> ~32%. Front by province (${feats.length} states) ÔÇö jagged, not smooth curve. Real war wavs low vol.`,true);
   }
   curFloat=realFloat(); curDay=Math.floor(curFloat);
   // if we restored log, ensure we don't re-log already logged days
@@ -439,7 +410,7 @@ async function init(){
       const col=b.attacker==="REV"?"rev":"erw";
       const dateStr=fmtDate(new Date(WAR_START.getTime()+Math.floor(curFloat)*86400000));
       const exists=document.getElementById("warLog").innerHTML.includes(b.sector);
-      if(!exists) log(`<b>${dateStr}</b> — <span class="${col}">${b.sector}</span> (${b.city}) • ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
+      if(!exists) log(`<b>${dateStr}</b> ÔÇö <span class="${col}">${b.sector}</span> (${b.city}) ÔÇó ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
     });
     if(curFloat<0.5) lastDayLogged=Math.floor(curFloat);
   }catch(e){}
@@ -450,7 +421,7 @@ function render(f){
   curFloat=f; curDay=Math.floor(f);
   const front=frontForFloat(f);
   const curDate=new Date(WAR_START.getTime()+f*86400000);
-  // province control — use cached centroids/areas (optimized)
+  // province control ÔÇö use cached centroids/areas (optimized)
   let provRev=0, provErw=0, areaRev=0, areaErw=0;
   let provFacs=[];
   try{
@@ -462,7 +433,7 @@ function render(f){
       if(fac==="REV"){provRev++; areaRev+=a;} else {provErw++; areaErw+=a;}
     }
   }catch(e){ provRev=Math.round(feats.length*0.68); provErw=feats.length-provRev; provFacs=feats.map(()=> "REV"); }
-  // city ownership — FIXED via cached province index (fast + matches map)
+  // city ownership ÔÇö FIXED via cached province index (fast + matches map)
   cityState=CITIES0.map((c, idx)=>{
     let fac="REV";
     const pIdx=cityProvIdx[idx];
@@ -473,9 +444,9 @@ function render(f){
     return {...c, faction:fac};
   });
   const revCities=cityState.filter(c=>c.faction==="REV").length, erwCities=cityState.length-revCities;
-  // revPct from actual province AREA (not fake wob) — front truly moves provinces
+  // revPct from actual province AREA (not fake wob) ÔÇö front truly moves provinces
   const areaPct = areaRev+areaErw>0 ? Math.round(areaRev/(areaRev+areaErw)*100) : 68;
-  // blend areaPct with base progression so trend stays 68→78 but provinces decide exact
+  // blend areaPct with base progression so trend stays 68ÔåÆ78 but provinces decide exact
   const baseRev=areaPct;
   const revPct=Math.max(60,Math.min(84, baseRev)), erwPct=100-revPct;
   // store for draw (optimized)
@@ -489,33 +460,33 @@ function render(f){
   gdpRev=gdpTotal*(revPct/100)*prodRev; gdpErw=gdpTotal*(erwPct/100)*prodErw;
   const sum=gdpRev+gdpErw, adj=gdpTotal/sum; gdpRev*=adj; gdpErw*=adj;
   let frontLen=0; try{frontLen=Math.round(turf.length({type:"Feature",geometry:{type:"LineString",coordinates:front}},{units:"kilometers"}));}catch(e){frontLen=2840-Math.round(f*12);}
-  document.getElementById("dateLabel").textContent=`${fmtDate(curDate)} — DAY ${f.toFixed(1)}/${DAYS}`;
+  document.getElementById("dateLabel").textContent=`${fmtDate(curDate)} ÔÇö DAY ${f.toFixed(1)}/${DAYS}`;
   document.getElementById("dayNum").textContent=`DAY ${f.toFixed(1)}`;
-  document.getElementById("countdown").textContent=f>=DAYS?`ARMISTICE 1 OCT 2026`: `${(DAYS-f).toFixed(1)} DAYS TO 1 OCT • ${Math.floor((1-realProgress())*24)}h`;
-  document.getElementById("warStatus").textContent=f>=DAYS?"☭ ARMISTICE — WAR ENDS 1 OCT":(realtime?`⏱ REAL TIME ${(realProgress()*100).toFixed(1)}%`:(playing?"● FAST SIM":"PAUSED"));
+  document.getElementById("countdown").textContent=f>=DAYS?`ARMISTICE 1 OCT 2026`: `${(DAYS-f).toFixed(1)} DAYS TO 1 OCT ÔÇó ${Math.floor((1-realProgress())*24)}h`;
+  document.getElementById("warStatus").textContent=f>=DAYS?"Ôÿ¡ ARMISTICE ÔÇö WAR ENDS 1 OCT":(realtime?`ÔÅ▒ REAL TIME ${(realProgress()*100).toFixed(1)}%`:(playing?"ÔùÅ FAST SIM":"PAUSED"));
   document.getElementById("revPct").textContent=revPct+"%"; document.getElementById("erwPct").textContent=erwPct+"%";
   document.getElementById("sRev").textContent=revPct+"% USSR"; document.getElementById("sErw").textContent=erwPct+"% USSR";
-  document.getElementById("sRevSub").textContent=`${revCities} CITIES • ${revPct>70?'ADVANCING':'HOLDING'}`; document.getElementById("sErwSub").textContent=`${erwCities} CITIES • ${erwPct<30?'RETREATING':'DEFENDING'}`;
-  document.getElementById("sFront").textContent=frontLen.toLocaleString()+" KM"; document.getElementById("sFrontSub").textContent=`DAY ${f.toFixed(1)} • SHIFT ${(front[3][1]-FRONT_START[3][1]).toFixed(2)}°`;
-  document.getElementById("sFrontDelta").textContent= f>0? (seeded01(Math.floor(f)*444)>0.5?'→ LIVE':'↘ PUSH'): '—';
+  document.getElementById("sRevSub").textContent=`${revCities} CITIES ÔÇó ${revPct>70?'ADVANCING':'HOLDING'}`; document.getElementById("sErwSub").textContent=`${erwCities} CITIES ÔÇó ${erwPct<30?'RETREATING':'DEFENDING'}`;
+  document.getElementById("sFront").textContent=frontLen.toLocaleString()+" KM"; document.getElementById("sFrontSub").textContent=`DAY ${f.toFixed(1)} ÔÇó SHIFT ${(front[3][1]-FRONT_START[3][1]).toFixed(2)}┬░`;
+  document.getElementById("sFrontDelta").textContent= f>0? (seeded01(Math.floor(f)*444)>0.5?'ÔåÆ LIVE':'Ôåÿ PUSH'): 'ÔÇö';
   document.getElementById("sCas").textContent=casual.toLocaleString(); document.getElementById("sCasSub").textContent=`~${Math.round(casual/(f+0.6)).toLocaleString()}/DAY`;
   document.getElementById("sCasDelta").textContent=`+${Math.floor(700+seeded01(Math.floor(f)*555)*600)}/tick`;
-  document.getElementById("sGdp").textContent=gdpTotal.toFixed(0)+"B ₽"; document.getElementById("sGdpDelta").textContent=`REV ${gdpRev.toFixed(0)}B / ERW ${gdpErw.toFixed(0)}B`;
-  document.getElementById("sRevGdp").textContent=`GDP ${gdpRev.toFixed(0)}B ₽`; document.getElementById("sRevGdp").className="delta "+(gdpRev>1238?"up":"down");
-  document.getElementById("sErwGdp").textContent=`GDP ${gdpErw.toFixed(0)}B ₽`; document.getElementById("sErwGdp").className="delta "+(gdpErw>582?"up":"down");
-  document.getElementById("sGdpDelta").textContent=gdpTotal>1820?`▲ +${(gdpTotal-1820).toFixed(0)}B vs 8 Sept`:`▼ ${(gdpTotal-1820).toFixed(0)}B`;
-  document.getElementById("sEco").textContent=(revPct>72?"REV OFFENSIVE":erwPct>30?"CONTESTED":"ERW DEFENSIVE"); document.getElementById("sEcoSub").textContent=`SUPPLY ${Math.round(88 - f*0.9 + (seeded01(Math.floor(f)*888)-0.5)*6)}% • MORALE REV ${Math.round(68+f*0.6)} / ERW ${Math.round(62-f*0.4)}`;
+  document.getElementById("sGdp").textContent=gdpTotal.toFixed(0)+"B Ôé¢"; document.getElementById("sGdpDelta").textContent=`REV ${gdpRev.toFixed(0)}B / ERW ${gdpErw.toFixed(0)}B`;
+  document.getElementById("sRevGdp").textContent=`GDP ${gdpRev.toFixed(0)}B Ôé¢`; document.getElementById("sRevGdp").className="delta "+(gdpRev>1238?"up":"down");
+  document.getElementById("sErwGdp").textContent=`GDP ${gdpErw.toFixed(0)}B Ôé¢`; document.getElementById("sErwGdp").className="delta "+(gdpErw>582?"up":"down");
+  document.getElementById("sGdpDelta").textContent=gdpTotal>1820?`Ôû▓ +${(gdpTotal-1820).toFixed(0)}B vs 8 Sept`:`Ôû╝ ${(gdpTotal-1820).toFixed(0)}B`;
+  document.getElementById("sEco").textContent=(revPct>72?"REV OFFENSIVE":erwPct>30?"CONTESTED":"ERW DEFENSIVE"); document.getElementById("sEcoSub").textContent=`SUPPLY ${Math.round(88 - f*0.9 + (seeded01(Math.floor(f)*888)-0.5)*6)}% ÔÇó MORALE REV ${Math.round(68+f*0.6)} / ERW ${Math.round(62-f*0.4)}`;
   // NEW SYSTEMS
   const ind = Math.round(92 - f*1.1 + (seeded01(Math.floor(f)*121)-0.5)*8);
   const fuel = Math.round(81 - f*1.4 + (seeded01(Math.floor(f)*323)-0.5)*10);
   const manRev = Math.round(1450 - f*18 + (seeded01(Math.floor(f)*777)-0.5)*40);
   const manErw = Math.round(980 - f*12 + (seeded01(Math.floor(f)*979)-0.5)*30);
-  document.getElementById("sInd").textContent=ind+"% CAPACITY"; document.getElementById("sIndSub").textContent=`REV ${Math.round(ind*0.68)}% • ERW ${Math.round(ind*0.32)}% • STEEL ${Math.round(420 - f*6)}kt`;
-  document.getElementById("sIndDelta").textContent= ind>88? "▲ STABLE" : ind>75? "→ STRAINED" : "▼ CRITICAL";
-  document.getElementById("sFuel").textContent=fuel+"% RESERVE"; document.getElementById("sFuelSub").textContent=`OIL ${Math.round(64 - f*1.2)}% • RAIL ${Math.round(78 - f*0.9)}%`;
-  document.getElementById("sFuelDelta").textContent= fuel>70? "→ ADEQUATE" : "▼ SHORTAGE";
-  document.getElementById("sMan").textContent=(manRev+manErw).toLocaleString()+"k"; document.getElementById("sManSub").textContent=`REV ${manRev}k • ERW ${manErw}k`;
-  document.getElementById("sManDelta").textContent= `−${Math.floor(18+seeded01(Math.floor(f)*654)*12)}/day`;
+  document.getElementById("sInd").textContent=ind+"% CAPACITY"; document.getElementById("sIndSub").textContent=`REV ${Math.round(ind*0.68)}% ÔÇó ERW ${Math.round(ind*0.32)}% ÔÇó STEEL ${Math.round(420 - f*6)}kt`;
+  document.getElementById("sIndDelta").textContent= ind>88? "Ôû▓ STABLE" : ind>75? "ÔåÆ STRAINED" : "Ôû╝ CRITICAL";
+  document.getElementById("sFuel").textContent=fuel+"% RESERVE"; document.getElementById("sFuelSub").textContent=`OIL ${Math.round(64 - f*1.2)}% ÔÇó RAIL ${Math.round(78 - f*0.9)}%`;
+  document.getElementById("sFuelDelta").textContent= fuel>70? "ÔåÆ ADEQUATE" : "Ôû╝ SHORTAGE";
+  document.getElementById("sMan").textContent=(manRev+manErw).toLocaleString()+"k"; document.getElementById("sManSub").textContent=`REV ${manRev}k ÔÇó ERW ${manErw}k`;
+  document.getElementById("sManDelta").textContent= `ÔêÆ${Math.floor(18+seeded01(Math.floor(f)*654)*12)}/day`;
   // progress bar
   const bar=document.getElementById("timeBar"); if(bar) bar.style.width=(f/DAYS*100).toFixed(1)+"%";
   try{ renderHOI4(f); }catch(e){}
@@ -535,7 +506,7 @@ function drawMap(front,f){
   const FAR=4000;
   const erwinPts=[...frontProj,[FAR,FAR],[-FAR,FAR],[-FAR,frontProj[0][1]]];
   const erwinPolyD="M"+erwinPts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L ")+" Z";
-  // provinces as neutral base (visible thin white), states thick black — HOI4
+  // provinces as neutral base (visible thin white), states thick black ÔÇö HOI4
   const provG=gBase.append("g").attr("id","provinces");
   for(let i=0;i<feats.length;i++){
     const d=path(feats[i]);
@@ -546,7 +517,7 @@ function drawMap(front,f){
   for(const st of (window._statesFeats||statesFeats||[])){
     try{ const d=path(st); if(d) stateG.append("path").attr("d",d).attr("fill","none").attr("stroke","#111").attr("stroke-width",1.9).attr("opacity",0.98); }catch(e){}
   }
-  // smooth war front — balanced, not limited to states (like before but balanced 68/32)
+  // smooth war front ÔÇö balanced, not limited to states (like before but balanced 68/32)
   const warG=gBase.append("g").attr("clip-path","url(#ussrClip)");
   warG.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","#9e1a1f").attr("opacity",0.92); // REV bigger
   warG.append("path").attr("d",erwinPolyD).attr("fill","#1e3d64").attr("opacity",0.96);
@@ -582,15 +553,15 @@ function drawMap(front,f){
     if(isMajor){
       g.append("text").attr("y",isRev?-10:14).attr("text-anchor","middle").attr("class","city-label").text(c.name);
     } else {
-      // minor towns: label only on hover via tooltip, dot only on map — fixes bugged clutter
+      // minor towns: label only on hover via tooltip, dot only on map ÔÇö fixes bugged clutter
       g.append("title").text(c.name);
     }
-    g.on("mouseenter",()=>{tooltip.style.opacity="1"; tooltip.innerHTML=`<span style="color:${isRev?'#ff6b6b':'#8ec0ff'}">●</span> ${c.name} — ${isRev?'REVOLUTIONARIES':'ERWIN'}<br><span style="opacity:.7">Day ${f.toFixed(1)} • ${fmtDate(new Date(WAR_START.getTime()+f*86400000))}</span>`;})
+    g.on("mouseenter",()=>{tooltip.style.opacity="1"; tooltip.innerHTML=`<span style="color:${isRev?'#ff6b6b':'#8ec0ff'}">ÔùÅ</span> ${c.name} ÔÇö ${isRev?'REVOLUTIONARIES':'ERWIN'}<br><span style="opacity:.7">Day ${f.toFixed(1)} ÔÇó ${fmtDate(new Date(WAR_START.getTime()+f*86400000))}</span>`;})
      .on("mouseleave",()=>tooltip.style.opacity="0")
      .on("mousemove",()=>{const rect=mapBox.getBoundingClientRect(), svgRect=document.getElementById("map").getBoundingClientRect(); const sx=svgRect.left+(x/W)*svgRect.width, sy=svgRect.top+(y/H)*svgRect.height; tooltip.style.left=(sx-rect.left)+"px"; tooltip.style.top=(sy-rect.top)+"px";});
     g.on("click",()=>{ zoomToCity(c.name); }); // no sound on city click (requested)
   });
-  gBase.append("text").attr("x",W/2).attr("y",28).attr("text-anchor","middle").attr("font-family","Playfair Display").attr("font-weight",900).attr("font-size",15).attr("letter-spacing",".06em").attr("fill","#111").attr("opacity",0.92).text(`USSR • ${fmtDate(new Date(WAR_START.getTime()+f*86400000))} • DAY ${f.toFixed(1)}/${DAYS} • ${f>=DAYS?"ARMISTICE":"TILL 1 OCT"}`).attr("paint-order","stroke").attr("stroke","#e8dcc6").attr("stroke-width",4).attr("stroke-linejoin","round");
+  gBase.append("text").attr("x",W/2).attr("y",28).attr("text-anchor","middle").attr("font-family","Playfair Display").attr("font-weight",900).attr("font-size",15).attr("letter-spacing",".06em").attr("fill","#111").attr("opacity",0.92).text(`USSR ÔÇó ${fmtDate(new Date(WAR_START.getTime()+f*86400000))} ÔÇó DAY ${f.toFixed(1)}/${DAYS} ÔÇó ${f>=DAYS?"ARMISTICE":"TILL 1 OCT"}`).attr("paint-order","stroke").attr("stroke","#e8dcc6").attr("stroke-width",4).attr("stroke-linejoin","round");
 }
 function battlesForFloat(f){
   const day=Math.floor(f), frac=f-day;
@@ -598,7 +569,7 @@ function battlesForFloat(f){
   if(frac>0.6 && day+1<=DAYS) out.push(...battlesForDay(day+1).slice(0,1));
   return out;
 }
-// SEEDED RANDOM — same for everyone (deterministic per day), still feels random but synced
+// SEEDED RANDOM ÔÇö same for everyone (deterministic per day), still feels random but synced
 function battlesForDay(d){
   if(d<0) return [];
   if(d===0){
@@ -638,7 +609,7 @@ function stepTo(f, withLog=true){
       const battles=battlesForDay(d), dateStr=fmtDate(new Date(WAR_START.getTime()+d*86400000));
       battles.forEach(b=>{
         const col=b.attacker==="REV"?"rev":"erw";
-        log(`<b>${dateStr}</b> — <span class="${col}">${b.sector}</span> (${b.city}) • ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
+        log(`<b>${dateStr}</b> ÔÇö <span class="${col}">${b.sector}</span> (${b.city}) ÔÇó ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
         zoomToCity(b.city);
         playBattleSounds(b.outcome, b.attacker);
       });
@@ -646,8 +617,8 @@ function stepTo(f, withLog=true){
         const prevFront=frontForFloat(prevFloat), facPrev=factionAt(c.coords[0],c.coords[1],prevFront);
         return facPrev!==c.faction;
       });
-      flips.forEach(c=> log(`<b>★ ${c.name} CAPTURED</b> by <span class="${c.faction==="REV"?"rev":"erw"}">${c.faction==="REV"?"REVOLUTIONARIES":"ERWIN"}</span> — ${dateStr}`));
-      if(d===DAYS){ log(`<b style="color:#f5e6a3">1 OCT 2026 — ARMISTICE</b> Final: <span class="rev">${document.getElementById("revPct").textContent} Rev</span> / <span class="erw">${document.getElementById("erwPct").textContent} Erw</span> • GDP ${gdpTotal.toFixed(0)}B • Casualties ${casual.toLocaleString()}`,true); stopAll(); }
+      flips.forEach(c=> log(`<b>Ôÿà ${c.name} CAPTURED</b> by <span class="${c.faction==="REV"?"rev":"erw"}">${c.faction==="REV"?"REVOLUTIONARIES":"ERWIN"}</span> ÔÇö ${dateStr}`));
+      if(d===DAYS){ log(`<b style="color:#f5e6a3">1 OCT 2026 ÔÇö ARMISTICE</b> Final: <span class="rev">${document.getElementById("revPct").textContent} Rev</span> / <span class="erw">${document.getElementById("erwPct").textContent} Erw</span> ÔÇó GDP ${gdpTotal.toFixed(0)}B ÔÇó Casualties ${casual.toLocaleString()}`,true); stopAll(); }
     }
     lastDayLogged=Math.max(lastDayLogged,newDay);
   }
@@ -659,7 +630,7 @@ function zoomToCity(cityName){
   const tx=W/2 - x*k, ty=H/2 - y*k;
   try{ gBase.interrupt(); }catch(e){}
   gBase.transition().duration(900).ease(d3.easeCubicOut).attr("transform",`translate(${tx},${ty}) scale(${k})`);
-  const badge=document.getElementById("zoomBadge"); badge.textContent=`◉ ZOOM: ${cityName} BATTLE`; badge.classList.add("on");
+  const badge=document.getElementById("zoomBadge"); badge.textContent=`Ôùë ZOOM: ${cityName} BATTLE`; badge.classList.add("on");
   setTimeout(()=>{
     gBase.transition().duration(1100).ease(d3.easeCubicInOut).attr("transform","translate(0,0) scale(1)");
     setTimeout(()=> badge.classList.remove("on"), 400);
@@ -673,17 +644,17 @@ function startRealtimeTick(){
     if(Math.abs(rf - curFloat) > 0.005){
       stepTo(rf, true);
     }
-    document.getElementById("countdown").textContent= rf>=DAYS?`ARMISTICE 1 OCT 2026`: `${(DAYS-rf).toFixed(1)} DAYS TO 1 OCT • ${Math.floor((1-realProgress())*24)}h`;
+    document.getElementById("countdown").textContent= rf>=DAYS?`ARMISTICE 1 OCT 2026`: `${(DAYS-rf).toFixed(1)} DAYS TO 1 OCT ÔÇó ${Math.floor((1-realProgress())*24)}h`;
   }, 2000);
 }
 function playFast(){
   if(curFloat>=DAYS) return;
   playing=true; realtime=false;
-  document.getElementById("warStatus").textContent="● FAST SIM";
+  document.getElementById("warStatus").textContent="ÔùÅ FAST SIM";
   if(fastTimer) clearInterval(fastTimer);
   fastTimer=setInterval(()=>{ if(curFloat>=DAYS){pauseFast();return;} stepTo(Math.min(DAYS, curFloat+0.25), true); }, 520);
 }
-function pauseFast(){ playing=false; if(fastTimer) clearInterval(fastTimer); fastTimer=null; document.getElementById("warStatus").textContent= curFloat>=DAYS?"☭ ARMISTICE":"PAUSED"; }
+function pauseFast(){ playing=false; if(fastTimer) clearInterval(fastTimer); fastTimer=null; document.getElementById("warStatus").textContent= curFloat>=DAYS?"Ôÿ¡ ARMISTICE":"PAUSED"; }
 function stopAll(){ playing=false; realtime=false; if(timer) clearInterval(timer); if(fastTimer) clearInterval(fastTimer); }
 function bindControls(){
   document.getElementById("btnRealtime").onclick=()=>{
@@ -692,19 +663,19 @@ function bindControls(){
     stepTo(realFloat(), false); startRealtimeTick();
   };
   document.getElementById("btnPause").onclick=()=>{ realtime=false; pauseFast(); };
-  // NO SKIP — slider/fast/step/reset removed (Chernobyl protocol)
+  // NO SKIP ÔÇö slider/fast/step/reset removed (Chernobyl protocol)
   document.getElementById("btnSound").onclick=(e)=>{
-    soundOn=!soundOn; e.target.textContent=soundOn?"🔊 SOUND ON":"🔇 SOUND OFF"; e.target.style.background=soundOn?"#111":"#fff"; e.target.style.color=soundOn?"var(--gold)":"#111";
+    soundOn=!soundOn; e.target.textContent=soundOn?"­ƒöè SOUND ON":"­ƒöç SOUND OFF"; e.target.style.background=soundOn?"#111":"#fff"; e.target.style.color=soundOn?"var(--gold)":"#111";
     if(soundOn) playBattleSounds("REV ADVANCE","REV");
   };
-  document.getElementById("btnTestSound").onclick=()=>{ soundOn=true; document.getElementById("btnSound").textContent="🔊 SOUND ON"; document.getElementById("btnSound").style.background="#111"; document.getElementById("btnSound").style.color="var(--gold)"; playRealSound(0); setTimeout(()=>playRealSound(1),280); setTimeout(()=>playRealSound(2),560); setTimeout(()=>playRealSound(3),850); setTimeout(()=>playRealSound(8),1050); };
+  document.getElementById("btnTestSound").onclick=()=>{ soundOn=true; document.getElementById("btnSound").textContent="­ƒöè SOUND ON"; document.getElementById("btnSound").style.background="#111"; document.getElementById("btnSound").style.color="var(--gold)"; playRealSound(0); setTimeout(()=>playRealSound(1),280); setTimeout(()=>playRealSound(2),560); setTimeout(()=>playRealSound(3),850); setTimeout(()=>playRealSound(8),1050); };
   document.getElementById("btnSave").onclick=()=>{
     const src=new XMLSerializer().serializeToString(document.getElementById("map"));
     const blob=new Blob([`<?xml version="1.0" encoding="UTF-8"?>\n`+src],{type:"image/svg+xml"});
     const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`ussr-civilwar-day${curFloat.toFixed(1)}-1oct.svg`; a.click(); URL.revokeObjectURL(url);
   };
   document.getElementById("btnFront").onclick=()=>{ showFront=!showFront; const g=document.getElementById("frontG"); if(g) g.style.display=showFront?"block":"none"; };
-  // block any manual seek via devtools — no slider to hijack
+  // block any manual seek via devtools ÔÇö no slider to hijack
 }
 init().catch(e=>{console.error(e); document.getElementById("topInfo").textContent="ERR "+e.message;});
 </script>
