@@ -1,1362 +1,2724 @@
-<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>USSR CIVIL WAR ??? REVOLUTIONARIES vs ERWIN - REAL TIME till 1 OCT 2026</title>
-
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700;800&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
-
-<style>
-
-:root{--red:#8a0f14;--blue:#1a3a5c;--paper:#e8dcc6;--ink:#111;--gold:#f5e6a3}
-
-*{box-sizing:border-box;margin:0;padding:0}
-
-body{background:var(--paper);color:var(--ink);font-family:'IBM Plex Mono',monospace;border-left:6px solid var(--red);border-right:6px solid var(--red);min-height:100vh;overflow-x:hidden}
-
-.top-rule{height:32px;background:var(--red);color:var(--gold);display:flex;align-items:center;gap:12px;padding:0 12px;font:700 10px 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;border-bottom:3px solid #111;white-space:nowrap;overflow:hidden}
-
-.top-rule b{background:#111;color:#fff;padding:2px 6px}
-
-.hdr{background:var(--paper);border-bottom:4px solid #111;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px}
-
-.brand{display:flex;align-items:center;gap:10px}
-
-.stamp{width:54px;height:54px;background:var(--red);border:3px solid #111;display:grid;place-items:center;color:var(--paper);font:900 18px 'Playfair Display';transform:rotate(-1deg);box-shadow:3px 3px 0 #111}
-
-.stamp small{font:700 7px 'IBM Plex Mono';display:block;letter-spacing:.1em;color:var(--gold)}
-
-.brand h1{font:900 28px 'Playfair Display';text-transform:uppercase;line-height:.9}
-
-.brand h1 i{font-style:normal;background:var(--red);color:#fff;padding:0 6px}
-
-.brand p{font:600 10px 'IBM Plex Mono';color:#5a5242;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
-
-.badge{display:inline-block;padding:2px 6px;border:2px solid #111;font:700 9px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase}
-
-.b-rev{background:var(--red);color:#fff}.b-erw{background:var(--blue);color:#fff}.b-gold{background:var(--gold);color:#111}
-
-.legend{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-
-.legend .item{display:flex;align-items:center;gap:6px;border:2px solid #111;padding:6px 8px;background:#fff;box-shadow:2px 2px 0 #111;font:700 10px 'IBM Plex Mono';text-transform:uppercase}
-
-.dot{width:14px;height:14px;border:1px solid #111;display:inline-block}.dot-rev{background:var(--red)}.dot-erw{background:var(--blue)}
-
-.map-wrap{max-width:1280px;margin:0 auto;padding:10px 12px 18px}
-
-.card{background:#fff;border:3px solid #111;box-shadow:4px 4px 0 #111;overflow:hidden}
-
-.card-h{padding:8px 10px;background:var(--red);color:var(--gold);border-bottom:3px solid #111;display:flex;align-items:center;justify-content:space-between;gap:10px;font:700 11px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase}
-
-.card-h small{font:600 9px 'IBM Plex Mono';opacity:.9;text-transform:none}
-
-.map-box{position:relative;background:#d6cbb3;height:68vh;min-height:460px;overflow:hidden;border-top:2px solid #111}
-
-#map{width:100%;height:100%;display:block;background:#c9bda3;background-image:radial-gradient(circle at 30% 20%, rgba(255,255,255,.25) 0 2px, transparent 2px),radial-gradient(circle at 70% 60%, rgba(0,0,0,.06) 0 1px, transparent 1px);background-size:28px 28px,18px 18px}
-
-.tooltip{position:absolute;pointer-events:none;background:#111;color:var(--gold);border:2px solid #111;padding:6px 8px;font:700 10px 'IBM Plex Mono';letter-spacing:.04em;box-shadow:3px 3px 0 rgba(0,0,0,.3);opacity:0;transform:translate(-50%,-130%);white-space:nowrap;z-index:10}
-
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
-
-@media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}.map-box{height:55vh;min-height:360px}}
-
-@media(max-width:600px){.stats{grid-template-columns:1fr}.brand h1{font-size:22px}}
-
-.stat{background:#fff;border:2px solid #111;padding:10px;box-shadow:3px 3px 0 #111}
-
-.stat b{display:block;font:700 8px 'IBM Plex Mono';letter-spacing:.12em;text-transform:uppercase;color:#5a5242;border-bottom:1px solid #111;padding-bottom:4px;margin-bottom:6px}
-
-.stat strong{display:block;font:800 18px 'IBM Plex Mono';line-height:1}
-
-.stat span{font:600 10px 'IBM Plex Mono';color:#5a5242}
-
-.stat .delta{font:700 10px 'IBM Plex Mono';margin-top:4px}
-
-.delta.up{color:#0a7a2e}.delta.down{color:var(--red)}
-
-.city-label{font:800 8px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.06em;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
-
-.war-panel{margin-top:10px;display:grid;grid-template-columns:1.25fr .75fr;gap:10px}
-
-@media(max-width:900px){.war-panel{grid-template-columns:1fr}}
-
-.timeline{padding:10px;background:var(--paper);border-top:3px solid #111;display:grid;gap:8px}
-
-.timeline-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-
-.timeline-row button{appearance:none;background:#fff;border:2px solid #111;padding:7px 10px;font:700 10px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111;text-transform:uppercase}
-
-.timeline-row button.active{background:var(--red);color:#fff}
-
-.timeline-row button.dark{background:#111;color:var(--gold)}
-
-input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
-
-.log{max-height:240px;overflow:auto;background:#111;color:#d8cab0;padding:8px;border:2px solid #111;font:600 10px 'IBM Plex Mono';line-height:1.5}
-
-.log b{color:var(--gold)}.log .rev{color:#ff7a7a}.log .erw{color:#7ab8ff}
-
-.countdown{font:800 11px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;background:#111;color:var(--gold);border:2px solid #111;display:inline-block}
-
-.pulse{width:8px;height:8px;background:#3fa35a;border:1px solid #fff;display:inline-block;vertical-align:middle;margin-right:4px;animation:pulse 1s infinite alternate}
-
-@keyframes pulse{from{opacity:1}to{opacity:.3}}
-
-.zoom-badge{position:absolute;top:10px;right:10px;background:#111;color:var(--gold);border:2px solid var(--gold);padding:6px 8px;font:700 9px 'IBM Plex Mono';opacity:0;transition:.3s;pointer-events:none;z-index:5}
-
-.zoom-badge.on{opacity:1}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="top-rule"><b>?????????????? // REAL-TIME WAR</b> <span>??? REVOLUTIONARIES vs ERWIN ??? REAL TIME TILL 1 OCT 2026 ??? PRAVDA LIVE ???</span> <span style="margin-left:auto" id="topInfo">LOADING...</span></div>
-
-<header class="hdr">
-
-  <div class="brand">
-
-    <div class="stamp">???<small>CCCP</small></div>
-
-    <div><h1><i>USSR</i> CIVIL WAR</h1><p>Pure silhouette - No SSR borders - Seeded simulation ??? same for everyone - 8 Sept -> 1 Oct</p></div>
-
-  </div>
-
-  <div class="legend">
-
-    <div class="item"><span class="dot dot-rev"></span> REV <span class="badge b-rev" id="revPct">???</span></div>
-
-    <div class="item"><span class="dot dot-erw"></span> ERW <span class="badge b-erw" id="erwPct">???</span></div>
-
-    <div class="item" style="background:var(--gold)"><span style="width:14px;height:3px;background:#111;display:inline-block;vertical-align:middle;border-top:2px dashed var(--gold)"></span> FRONT</div>
-
-  </div>
-
-</header>
-
-
-
-<div class="map-wrap">
-
-  <div class="card">
-
-    <div class="card-h"><span>Pure USSR ??? Seeded Real-Time War (till 1 Oct) ??? SAME FOR EVERYONE</span><small>84->1 SILHOUETTE - ZOOM ON CITY BATTLES - SEEDED</small></div>
-
-    <div class="map-box" id="mapBox">
-
-      <svg id="map" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet"></svg>
-
-      <div class="tooltip" id="tooltip"></div>
-
-      <div class="zoom-badge" id="zoomBadge">? ZOOM: CITY BATTLE</div>
-
-      <div id="casualtiesMap" style="position:absolute;top:42px;right:10px;left:auto;background:#111;color:#ff7a7a;border:2px solid #fff;padding:5px 7px;font:800 9px 'IBM Plex Mono';z-index:6;box-shadow:2px 2px 0 #111;pointer-events:none">CASUALTIES -</div>
-
-    </div>
-
-    <div class="timeline">
-
-      <div class="timeline-row">
-
-        <span class="countdown"><span class="pulse"></span><span id="dateLabel">???</span> - <span id="countdown">???</span></span>
-
-        <span class="badge b-gold" id="warStatus">SYNCING REAL TIME???</span>
-
-        <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
-
-          <button id="btnRealtime" class="active">??? REAL TIME (NO SKIP)</button>
-
-          <button id="btnPause">??? PAUSE</button>
-
-          <button id="btnSound">???? SOUND ON</button>
-
-          <button id="btnSave">??? SAVE SVG</button>
-
-          <button id="btnFront">TOGGLE FRONT</button>
-
-        </span>
-
-      </div>
-
-      <div class="timeline-row" style="background:#111;color:var(--gold);padding:6px 8px;border:2px solid #111">
-
-        <span style="font:800 9px 'IBM Plex Mono'">REAL-TIME PROGRESS</span>
-
-        <div style="flex:1;height:14px;background:#222;border:1px solid #444;position:relative;overflow:hidden"><div id="timeBar" style="height:100%;width:0%;background:repeating-linear-gradient(90deg,var(--red) 0 10px,#a51a1a 10px 20px);transition:width .6s"></div><span id="dayNum" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 10px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 6px;border:1px solid #fff">DAY 0.0</span></div>
-
-        <span class="badge" style="background:var(--red);color:#fff">NO SKIP - CHERNOBYL PROTOCOL</span>
-
-      </div>
-
-      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">PROVINCE FRONT: 84 oblasts colored by centroid vs front line -> jagged state-border front (not smooth curve). Seeded same for everyone. Real-time locked (no skip). Zoom 2.8??. Sounds 9 wavs low vol. Ends 1 Oct.</div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="stats">
-
-    <div class="stat"><b>REVOLUTIONARIES ??? CONTROL & GDP</b><strong style="color:var(--red)" id="sRev">???</strong><span id="sRevSub">???</span><div class="delta" id="sRevGdp">GDP ???</div></div>
-
-    <div class="stat"><b>ERWIN ??? CONTROL & GDP</b><strong style="color:var(--blue)" id="sErw">???</strong><span id="sErwSub">???</span><div class="delta" id="sErwGdp">GDP ???</div></div>
-
-    <div class="stat"><b>FRONT LINE</b><strong id="sFront">???</strong><span id="sFrontSub">???</span><div class="delta" id="sFrontDelta">???</div></div>
-
-    <div class="stat"><b>CASUALTIES (SEEDED)</b><strong id="sCas">???</strong><span id="sCasSub">???</span><div class="delta" id="sCasDelta">???</div></div>
-
-    <div class="stat"><b>TOTAL GDP</b><strong id="sGdp">???</strong><span>1936 RUBLES - BOTH FACTIONS</span><div class="delta" id="sGdpDelta">???</div></div>
-
-    <div class="stat"><b>WAR ECONOMY</b><strong id="sEco">???</strong><span id="sEcoSub">SUPPLY - MORALE</span><div class="delta" id="sEcoDelta">???</div></div>
-
-    <div class="stat"><b>INDUSTRY ??? OUTPUT</b><strong id="sInd">???</strong><span id="sIndSub">FACTORIES - STEEL</span><div class="delta" id="sIndDelta">???</div></div>
-
-    <div class="stat"><b>FUEL & LOGISTICS</b><strong id="sFuel">???</strong><span id="sFuelSub">OIL - RAIL CAPACITY</span><div class="delta" id="sFuelDelta">???</div></div>
-
-    <div class="stat"><b>MANPOWER</b><strong id="sMan">???</strong><span id="sManSub">RESERVES - RECRUITS</span><div class="delta" id="sManDelta">???</div></div>
-
-  </div>
-
-
-
-  <div class="card" style="margin-top:10px">
-
-    <div class="card-h"><span>HOI4 ??? DIVISIONS - TANKS - AIRFORCE - DEPLOYED TROOPS</span><small>SEMI-REALISTIC - AIR BOMBINGS + LAND</small></div>
-
-    <div style="padding:10px;background:var(--paper);display:grid;gap:10px">
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="hoi4Divs"></div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="hoi4Air"></div>
-
-      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242" id="hoi4Meta">HOI4 formula: org, strength, equipment, air superiority affect front push. Bombings reduce enemy industry.</div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="card" style="margin-top:10px">
-
-    <div class="card-h"><span>??? ONGOING BATTLES ??? LIVE COMBAT (CLICK TO VIEW)</span><small id="ongoingMeta">SEEDED - HOI4 - SAME FOR ALL</small></div>
-
-    <div id="ongoingBattles" style="padding:8px;background:var(--paper);display:grid;gap:6px;max-height:360px;overflow:auto"></div>
-
-    <div style="padding:6px 8px;background:#111;color:var(--gold);font:600 9px 'IBM Plex Mono'">Click battle -> zoom to city + hear combat. Bars = org/strength. Winner predicted via HOI4 soft/hard + air sup.</div>
-
-  </div>
-
-
-
-  <div class="war-panel">
-
-    <div class="card"><div class="card-h"><span>??? BATTLE LOG ??? SEEDED (SAME FOR ALL)</span><small id="logMeta">SEEDED - CITY ZOOM - PERSISTS</small></div><div class="log" id="warLog"></div></div>
-
-    <div class="card"><div class="card-h"><span>???? REAL WAR SOUNDS - CC0</span><small>SELF-HOSTED - LOW VOLUME</small></div>
-
-      <div style="padding:10px;background:var(--paper);font:600 10px 'IBM Plex Mono';line-height:1.6;display:grid;gap:6px">
-
-        <div>WIPED loud synth. Now <b>9 real CC0 war wavs</b> (afterglow-artillery + Pixabay distant). Self-hosted <code>/sounds/</code>, low vol.</div>
-
-        <div>- <code>blast-small</code> light mortar - <code>blast-medium</code> barrage - <code>blast-large</code> heavy - <code>blast-low</code> distant - <code>impact-soil/rock/hull</code> - <code>fire-whoosh</code> - <code>launch-thruster</code> - <code>distant-war.mp3</code> (Pixabay)</div>
-
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
-
-          <audio id="aud1" preload="auto" src="./sounds/blast-small.wav"></audio>
-
-          <audio id="aud2" preload="auto" src="./sounds/blast-medium.wav"></audio>
-
-          <audio id="aud3" preload="auto" src="./sounds/blast-large.wav"></audio>
-
-          <audio id="aud4" preload="auto" src="./sounds/impact-soil.wav"></audio>
-
-          <audio id="aud5" preload="auto" src="./sounds/fire-whoosh.wav"></audio>
-
-          <audio id="aud6" preload="auto" src="./sounds/impact-rock.wav"></audio>
-
-          <audio id="aud7" preload="auto" src="./sounds/launch-thruster.wav"></audio>
-
-          <audio id="aud8" preload="auto" src="./sounds/distant-war.mp3"></audio>
-
-          <audio id="aud9" preload="auto" src="./sounds/blast-low.wav"></audio>
-
-        </div>
-
-        <div style="display:flex;gap:6px">
-
-          <button id="btnTestSound" style="appearance:none;background:#fff;border:2px solid #111;padding:5px 8px;font:700 9px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111">??? TEST REAL SOUNDS (LOW VOL)</button>
-
-          <span style="font:600 9px 'IBM Plex Mono';color:#5a5242;align-self:center">Vol 0.18-0.22 - randomized picks - distant = quieter</span>
-
-        </div>
-
-        <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">Auto-zoom: 2.8?? to battle city for 3.8s. Seeded ??? same for everyone.</div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-
-  <div class="card" style="margin-top:10px"><div class="card-h"><span>HOW IT WORKS ??? SEEDED (SAME FOR EVERYONE)</span><small>DETERMINISTIC</small></div>
-
-    <div style="padding:10px;background:var(--paper);font:500 11px 'IBM Plex Mono';line-height:1.6">Seeded PRNG <code>mulberry32</code> per day: <code>seeded01(day*...)</code> ??? same battles/front/GDP for every visitor on same wall-clock day (real-time 8 Sept -> 1 Oct). Front = <code>START->END</code> wall-clock lerp + seeded jitter (<code>??0.18??</code>). No per-client <code>Math.random()</code>. Forked from freelance-ussr-map merged silhouette (84->1) pure outer stroke.</div>
-
-  </div>
-
-</div>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
-
-<script>
-
-const GEO_URL="https://hyawiigithub.github.io/USSRCIVILWAR/ussr.geojson";
-
-// fallback absolute if relative fails (jsdom test would fail with relative)
-
-const FRONT_START=[[22.5,52.8],[26.5,51.5],[30.2,50.2],[34.0,49.1],[38.5,47.2],[42.8,44.6],[46.5,42.8],[51.2,41.5],[57.8,40.2],[65.2,41.0],[73.5,43.5],[82.0,47.0],[90.5,52.2],[103.0,55.5],[118.0,56.8],[132.5,54.5]];
-
-const FRONT_END=[[22.5,51.9],[26.5,50.6],[30.2,49.1],[34.0,47.8],[38.5,45.7],[42.8,43.1],[46.5,41.3],[51.2,40.0],[57.8,38.8],[65.2,39.7],[73.5,42.1],[82.0,45.6],[90.5,50.9],[103.0,54.2],[118.0,55.5],[132.5,53.6]];
-
-// SEEDED jitter ??? same for everyone (deterministic, not per-client random)
-
-function seeded01(seed){ let t=seed+=0x6D2B79F5; t=Math.imul(t ^ t>>>15, t|1); t^=t+Math.imul(t ^ t>>>7, t|61); return ((t ^ t>>>14)>>>0)/4294967296; }
-
-const FRONT_JITTER = FRONT_START.map((_,i)=> (seeded01(42+i*1337)-0.5)*0.18);
-
-const FRONT_JITTER2 = FRONT_START.map((_,i)=> (seeded01(99+i*2713)-0.5)*0.10);
-
-const CITIES0=[
-
-  {name:"MOSCOW",coords:[37.6173,55.7558]},{name:"LENINGRAD",coords:[30.3351,59.9343]},{name:"KIEV",coords:[30.5234,50.4501]},{name:"MINSK",coords:[27.5615,53.9045]},{name:"KHARKOV",coords:[36.2304,49.9935]},{name:"ROSTOV",coords:[39.7015,47.2225]},{name:"TASHKENT",coords:[69.2401,41.2995]},{name:"SAMARKAND",coords:[66.9597,39.6270]},{name:"NOVOSIBIRSK",coords:[82.9357,55.0084]},{name:"VLADIVOSTOK",coords:[131.8735,43.1056]},
-
-  {name:"MURMANSK",coords:[33.0827,68.9585]},{name:"ARCHANGELSK",coords:[40.5443,64.5393]},{name:"SVERDLOVSK",coords:[60.6122,56.8389]},{name:"OMSK",coords:[73.3686,54.9885]},{name:"TIFLIS",coords:[44.8271,41.7151]},{name:"BAKU",coords:[49.8671,40.4093]},
-
-  {name:"RIGA",coords:[24.1052,56.9496]},{name:"VILNIUS",coords:[25.2797,54.6872]},{name:"TALLINN",coords:[24.7536,59.437]},{name:"KISHINEV",coords:[28.8638,47.0105]},{name:"BREST",coords:[23.6878,52.0976]},{name:"GOMEL",coords:[31.0114,52.4345]},{name:"VITEBSK",coords:[30.2019,55.1904]},{name:"SMOLENSK",coords:[32.045,54.7903]},{name:"BRYANSK",coords:[34.3687,53.2434]},{name:"KURSK",coords:[36.1939,51.7091]},{name:"VORONEZH",coords:[39.2003,51.672]},{name:"SARATOV",coords:[46.034,51.5406]},{name:"VOLGOGRAD",coords:[44.5167,48.708]},{name:"ASTRAKHAN",coords:[48.046,46.3479]},{name:"KRASNODAR",coords:[38.9873,45.0355]},{name:"STAVROPOL",coords:[41.9734,45.0428]},{name:"GROZNY",coords:[45.6982,43.3181]},{name:"MAKHACHKALA",coords:[47.5047,42.9849]},{name:"UFA",coords:[55.9587,54.7352]},{name:"CHELYABINSK",coords:[61.4297,55.1644]},{name:"PERM",coords:[56.2502,58.0105]},{name:"KAZAN",coords:[49.1233,55.7887]},{name:"GORKY",coords:[44.002,56.2965]},{name:"YAROSLAVL",coords:[39.884,57.6261]},{name:"KALININ",coords:[35.9042,56.8584]},{name:"VLADIMIR",coords:[40.4026,56.129]},{name:"RYAZAN",coords:[39.7449,54.629]},{name:"TULA",coords:[37.6177,54.1961]},{name:"OREL",coords:[36.0639,52.9703]},{name:"LIPETSK",coords:[39.5717,52.6031]},{name:"TAMBOV",coords:[41.4353,52.7224]},{name:"PENZA",coords:[45.015,53.195]},{name:"ULYANOVSK",coords:[48.4019,54.3282]},{name:"KUIBYSHEV",coords:[50.2212,53.2415]},{name:"ORENBURG",coords:[55.099,51.7682]},{name:"ORSK",coords:[58.5667,51.229]},{name:"MAGNITOGORSK",coords:[58.985,53.4186]},{name:"TYUMEN",coords:[65.5343,57.1531]},{name:"TOMSK",coords:[84.948,56.4846]},{name:"BARNAUL",coords:[83.7769,53.3606]},{name:"KEMEROVO",coords:[86.087,55.3552]},{name:"KRASNOYARSK",coords:[92.8932,56.0153]},{name:"IRKUTSK",coords:[104.296,52.2869]},{name:"YAKUTSK",coords:[129.701,62.0355]},{name:"KHABAROVSK",coords:[135.071,48.4802]},{name:"BLAGOVESHCHENSK",coords:[127.540,50.2907]},{name:"CHITA",coords:[113.5,52.034]},{name:"ULAN-UDE",coords:[107.608,51.8345]},{name:"PETROZAVODSK",coords:[34.363,61.788]},{name:"SYKTYVKAR",coords:[50.827,61.6685]},{name:"VOLOGDA",coords:[39.8938,59.2237]},{name:"NOVGOROD",coords:[31.2755,58.5214]},{name:"PSKOV",coords:[28.3318,57.8136]},{name:"KALININGRAD",coords:[20.4522,54.71]},{name:"SEVASTOPOL",coords:[33.5254,44.6167]},{name:"ODESSA",coords:[30.7233,46.4825]},{name:"NIKOLAYEV",coords:[32.002,46.975]},{name:"KHERSON",coords:[32.616,46.6354]},{name:"DNEPROPETROVSK",coords:[35.0462,48.4647]},{name:"DONETSK",coords:[37.8028,48.0159]},{name:"LUGANSK",coords:[39.3086,48.574]},{name:"ZAPOROZHYE",coords:[35.1396,47.8388]},{name:"POLTAVA",coords:[34.5514,49.5883]},{name:"CHERNIGOV",coords:[31.292,51.4982]},{name:"SUMY",coords:[34.8002,50.9077]},{name:"ZHYTOMYR",coords:[28.6587,50.2547]},{name:"VINNITSA",coords:[28.4687,49.2328]},{name:"FRUNZE",coords:[74.6037,42.8746]},{name:"ALMA-ATA",coords:[76.9286,43.222]},{name:"ASHKHABAD",coords:[58.38,37.95]},{name:"DUSHANBE",coords:[68.78,38.5598]},{name:"EREVAN",coords:[44.5021,40.1792]},
-
-];
-
-const SECTORS=[
-
-  {name:"BREST SECTOR",city:"MINSK"},{name:"KIEV AXIS",city:"KIEV"},{name:"KHARKOV SALIENT",city:"KHARKOV"},{name:"DONBAS",city:"KHARKOV"},{name:"ROSTOV GATE",city:"ROSTOV"},{name:"CAUCASUS PASS",city:"TIFLIS"},{name:"CASPAN FLANK",city:"BAKU"},{name:"TURKMEN FRONT",city:"SAMARKAND"},{name:"TASHKENT CORRIDOR",city:"TASHKENT"},{name:"BALKHASH LINE",city:"OMSK"},{name:"SAYAN RIDGE",city:"NOVOSIBIRSK"},{name:"BAIKAL SHORE",city:"NOVOSIBIRSK"},{name:"FAR EAST BEND",city:"VLADIVOSTOK"}
-
-];
-
-const DIV_TEMPLATES=[
-
-  {id:"inf", name:"Strelkovaya (9 INF)", icon:"????", man:9000, art:36, tanks:0, soft:142, hard:12, org:60, cost:0.8},
-
-  {id:"tank", name:"Tankovaya (T-26/BT)", icon:"???????", man:4200, art:12, tanks:120, soft:48, hard:85, org:45, cost:2.4},
-
-  {id:"mot", name:"Motostrelki", icon:"????", man:6500, art:24, tanks:20, soft:110, hard:28, org:55, cost:1.4},
-
-  {id:"cav", name:"Kavaleriya", icon:"????", man:5500, art:12, tanks:0, soft:78, hard:8, org:65, cost:0.6},
-
-];
-
-const HOI4_REV_BASE=[{t:"inf",n:34},{t:"tank",n:8},{t:"mot",n:6},{t:"cav",n:4}];
-
-const HOI4_ERW_BASE=[{t:"inf",n:18},{t:"tank",n:4},{t:"mot",n:3},{t:"cav",n:3}];
-
-const AIR_REV_BASE={fighters:420, cas:110, bombers:78, trans:16};
-
-const AIR_ERW_BASE={fighters:210, cas:58, bombers:36, trans:10};
-
-const WAR_START=new Date("2026-09-08T00:00:00Z"), WAR_END=new Date("2026-10-01T00:00:00Z"), DAYS=Math.round((WAR_END-WAR_START)/86400000);
-
-let proj,path,mergedD,feats, statesFeats=[], provCentroids=[], provAreas=[], cityProvIdx=[];
-
-let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=false, gBase=null;
-
-let casual=0, gdpTotal=1820, gdpRev=1238, gdpErw=582, lastLogDay=-1;
-
-const SOUNDS=[
-
-  {id:"aud1", vol:0.18}, // blast-small light
-
-  {id:"aud2", vol:0.18}, // blast-medium
-
-  {id:"aud3", vol:0.16}, // blast-large heavy ??? quietest
-
-  {id:"aud4", vol:0.17}, // impact-soil
-
-  {id:"aud5", vol:0.19}, // fire-whoosh
-
-  {id:"aud6", vol:0.17}, // impact-rock
-
-  {id:"aud7", vol:0.15}, // launch-thruster distant
-
-  {id:"aud8", vol:0.16}, // distant-war pixabay
-
-  {id:"aud9", vol:0.15}, // blast-low distant rumble
-
-];
-
-function playRealSound(variant){
-
-  if(!soundOn) return;
-
-  const pick = variant!=null ? SOUNDS[variant % SOUNDS.length] : SOUNDS[Math.floor(seeded01(Date.now()%100000)*SOUNDS.length)];
-
-  const a=document.getElementById(pick.id);
-
-  if(!a) return;
-
-  try{
-
-    a.pause(); a.currentTime=0; a.volume=pick.vol;
-
-    a.play().catch(()=>{});
-
-  }catch(e){}
-
-}
-
-function playBattleSounds(outcome, attacker){
-
-  // layered, not loud ??? pick 1-2 wavs per battle, staggered low vol
-
-  if(outcome.includes("ADVANCE")){
-
-    playRealSound(2); setTimeout(()=> playRealSound(5), 180); setTimeout(()=> playRealSound(8), 420);
-
-  } else if(attacker==="REV"){
-
-    playRealSound(0); setTimeout(()=> playRealSound(4), 220);
-
-  } else {
-
-    playRealSound(1); setTimeout(()=> playRealSound(3), 260);
-
-  }
-
-  if(outcome==="STALEMATE") setTimeout(()=> playRealSound(6), 500);
-
-}
-
-const svg=d3.select("#map"), W=1000, H=560;
-
-function frontForFloat(f){
-
-  const t=Math.max(0,Math.min(1,f/DAYS));
-
-  const day=Math.floor(f);
-
-  return FRONT_START.map((c,i)=>{
-
-    const e=FRONT_END[i];
-
-    const baseLon=c[0]+(e[0]-c[0])*t, baseLat=c[1]+(e[1]-c[1])*t;
-
-    // seeded jitter ??? same for everyone
-
-    const wob = FRONT_JITTER[i]*Math.sin(f*0.35) + FRONT_JITTER2[i]*Math.cos(f*0.22);
-
-    const r1=seeded01(day*1000 + i*917), r2=seeded01(day*2000 + i*677);
-
-    const push = (r1<0.08 ? (r2-0.5)*0.30 : 0);
-
-    return [baseLon, baseLat+wob+push];
-
-  });
-
-}
-
-function factionAt(lon,lat,front){
-
-  let best=front[0], idx=0;
-
-  for(let i=0;i<front.length;i++) if(Math.abs(front[i][0]-lon)<Math.abs(best[0]-lon)){best=front[i]; idx=i;}
-
-  let latAt=best[1];
-
-  if(idx>0&&idx<front.length-1){const a=front[idx-1], b=front[idx+1]; if(b[0]!==a[0]){const f=(lon-a[0])/(b[0]-a[0]); latAt=a[1]+f*(b[1]-a[1]);}}
-
-  else if(idx===0){const b=front[1]; if(b[0]!==best[0]){const f=(lon-best[0])/(b[0]-best[0]); latAt=best[1]+f*(b[1]-best[1]);}}
-
-  return lat<latAt?"ERW":"REV";
-
-}
-
-function projectionFor(features){
-
-  // FIX zoomed out: fitExtent then zoom 1.35x so USSR fills, not tiny
-
-  const p=d3.geoMercator().center([0,0]).translate([500,295]).scale(620).rotate([-11,0,0]);
-
-  try{ const fc={type:"FeatureCollection",features}; p.fitExtent([[18,18],[982,542]], fc); p.scale(p.scale()*1.65); }catch(e){}
-
-  return p;
-
-}
-
-function fmtDate(d){return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}).toUpperCase();}
-
-function realProgress(){const now=Date.now(), s=WAR_START.getTime(), e=WAR_END.getTime(); return Math.max(0,Math.min(1,(now-s)/(e-s)));}
-
-function realFloat(){return realProgress()*DAYS;}
-
-function getHOI4(f){
-
-  const day=Math.floor(f);
-
-  // attrition seeded
-
-  let revDivs=[], erwDivs=[];
-
-  let revMan=0, erwMan=0, revTanks=0, erwTanks=0, revArt=0, erwArt=0;
-
-  HOI4_REV_BASE.forEach(b=>{
-
-    const tmpl=DIV_TEMPLATES.find(x=>x.id===b.t); const losses= seeded01(day*700 + b.t.charCodeAt(0))*0.08;
-
-    const str= Math.max(0.55, 1 - losses - f*0.006);
-
-    const n=b.n;
-
-    revDivs.push({tmpl, n, str, deployed: Math.round(n*str)});
-
-    revMan+= Math.round(tmpl.man*n*str); revTanks+= Math.round(tmpl.tanks*n*str); revArt+= Math.round(tmpl.art*n*str);
-
-  });
-
-  HOI4_ERW_BASE.forEach(b=>{
-
-    const tmpl=DIV_TEMPLATES.find(x=>x.id===b.t); const losses= seeded01(day*900 + b.t.charCodeAt(0)+5)*0.09;
-
-    const str= Math.max(0.5, 1 - losses - f*0.008);
-
-    const n=b.n;
-
-    erwDivs.push({tmpl, n, str, deployed: Math.round(n*str)});
-
-    erwMan+= Math.round(tmpl.man*n*str); erwTanks+= Math.round(tmpl.tanks*n*str); erwArt+= Math.round(tmpl.art*n*str);
-
-  });
-
-  const revTotalN=HOI4_REV_BASE.reduce((s,b)=>s+b.n,0), erwTotalN=HOI4_ERW_BASE.reduce((s,b)=>s+b.n,0);
-
-  // air ??? fighters attrition + production
-
-  const revAir={fighters: Math.round(AIR_REV_BASE.fighters* Math.max(0.6, 1 - seeded01(day*111)*0.12 - f*0.005)), cas: Math.round(AIR_REV_BASE.cas* Math.max(0.65, 1 - seeded01(day*222)*0.10 - f*0.004)), bombers: Math.round(AIR_REV_BASE.bombers* Math.max(0.6, 1 - seeded01(day*333)*0.11 - f*0.003))};
-
-  const erwAir={fighters: Math.round(AIR_ERW_BASE.fighters* Math.max(0.55, 1 - seeded01(day*444+1)*0.13 - f*0.006)), cas: Math.round(AIR_ERW_BASE.cas* Math.max(0.6, 1 - seeded01(day*555+1)*0.11 - f*0.005)), bombers: Math.round(AIR_ERW_BASE.bombers* Math.max(0.55, 1 - seeded01(day*666+1)*0.12 - f*0.004))};
-
-  const airSup = Math.round( 50 + (revAir.fighters - erwAir.fighters)/(revAir.fighters+erwAir.fighters)*50 + (seeded01(day*777)-0.5)*6 );
-
-  // bombings per day ??? CAS + bombers do damage to industry/manpower
-
-  const bombings = Math.round( (revAir.cas*0.18 + revAir.bombers*0.35 + erwAir.cas*0.18 + erwAir.bombers*0.35) + seeded01(day*888)*12 );
-
-  return {revDivs, erwDivs, revTotalN, erwTotalN, revMan, erwMan, revTanks, erwTanks, revArt, erwArt, revAir, erwAir, airSup: Math.max(12,Math.min(88,airSup)), bombings};
-
-}
-
-function renderHOI4(f){
-
-  const h=getHOI4(f);
-
-  const divEl=document.getElementById("hoi4Divs"), airEl=document.getElementById("hoi4Air"), meta=document.getElementById("hoi4Meta");
-
-  if(!divEl||!airEl) return;
-
-  const divRow=(label, data, totalN, man, tanks, art, color)=>{
-
-    const rows=data.map(d=> `${d.tmpl.icon} ${d.tmpl.name} ??${d.n} -> <b>${d.deployed} deployed</b> ${(d.str*100).toFixed(0)}% str`).join("<br>");
-
-    const avgStr=(data.reduce((s,d)=>s+d.str*d.n,0)/totalN*100).toFixed(0);
-
-    return `<div style="border:2px solid #111;padding:8px;background:${color==="REV"?"#fff5f5":"#f0f6ff"};box-shadow:2px 2px 0 #111"><div style="font:800 10px 'IBM Plex Mono';color:${color==="REV"?"var(--red)":"var(--blue)"}">${label} ??? ${totalN} DIVS - ${man.toLocaleString()} men - ${tanks} tanks - ${art} art - ORG ${avgStr}%</div><div style="font:600 9px 'IBM Plex Mono';margin-top:4px;line-height:1.5">${rows}</div></div>`;
-
-  };
-
-  divEl.innerHTML= divRow("REVOLUTIONARIES", h.revDivs, h.revTotalN, h.revMan, h.revTanks, h.revArt, "REV") + divRow("ERWIN SUPPORTERS", h.erwDivs, h.erwTotalN, h.erwMan, h.erwTanks, h.erwArt, "ERW");
-
-  const airRow=(label, air, supLabel)=>{
-
-    return `<div style="border:2px solid #111;padding:8px;background:#fff;box-shadow:2px 2px 0 #111"><div style="font:800 10px 'IBM Plex Mono'">${label}</div><div style="font:600 10px 'IBM Plex Mono';margin-top:4px">??? Fighters ${air.fighters} - CAS ${air.cas} - Bombers ${air.bombers}<br><span style="color:#5a5242">${supLabel}</span></div></div>`;
-
-  };
-
-  airEl.innerHTML= airRow("REV AIRFORCE", h.revAir, `Air sup ${h.airSup}% (REV)`) + airRow("ERW AIRFORCE", h.erwAir, `Air sup ${100-h.airSup}% (ERW) - Bombings today: ${h.bombings} sorties`);
-
-  if(meta) meta.textContent=`HOI4: ${h.revTotalN+h.erwTotalN} total divs - Deployed ${ (h.revMan+h.erwMan).toLocaleString()} men, ${h.revTanks+h.erwTanks} tanks, ${h.revArt+h.erwArt} art. Air ${h.revAir.fighters+h.erwAir.fighters} fighters, ${h.revAir.cas+h.erwAir.cas} CAS. Bombings ${h.bombings}/day degrade enemy industry/GDP. Same for everyone (seeded).`;
-
-}
-
-function renderOngoingBattles(f){
-
-  const el=document.getElementById("ongoingBattles"); if(!el) return;
-
-  const battles=battlesForDay(Math.floor(f));
-
-  const hoi=getHOI4(f);
-
-  // build ongoing list with combat calc
-
-  el.innerHTML="";
-
-  if(battles.length===0){
-
-    el.innerHTML=`<div style="padding:8px;border:2px dashed #111;background:#fff;font:600 10px 'IBM Plex Mono';text-align:center">No active battles ??? front consolidating</div>`;
-
-    return;
-
-  }
-
-  battles.forEach((b, idx)=>{
-
-    const day=Math.floor(f), seed=day*10000+idx*791;
-
-    const isRevAtk=b.attacker==="REV";
-
-    const atkAir=isRevAtk? hoi.revAir.cas : hoi.erwAir.cas;
-
-    const defAir=isRevAtk? hoi.erwAir.cas : hoi.revAir.cas;
-
-    // pull division avg stats
-
-    const atkDivs=isRevAtk? hoi.revDivs : hoi.erwDivs;
-
-    const defDivs=isRevAtk? hoi.erwDivs : hoi.revDivs;
-
-    const atkSoft= atkDivs.reduce((s,d)=>s+d.tmpl.soft*d.deployed,0)/Math.max(1, atkDivs.reduce((s,d)=>s+d.deployed,0));
-
-    const defSoft= defDivs.reduce((s,d)=>s+d.tmpl.soft*d.deployed,0)/Math.max(1, defDivs.reduce((s,d)=>s+d.deployed,0));
-
-    const airBonus=(atkAir-defAir)*0.18;
-
-    const atkRoll=seeded01(seed+1)*12, defRoll=seeded01(seed+2)*12;
-
-    const atkScore= atkSoft*0.62 + airBonus + atkRoll + (hoi.airSup>55? 6:0);
-
-    const defScore= defSoft*0.58 + defRoll + (hoi.airSup<45? 6:0);
-
-    const total=atkScore+defScore;
-
-    const atkPct=Math.round(atkScore/total*100), defPct=100-atkPct;
-
-    const winning= atkPct>defPct ? b.attacker : (b.attacker==="REV"?"ERW":"REV");
-
-    const winningName= winning==="REV"?"Revolutionaries":"Erwin";
-
-    const col=winning==="REV"?"#8a0f14":"#1e3d64";
-
-    const progress=Math.min(99, Math.round(((f - Math.floor(f))*100 + seeded01(seed+3)*18) % 92 + 8));
-
-    const div=document.createElement("div");
-
-    div.style.cssText="border:2px solid #111;padding:7px;background:#fff;box-shadow:2px 2px 0 #111;cursor:pointer";
-
-    div.innerHTML=`
-
-      <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
-
-        <div style="font:800 10px 'IBM Plex Mono'">${b.sector} <span style="font:600 9px;color:#5a5242">-> ${b.city}</span> <span style="background:${b.attacker==="REV"?"var(--red)":"var(--blue)"};color:#fff;padding:1px 4px;border:1px solid #111">${b.attacker==="REV"?"REV ATK":"ERW ATK"}</span></div>
-
-        <span style="font:700 9px 'IBM Plex Mono';color:${col}">${winningName} WINNING ${Math.max(atkPct,defPct)}%</span>
-
-      </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
-
-        <div>
-
-          <div style="font:700 8px 'IBM Plex Mono'">${b.attacker==="REV"?"REV":"ERW"} ATTACK ${atkScore.toFixed(0)} - CAS ${atkAir} - roll ${atkRoll.toFixed(0)}</div>
-
-          <div style="height:10px;background:#fff;border:1px solid #111;margin-top:2px"><div style="height:100%;width:${atkPct}%;background:${b.attacker==="REV"?"var(--red)":"var(--blue)"}"></div></div>
-
-        </div>
-
-        <div>
-
-          <div style="font:700 8px 'IBM Plex Mono'">${b.attacker==="REV"?"ERW":"REV"} DEFEND ${defScore.toFixed(0)} - CAS ${defAir} - roll ${defRoll.toFixed(0)}</div>
-
-          <div style="height:10px;background:#fff;border:1px solid #111;margin-top:2px"><div style="height:100%;width:${defPct}%;background:${b.attacker==="REV"?"var(--blue)":"var(--red)"}"></div></div>
-
-        </div>
-
-      </div>
-
-      <div style="height:8px;background:#222;border:1px solid #111;margin-top:6px;position:relative"><div style="height:100%;width:${progress}%;background:repeating-linear-gradient(90deg,var(--gold) 0 6px,#d8b24a 6px 12px);transition:width .4s"></div><span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:700 7px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 4px">COMBAT ${progress}% - ${b.outcome}</span></div>
-
-      <div style="font:600 8px 'IBM Plex Mono';color:#5a5242;margin-top:4px">${Math.round(atkScore)} vs ${Math.round(defScore)} - ${b.cas} cas. - click to zoom -> ${b.city}</div>
-
-    `;
-
-    div.onclick=()=>{ zoomToCity(b.city); playBattleSounds(b.outcome, b.attacker); };
-
-    el.appendChild(div);
-
-  });
-
-}
-
-let cityState=[];
-
-async function init(){
-
-  let raw=null;
-
-  const urls=[GEO_URL, "https://raw.githubusercontent.com/HyawiiGithub/USSRCIVILWAR/main/ussr.geojson", "./ussr.geojson"];
-
-  for(const u of urls){
-
-    try{ raw=await d3.json(u); if(raw && raw.features && raw.features.length) break; }catch(e){ console.warn("geo fetch failed",u,e.message); }
-
-  }
-
-  if(!raw || !raw.features) throw new Error("ussr.geojson failed all urls");
-
-  let origFeats=raw.features;
-
-  // FIX 190?? antimeridian -> clamp to 179.9 (Chukotka) so bbox not huge (-170->179 = 350?? bug)
-
-  try{
-
-    origFeats.forEach(fe=>{
-
-      const g=fe.geometry; if(!g||!g.coordinates) return;
-
-      if(g.type==="Polygon") g.coordinates.forEach(r=> r.forEach(c=>{ if(c[0]>180) c[0]=179.9; }));
-
-      else if(g.type==="MultiPolygon") g.coordinates.forEach(poly=> poly.forEach(r=> r.forEach(c=>{ if(c[0]>180) c[0]=179.9; })));
-
-    });
-
-  }catch(e){}
-
-  // CLEAN: 84 real oblasts as provinces ??? HOI4 states = same, but draw both for visibility
-
-  let union=null;
-
-  try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
-
-  feats=origFeats;
-
-  window._statesFeats=origFeats;
-
-  proj=projectionFor(feats); path=d3.geoPath(proj);
-
-  mergedD=""; feats.forEach(f=>{ try{ const d=path(f); if(d) mergedD+=d+" "; }catch(e){} });
-
-  // cache centroids/areas ??? OPTIMIZED: no recompute per frame
-
-  try{
-
-    provCentroids=feats.map(fe=>{ try{ return d3.geoCentroid(fe); }catch(e){ try{ return turf.centroid(fe).geometry.coordinates; }catch(e2){ return [0,0]; } } });
-
-    provAreas=feats.map(fe=>{ try{ return turf.area(fe); }catch(e){ return 1; } });
-
-    // cache city -> province index (fixes bugged city ownership + speeds up)
-
-    cityProvIdx=CITIES0.map(c=>{
-
-      const pt=turf.point(c.coords);
-
-      for(let i=0;i<feats.length;i++){ try{ if(turf.booleanPointInPolygon(pt, feats[i])) return i; }catch(e){} }
-
-      return -1;
-
-    });
-
-  }catch(e){ provCentroids=[]; provAreas=[]; cityProvIdx=[]; }
-
-  document.getElementById("topInfo").textContent=feats.length+" OBLASTS/STATES - "+CITIES0.length+" CITIES - HOI4 - FIXED";
-
-  const ds=document.getElementById("daySlider"); if(ds){ ds.max=DAYS; ds.step=0.1; }
-
-  // restore pravda log from localStorage (persists after refresh lmao)
-
-  try{
-
-    const saved=localStorage.getItem("pravdaLog");
-
-    if(saved){
-
-      const el=document.getElementById("warLog"); el.innerHTML=saved;
-
-      el.scrollTop=el.scrollHeight;
-
-    }
-
-    const sd=localStorage.getItem("pravdaLogDay");
-
-    if(sd!=null && !isNaN(parseFloat(sd))) lastDayLogged=Math.floor(parseFloat(sd));
-
-  }catch(e){}
-
-  // if empty, seed initial
-
-  if(!document.getElementById("warLog").innerHTML.trim()){
-
-    log(`<b>${fmtDate(WAR_START)} ??? WAR BEGINS (SEEDED ??? SAME FOR ALL)</b> <span class="rev">Revolutionaries</span> ~68% / <span class="erw">Erwin</span> ~32%. Front by province (${feats.length} states) ??? jagged, not smooth curve. Real war wavs low vol.`,true);
-
-  }
-
-  curFloat=realFloat(); curDay=Math.floor(curFloat);
-
-  // if we restored log, ensure we don't re-log already logged days
-
-  if(lastDayLogged < Math.floor(curFloat)) {
-
-  } else {
-
-    lastDayLogged=Math.floor(curFloat);
-
-  }
-
-  render(curFloat);
-
-  // seed battle log for current day so not empty (no sound/zoom on init)
-
-  try{
-
-    const cb=battlesForDay(Math.floor(curFloat));
-
-    cb.forEach(b=>{
-
-      const col=b.attacker==="REV"?"rev":"erw";
-
-      const dateStr=fmtDate(new Date(WAR_START.getTime()+Math.floor(curFloat)*86400000));
-
-      const exists=document.getElementById("warLog").innerHTML.includes(b.sector);
-
-      if(!exists) log(`<b>${dateStr}</b> ??? <span class="${col}">${b.sector}</span> (${b.city}) - ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
-
-    });
-
-    if(curFloat<0.5) lastDayLogged=Math.floor(curFloat);
-
-  }catch(e){}
-
-  bindControls(); startRealtimeTick();
-
-  try{ localStorage.setItem("pravdaLogDay", String(curFloat)); }catch(e){}
-
-}
-
-function render(f){
-
-  curFloat=f; curDay=Math.floor(f);
-
-  const front=frontForFloat(f);
-
-  const curDate=new Date(WAR_START.getTime()+f*86400000);
-
-  // province control ??? use cached centroids/areas (optimized)
-
-  let provRev=0, provErw=0, areaRev=0, areaErw=0;
-
-  let provFacs=[];
-
-  try{
-
-    for(let i=0;i<feats.length;i++){
-
-      const cent=provCentroids[i]|| d3.geoCentroid(feats[i]);
-
-      const fac=factionAt(cent[0], cent[1], front);
-
-      provFacs[i]=fac;
-
-      const a=provAreas[i]||1;
-
-      if(fac==="REV"){provRev++; areaRev+=a;} else {provErw++; areaErw+=a;}
-
-    }
-
-  }catch(e){ provRev=Math.round(feats.length*0.68); provErw=feats.length-provRev; provFacs=feats.map(()=> "REV"); }
-
-  // city ownership ??? FIXED via cached province index (fast + matches map)
-
-  cityState=CITIES0.map((c, idx)=>{
-
-    let fac="REV";
-
-    const pIdx=cityProvIdx[idx];
-
-    if(pIdx>=0 && provFacs[pIdx]!=null) fac=provFacs[pIdx];
-
-    else {
-
-      try{ fac=factionAt(c.coords[0], c.coords[1], front); }catch(e){ fac="REV"; }
-
-    }
-
-    return {...c, faction:fac};
-
-  });
-
-  const revCities=cityState.filter(c=>c.faction==="REV").length, erwCities=cityState.length-revCities;
-
-  // revPct from actual province AREA (not fake wob) ??? front truly moves provinces
-
-  const areaPct = areaRev+areaErw>0 ? Math.round(areaRev/(areaRev+areaErw)*100) : 68;
-
-  // blend areaPct with base progression so trend stays 68->78 but provinces decide exact
-
-  const baseRev=areaPct;
-
-  const revPct=Math.max(60,Math.min(84, baseRev)), erwPct=100-revPct;
-
-  // store for draw (optimized)
-
-  window._provStats={provRev, provErw, areaRev, areaErw};
-
-  window._provFacs=provFacs;
-
-  casual=0; for(let i=0;i<=Math.floor(f);i++){ const r1=seeded01(i*1543), r2=seeded01(i*2909+1); casual+=900+Math.floor(r1*900)+(r2<0.33?400:0); }
-
-  casual+=Math.floor((f-Math.floor(f))* (900+seeded01(Math.floor(f)*3333)*400));
-
-  const prodRev=1.04, prodErw=0.92;
-
-  const warDrag= (casual/80000)*18 + f*2.2;
-
-  gdpTotal=Math.max(1720, 1820 + f*4.2 - warDrag + (seeded01(Math.floor(f)*7777)-0.5)*8);
-
-  gdpRev=gdpTotal*(revPct/100)*prodRev; gdpErw=gdpTotal*(erwPct/100)*prodErw;
-
-  const sum=gdpRev+gdpErw, adj=gdpTotal/sum; gdpRev*=adj; gdpErw*=adj;
-
-  let frontLen=0; try{frontLen=Math.round(turf.length({type:"Feature",geometry:{type:"LineString",coordinates:front}},{units:"kilometers"}));}catch(e){frontLen=2840-Math.round(f*12);}
-
-  document.getElementById("dateLabel").textContent=`${fmtDate(curDate)} ??? DAY ${f.toFixed(1)}/${DAYS}`;
-
-  document.getElementById("dayNum").textContent=`DAY ${f.toFixed(1)}`;
-
-  document.getElementById("countdown").textContent=f>=DAYS?`ARMISTICE 1 OCT 2026`: `${(DAYS-f).toFixed(1)} DAYS TO 1 OCT - ${Math.floor((1-realProgress())*24)}h`;
-
-  document.getElementById("warStatus").textContent=f>=DAYS?"??? ARMISTICE ??? WAR ENDS 1 OCT":(realtime?`??? REAL TIME ${(realProgress()*100).toFixed(1)}%`:(playing?"??? FAST SIM":"PAUSED"));
-
-  const _casMap=document.getElementById("casualtiesMap"); if(_casMap) _casMap.textContent=`X ${casual.toLocaleString()} CAS - DAY ${f.toFixed(1)}`;
-
-  document.getElementById("revPct").textContent=revPct+"%"; document.getElementById("erwPct").textContent=erwPct+"%";
-
-  document.getElementById("sRev").textContent=revPct+"% USSR"; document.getElementById("sErw").textContent=erwPct+"% USSR";
-
-  document.getElementById("sRevSub").textContent=`${revCities} CITIES - ${revPct>70?'ADVANCING':'HOLDING'}`; document.getElementById("sErwSub").textContent=`${erwCities} CITIES - ${erwPct<30?'RETREATING':'DEFENDING'}`;
-
-  document.getElementById("sFront").textContent=frontLen.toLocaleString()+" KM"; document.getElementById("sFrontSub").textContent=`DAY ${f.toFixed(1)} - SHIFT ${(front[3][1]-FRONT_START[3][1]).toFixed(2)}??`;
-
-  document.getElementById("sFrontDelta").textContent= f>0? (seeded01(Math.floor(f)*444)>0.5?'-> LIVE':'??? PUSH'): '???';
-
-  document.getElementById("sCas").textContent=casual.toLocaleString(); document.getElementById("sCasSub").textContent=`~${Math.round(casual/(f+0.6)).toLocaleString()}/DAY`;
-
-  document.getElementById("sCasDelta").textContent=`+${Math.floor(700+seeded01(Math.floor(f)*555)*600)}/tick`;
-
-  document.getElementById("sGdp").textContent=gdpTotal.toFixed(0)+"B ???"; document.getElementById("sGdpDelta").textContent=`REV ${gdpRev.toFixed(0)}B / ERW ${gdpErw.toFixed(0)}B`;
-
-  document.getElementById("sRevGdp").textContent=`GDP ${gdpRev.toFixed(0)}B ???`; document.getElementById("sRevGdp").className="delta "+(gdpRev>1238?"up":"down");
-
-  document.getElementById("sErwGdp").textContent=`GDP ${gdpErw.toFixed(0)}B ???`; document.getElementById("sErwGdp").className="delta "+(gdpErw>582?"up":"down");
-
-  document.getElementById("sGdpDelta").textContent=gdpTotal>1820?`??? +${(gdpTotal-1820).toFixed(0)}B vs 8 Sept`:`??? ${(gdpTotal-1820).toFixed(0)}B`;
-
-  document.getElementById("sEco").textContent=(revPct>72?"REV OFFENSIVE":erwPct>30?"CONTESTED":"ERW DEFENSIVE"); document.getElementById("sEcoSub").textContent=`SUPPLY ${Math.round(88 - f*0.9 + (seeded01(Math.floor(f)*888)-0.5)*6)}% - MORALE REV ${Math.round(68+f*0.6)} / ERW ${Math.round(62-f*0.4)}`;
-
-  // NEW SYSTEMS
-
-  const ind = Math.round(92 - f*1.1 + (seeded01(Math.floor(f)*121)-0.5)*8);
-
-  const fuel = Math.round(81 - f*1.4 + (seeded01(Math.floor(f)*323)-0.5)*10);
-
-  const manRev = Math.round(1450 - f*18 + (seeded01(Math.floor(f)*777)-0.5)*40);
-
-  const manErw = Math.round(980 - f*12 + (seeded01(Math.floor(f)*979)-0.5)*30);
-
-  document.getElementById("sInd").textContent=ind+"% CAPACITY"; document.getElementById("sIndSub").textContent=`REV ${Math.round(ind*0.68)}% - ERW ${Math.round(ind*0.32)}% - STEEL ${Math.round(420 - f*6)}kt`;
-
-  document.getElementById("sIndDelta").textContent= ind>88? "??? STABLE" : ind>75? "-> STRAINED" : "??? CRITICAL";
-
-  document.getElementById("sFuel").textContent=fuel+"% RESERVE"; document.getElementById("sFuelSub").textContent=`OIL ${Math.round(64 - f*1.2)}% - RAIL ${Math.round(78 - f*0.9)}%`;
-
-  document.getElementById("sFuelDelta").textContent= fuel>70? "-> ADEQUATE" : "??? SHORTAGE";
-
-  document.getElementById("sMan").textContent=(manRev+manErw).toLocaleString()+"k"; document.getElementById("sManSub").textContent=`REV ${manRev}k - ERW ${manErw}k`;
-
-  document.getElementById("sManDelta").textContent= `???${Math.floor(18+seeded01(Math.floor(f)*654)*12)}/day`;
-
-  // progress bar
-
-  const bar=document.getElementById("timeBar"); if(bar) bar.style.width=(f/DAYS*100).toFixed(1)+"%";
-
-  try{ renderHOI4(f); }catch(e){}
-
-  try{ renderOngoingBattles(f); }catch(e){}
-
-  drawMap(front,f);
-
-}
-
-function drawMap(front,f){
-
-  const frontD=path({type:"Feature",geometry:{type:"LineString",coordinates:front}});
-
-  svg.selectAll("*").remove();
-
-  const defs=svg.append("defs");
-
-  defs.append("pattern").attr("id","paperHatch").attr("width",6).attr("height",6).attr("patternUnits","userSpaceOnUse").append("path").attr("d","M0 6 L6 0").attr("stroke","rgba(0,0,0,.07)").attr("stroke-width",0.7);
-
-  defs.append("clipPath").attr("id","ussrClip").append("path").attr("d",mergedD);
-
-  svg.append("rect").attr("width",W).attr("height",H).attr("fill","#b8ad94");
-
-  gBase=svg.append("g").attr("id","gBase");
-
-  // PURE USSR: 0 provinces - smooth front only, no state limitation, balanced like before
-
-  const frontProj=front.map(c=>proj(c));
-
-  const FAR=4000;
-
-  const erwinPts=[...frontProj,[FAR,FAR],[-FAR,FAR],[-FAR,frontProj[0][1]]];
-
-  const erwinPolyD="M"+erwinPts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L ")+" Z";
-
-  // pure war front - no provinces, just smooth clip (0 provinces as requested)
-
-  const warG=gBase.append("g").attr("clip-path","url(#ussrClip)");
-
-  warG.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","#9e1a1f").attr("opacity",0.92); // REV bigger
-
-  warG.append("path").attr("d",erwinPolyD).attr("fill","#1e3d64").attr("opacity",0.96);
-
-  warG.append("path").attr("d",erwinPolyD).attr("fill","none").attr("stroke","rgba(255,255,255,.18)").attr("stroke-width",0.6).attr("stroke-dasharray","5 5");
-
-  // hatch overlay clipped to USSR for texture
-
-  const hatchG=gBase.append("g").attr("clip-path","url(#ussrClip)");
-
-  hatchG.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","url(#paperHatch)").attr("opacity",0.22).attr("pointer-events","none");
-
-  gBase.append("path").attr("d",mergedD).attr("fill","none").attr("stroke","#111").attr("stroke-width",2.6).attr("stroke-linejoin","round");
-
-  gBase.append("path").attr("d",mergedD).attr("fill","none").attr("stroke","rgba(245,230,163,.35)").attr("stroke-width",0.8);
-
-  const frontG=gBase.append("g").attr("id","frontG").style("display",showFront?"block":"none");
-
-  frontG.append("path").attr("d",frontD).attr("fill","none").attr("stroke","rgba(245,230,163,.9)").attr("stroke-width",7).attr("stroke-linecap","round").attr("opacity",0.35);
-
-  frontG.append("path").attr("d",frontD).attr("fill","none").attr("stroke","#f5e6a3").attr("stroke-width",3.2).attr("stroke-linecap","round").attr("stroke-dasharray","10 7").attr("stroke-dashoffset",f*6);
-
-  frontG.append("path").attr("d",frontD).attr("fill","none").attr("stroke","#111").attr("stroke-width",1.2).attr("stroke-dasharray","10 7").attr("stroke-dashoffset",f*6);
-
-  try{const tmp=document.createElementNS("http://www.w3.org/2000/svg","path"); tmp.setAttribute("d",frontD); const L=tmp.getTotalLength(); for(let t=0.18;t<0.88;t+=0.22){const pt=tmp.getPointAtLength(t*L), pt2=tmp.getPointAtLength(t*L+1); const ang=Math.atan2(pt2.y-pt.y,pt2.x-pt.x)*180/Math.PI; frontG.append("g").attr("transform",`translate(${pt.x},${pt.y}) rotate(${ang})`).append("path").attr("d","M -10 -6 L 0 0 L -10 6").attr("fill","none").attr("stroke","#f5e6a3").attr("stroke-width",1.4).attr("stroke-linecap","round");}}catch(e){}
-
-  const battles=battlesForFloat(f);
-
-  battles.forEach(b=>{
-
-    const city=CITIES0.find(c=>c.name===b.city); const coord=b.coord||front[3]; const [x,y]=city?proj(city.coords):proj(coord);
-
-    const g=gBase.append("g").attr("transform",`translate(${x},${y})`);
-
-    g.append("circle").attr("r",7).attr("fill","none").attr("stroke","#ff3b30").attr("stroke-width",1.4).attr("opacity",0.9).append("animate").attr("attributeName","r").attr("from","7").attr("to","20").attr("dur","0.9s").attr("repeatCount","indefinite");
-
-    g.append("circle").attr("r",3).attr("fill","#f5e6a3").attr("stroke","#111").attr("stroke-width",1);
-
-    g.append("text").attr("y",-14).attr("text-anchor","middle").attr("font-size","7px").attr("font-weight","800").attr("fill","#111").attr("paint-order","stroke").attr("stroke","#fff").attr("stroke-width","3").text(b.sector.split(" ")[0]);
-
-  });
-
-  const cityG=gBase.append("g");
-
-  const tooltip=document.getElementById("tooltip"), mapBox=document.getElementById("mapBox");
-
-  const MAJOR=new Set(["MOSCOW","LENINGRAD","KIEV","MINSK","KHARKOV","ROSTOV","TASHKENT","NOVOSIBIRSK","VLADIVOSTOK","SVERDLOVSK","TIFLIS","BAKU","RIGA","TALLINN","ODESSA","STAVROPOL","GORKY","KAZAN"]);
-
-  cityState.forEach(c=>{
-
-    const [x,y]=proj(c.coords); const isRev=c.faction==="REV"; const isMajor=MAJOR.has(c.name);
-
-    const g=cityG.append("g").attr("transform",`translate(${x},${y})`).style("cursor","pointer");
-
-    const rOuter=isMajor?6.5:4.2, rInner=isMajor?5:3.2;
-
-    g.append("circle").attr("r",rOuter).attr("fill","#111").attr("opacity",0.95);
-
-    g.append("circle").attr("r",rInner).attr("fill",isRev?"#ff4444":"#5aa0ff").attr("stroke","#fff").attr("stroke-width",1.1);
-
-    g.append("circle").attr("r",isMajor?1.7:1.1).attr("fill","#fff");
-
-    if(isMajor){
-
-      g.append("text").attr("y",isRev?-10:14).attr("text-anchor","middle").attr("class","city-label").text(c.name);
-
-    } else {
-
-      // minor towns: label only on hover via tooltip, dot only on map ??? fixes bugged clutter
-
-      g.append("title").text(c.name);
-
-    }
-
-    g.on("mouseenter",()=>{tooltip.style.opacity="1"; tooltip.innerHTML=`<span style="color:${isRev?'#ff6b6b':'#8ec0ff'}">???</span> ${c.name} ??? ${isRev?'REVOLUTIONARIES':'ERWIN'}<br><span style="opacity:.7">Day ${f.toFixed(1)} - ${fmtDate(new Date(WAR_START.getTime()+f*86400000))}</span>`;})
-
-     .on("mouseleave",()=>tooltip.style.opacity="0")
-
-     .on("mousemove",()=>{const rect=mapBox.getBoundingClientRect(), svgRect=document.getElementById("map").getBoundingClientRect(); const sx=svgRect.left+(x/W)*svgRect.width, sy=svgRect.top+(y/H)*svgRect.height; tooltip.style.left=(sx-rect.left)+"px"; tooltip.style.top=(sy-rect.top)+"px";});
-
-    g.on("click",()=>{ zoomToCity(c.name); }); // no sound on city click (requested)
-
-  });
-
-  gBase.append("text").attr("x",W/2).attr("y",28).attr("text-anchor","middle").attr("font-family","Playfair Display").attr("font-weight",900).attr("font-size",15).attr("letter-spacing",".06em").attr("fill","#111").attr("opacity",0.92).text(`USSR - ${fmtDate(new Date(WAR_START.getTime()+f*86400000))} - DAY ${f.toFixed(1)}/${DAYS} - ${f>=DAYS?"ARMISTICE":"TILL 1 OCT"}`).attr("paint-order","stroke").attr("stroke","#e8dcc6").attr("stroke-width",4).attr("stroke-linejoin","round");
-
-}
-
-function battlesForFloat(f){
-
-  const day=Math.floor(f), frac=f-day;
-
-  const out=battlesForDay(day);
-
-  if(frac>0.6 && day+1<=DAYS) out.push(...battlesForDay(day+1).slice(0,1));
-
-  return out;
-
-}
-
-// SEEDED RANDOM ??? same for everyone (deterministic per day), still feels random but synced
-
-function battlesForDay(d){
-
-  if(d<0) return [];
-
-  if(d===0){
-
-    // day 0: initial skirmish so log not empty
-
-    const sec=SECTORS[Math.floor(seeded01(0*133)*SECTORS.length)];
-
-    return [{sector:sec.name, city:sec.city, attacker:"REV", outcome:"SKIRMISH", cas:84, coord:FRONT_START[3]}];
-
-  }
-
-  const r0=seeded01(d*7919);
-
-  const n = 2 + (r0<0.28?1:0);
-
-  const out=[];
-
-  for(let i=0;i<n;i++){
-
-    const sec=SECTORS[Math.floor(seeded01(d*1000 + i*133)*SECTORS.length)];
-
-    const attacker=seeded01(d*2000 + i*517)>0.5?"REV":"ERW";
-
-    const roll=seeded01(d*3000 + i*977);
-
-    const outcome= roll>0.62 ? (attacker==="REV"?"REV ADVANCE":"ERW COUNTER") : roll>0.30?"STALEMATE":"SKIRMISH";
-
-    const cas=80+Math.floor(seeded01(d*4000 + i*1237)*520);
-
-    const idx=Math.floor(seeded01(d*5000 + i*2011)*FRONT_START.length);
-
-    const coord=FRONT_START[idx];
-
-    out.push({sector:sec.name, city:sec.city, attacker, outcome, cas, coord});
-
-  }
-
-  return out;
-
-}
-
-function log(html,top=false){
-
-  const el=document.getElementById("warLog"); const p=document.createElement("div"); p.innerHTML=html; p.style.borderBottom="1px solid #222"; p.style.padding="4px 0"; if(top) el.prepend(p); else el.appendChild(p);
-
-  // keep max 90 lines, persist to localStorage so survives refresh
-
-  while(el.children.length>90) el.removeChild(el.firstChild);
-
-  el.scrollTop=el.scrollHeight;
-
-  try{ localStorage.setItem("pravdaLog", el.innerHTML); localStorage.setItem("pravdaLogDay", String(curFloat)); }catch(e){}
-
-}
-
-let lastDayLogged=-1;
-
-function stepTo(f, withLog=true){
-
-  const prevFloat=curFloat, prevDay=Math.floor(prevFloat);
-
-  render(f); const ds=document.getElementById("daySlider"); if(ds) ds.value=f.toFixed(1);
-
-  if(withLog){
-
-    const newDay=Math.floor(f);
-
-    for(let d=Math.max(lastDayLogged+1, prevDay+1); d<=newDay; d++){
-
-      const battles=battlesForDay(d), dateStr=fmtDate(new Date(WAR_START.getTime()+d*86400000));
-
-      battles.forEach(b=>{
-
-        const col=b.attacker==="REV"?"rev":"erw";
-
-        log(`<b>${dateStr}</b> ??? <span class="${col}">${b.sector}</span> (${b.city}) - ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
-
-        zoomToCity(b.city);
-
-        playBattleSounds(b.outcome, b.attacker);
-
-      });
-
-      const flips=cityState.filter(c=>{
-
-        const prevFront=frontForFloat(prevFloat), facPrev=factionAt(c.coords[0],c.coords[1],prevFront);
-
-        return facPrev!==c.faction;
-
-      });
-
-      flips.forEach(c=> log(`<b>??? ${c.name} CAPTURED</b> by <span class="${c.faction==="REV"?"rev":"erw"}">${c.faction==="REV"?"REVOLUTIONARIES":"ERWIN"}</span> ??? ${dateStr}`));
-
-      if(d===DAYS){ log(`<b style="color:#f5e6a3">1 OCT 2026 ??? ARMISTICE</b> Final: <span class="rev">${document.getElementById("revPct").textContent} Rev</span> / <span class="erw">${document.getElementById("erwPct").textContent} Erw</span> - GDP ${gdpTotal.toFixed(0)}B - Casualties ${casual.toLocaleString()}`,true); stopAll(); }
-
-    }
-
-    lastDayLogged=Math.max(lastDayLogged,newDay);
-
-  }
-
-}
-
-function zoomToCity(cityName){
-
-  const city=CITIES0.find(c=>c.name===cityName); if(!city||!gBase) return;
-
-  const [x,y]=proj(city.coords);
-
-  const k=2.8;
-
-  const tx=W/2 - x*k, ty=H/2 - y*k;
-
-  try{ gBase.interrupt(); }catch(e){}
-
-  gBase.transition().duration(900).ease(d3.easeCubicOut).attr("transform",`translate(${tx},${ty}) scale(${k})`);
-
-  const badge=document.getElementById("zoomBadge"); badge.textContent=`??? ZOOM: ${cityName} BATTLE`; badge.classList.add("on");
-
-  setTimeout(()=>{
-
-    gBase.transition().duration(1100).ease(d3.easeCubicInOut).attr("transform","translate(0,0) scale(1)");
-
-    setTimeout(()=> badge.classList.remove("on"), 400);
-
-  }, 3800);
-
-}
-
-function startRealtimeTick(){
-
-  if(timer) clearInterval(timer);
-
-  timer=setInterval(()=>{
-
-    if(!realtime || playing) return;
-
-    const rf=realFloat();
-
-    if(Math.abs(rf - curFloat) > 0.005){
-
-      stepTo(rf, true);
-
-    }
-
-    document.getElementById("countdown").textContent= rf>=DAYS?`ARMISTICE 1 OCT 2026`: `${(DAYS-rf).toFixed(1)} DAYS TO 1 OCT - ${Math.floor((1-realProgress())*24)}h`;
-
-  }, 2000);
-
-}
-
-function playFast(){
-
-  if(curFloat>=DAYS) return;
-
-  playing=true; realtime=false;
-
-  document.getElementById("warStatus").textContent="??? FAST SIM";
-
-  if(fastTimer) clearInterval(fastTimer);
-
-  fastTimer=setInterval(()=>{ if(curFloat>=DAYS){pauseFast();return;} stepTo(Math.min(DAYS, curFloat+0.25), true); }, 520);
-
-}
-
-function pauseFast(){ playing=false; if(fastTimer) clearInterval(fastTimer); fastTimer=null; document.getElementById("warStatus").textContent= curFloat>=DAYS?"??? ARMISTICE":"PAUSED"; }
-
-function stopAll(){ playing=false; realtime=false; if(timer) clearInterval(timer); if(fastTimer) clearInterval(fastTimer); }
-
-function bindControls(){
-
-  document.getElementById("btnRealtime").onclick=()=>{
-
-    realtime=true; playing=false; if(fastTimer) clearInterval(fastTimer);
-
-    document.getElementById("btnRealtime").classList.add("active");
-
-    stepTo(realFloat(), false); startRealtimeTick();
-
-  };
-
-  document.getElementById("btnPause").onclick=()=>{ realtime=false; pauseFast(); };
-
-  // NO SKIP ??? slider/fast/step/reset removed (Chernobyl protocol)
-
-  document.getElementById("btnSound").onclick=(e)=>{
-
-    soundOn=!soundOn; e.target.textContent=soundOn?"???? SOUND ON":"???? SOUND OFF"; e.target.style.background=soundOn?"#111":"#fff"; e.target.style.color=soundOn?"var(--gold)":"#111";
-
-    if(soundOn) playBattleSounds("REV ADVANCE","REV");
-
-  };
-
-  document.getElementById("btnTestSound").onclick=()=>{ soundOn=true; document.getElementById("btnSound").textContent="???? SOUND ON"; document.getElementById("btnSound").style.background="#111"; document.getElementById("btnSound").style.color="var(--gold)"; playRealSound(0); setTimeout(()=>playRealSound(1),280); setTimeout(()=>playRealSound(2),560); setTimeout(()=>playRealSound(3),850); setTimeout(()=>playRealSound(8),1050); };
-
-  document.getElementById("btnSave").onclick=()=>{
-
-    const src=new XMLSerializer().serializeToString(document.getElementById("map"));
-
-    const blob=new Blob([`<?xml version="1.0" encoding="UTF-8"?>\n`+src],{type:"image/svg+xml"});
-
-    const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`ussr-civilwar-day${curFloat.toFixed(1)}-1oct.svg`; a.click(); URL.revokeObjectURL(url);
-
-  };
-
-  document.getElementById("btnFront").onclick=()=>{ showFront=!showFront; const g=document.getElementById("frontG"); if(g) g.style.display=showFront?"block":"none"; };
-
-  // block any manual seek via devtools ??? no slider to hijack
-
-}
-
-init().catch(e=>{console.error(e); document.getElementById("topInfo").textContent="ERR "+e.message;});
-
-</script>
-
-</body>
-
-</html>
-
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+
+
+
+<head>
+
+
+
+<meta charset="UTF-8">
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<title>USSR CIVIL WAR ??? REVOLUTIONARIES vs ERWIN - REAL TIME till 1 OCT 2026</title>
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700;800&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
+
+
+
+<style>
+
+
+
+:root{--red:#8a0f14;--blue:#1a3a5c;--paper:#e8dcc6;--ink:#111;--gold:#f5e6a3}
+
+
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+
+
+body{background:var(--paper);color:var(--ink);font-family:'IBM Plex Mono',monospace;border-left:6px solid var(--red);border-right:6px solid var(--red);min-height:100vh;overflow-x:hidden}
+
+
+
+.top-rule{height:32px;background:var(--red);color:var(--gold);display:flex;align-items:center;gap:12px;padding:0 12px;font:700 10px 'IBM Plex Mono';letter-spacing:.14em;text-transform:uppercase;border-bottom:3px solid #111;white-space:nowrap;overflow:hidden}
+
+
+
+.top-rule b{background:#111;color:#fff;padding:2px 6px}
+
+
+
+.hdr{background:var(--paper);border-bottom:4px solid #111;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px}
+
+
+
+.brand{display:flex;align-items:center;gap:10px}
+
+
+
+.stamp{width:54px;height:54px;background:var(--red);border:3px solid #111;display:grid;place-items:center;color:var(--paper);font:900 18px 'Playfair Display';transform:rotate(-1deg);box-shadow:3px 3px 0 #111}
+
+
+
+.stamp small{font:700 7px 'IBM Plex Mono';display:block;letter-spacing:.1em;color:var(--gold)}
+
+
+
+.brand h1{font:900 28px 'Playfair Display';text-transform:uppercase;line-height:.9}
+
+
+
+.brand h1 i{font-style:normal;background:var(--red);color:#fff;padding:0 6px}
+
+
+
+.brand p{font:600 10px 'IBM Plex Mono';color:#5a5242;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+
+
+
+.badge{display:inline-block;padding:2px 6px;border:2px solid #111;font:700 9px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase}
+
+
+
+.b-rev{background:var(--red);color:#fff}.b-erw{background:var(--blue);color:#fff}.b-gold{background:var(--gold);color:#111}
+
+
+
+.legend{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+
+
+.legend .item{display:flex;align-items:center;gap:6px;border:2px solid #111;padding:6px 8px;background:#fff;box-shadow:2px 2px 0 #111;font:700 10px 'IBM Plex Mono';text-transform:uppercase}
+
+
+
+.dot{width:14px;height:14px;border:1px solid #111;display:inline-block}.dot-rev{background:var(--red)}.dot-erw{background:var(--blue)}
+
+
+
+.map-wrap{max-width:1280px;margin:0 auto;padding:10px 12px 18px}
+
+
+
+.card{background:#fff;border:3px solid #111;box-shadow:4px 4px 0 #111;overflow:hidden}
+
+
+
+.card-h{padding:8px 10px;background:var(--red);color:var(--gold);border-bottom:3px solid #111;display:flex;align-items:center;justify-content:space-between;gap:10px;font:700 11px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase}
+
+
+
+.card-h small{font:600 9px 'IBM Plex Mono';opacity:.9;text-transform:none}
+
+
+
+.map-box{position:relative;background:#d6cbb3;height:68vh;min-height:460px;overflow:hidden;border-top:2px solid #111}
+
+
+
+#map{width:100%;height:100%;display:block;background:#c9bda3;background-image:radial-gradient(circle at 30% 20%, rgba(255,255,255,.25) 0 2px, transparent 2px),radial-gradient(circle at 70% 60%, rgba(0,0,0,.06) 0 1px, transparent 1px);background-size:28px 28px,18px 18px}
+
+
+
+.tooltip{position:absolute;pointer-events:none;background:#111;color:var(--gold);border:2px solid #111;padding:6px 8px;font:700 10px 'IBM Plex Mono';letter-spacing:.04em;box-shadow:3px 3px 0 rgba(0,0,0,.3);opacity:0;transform:translate(-50%,-130%);white-space:nowrap;z-index:10}
+
+
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+
+
+
+@media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}.map-box{height:55vh;min-height:360px}}
+
+
+
+@media(max-width:600px){.stats{grid-template-columns:1fr}.brand h1{font-size:22px}}
+
+
+
+.stat{background:#fff;border:2px solid #111;padding:10px;box-shadow:3px 3px 0 #111}
+
+
+
+.stat b{display:block;font:700 8px 'IBM Plex Mono';letter-spacing:.12em;text-transform:uppercase;color:#5a5242;border-bottom:1px solid #111;padding-bottom:4px;margin-bottom:6px}
+
+
+
+.stat strong{display:block;font:800 18px 'IBM Plex Mono';line-height:1}
+
+
+
+.stat span{font:600 10px 'IBM Plex Mono';color:#5a5242}
+
+
+
+.stat .delta{font:700 10px 'IBM Plex Mono';margin-top:4px}
+
+
+
+.delta.up{color:#0a7a2e}.delta.down{color:var(--red)}
+
+
+
+.city-label{font:800 8px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.06em;paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+
+
+
+.war-panel{margin-top:10px;display:grid;grid-template-columns:1.25fr .75fr;gap:10px}
+
+
+
+@media(max-width:900px){.war-panel{grid-template-columns:1fr}}
+
+
+
+.timeline{padding:10px;background:var(--paper);border-top:3px solid #111;display:grid;gap:8px}
+
+
+
+.timeline-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+
+
+.timeline-row button{appearance:none;background:#fff;border:2px solid #111;padding:7px 10px;font:700 10px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111;text-transform:uppercase}
+
+
+
+.timeline-row button.active{background:var(--red);color:#fff}
+
+
+
+.timeline-row button.dark{background:#111;color:var(--gold)}
+
+
+
+input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
+
+
+
+.log{max-height:240px;overflow:auto;background:#111;color:#d8cab0;padding:8px;border:2px solid #111;font:600 10px 'IBM Plex Mono';line-height:1.5}
+
+
+
+.log b{color:var(--gold)}.log .rev{color:#ff7a7a}.log .erw{color:#7ab8ff}
+
+
+
+.countdown{font:800 11px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase;padding:6px 8px;background:#111;color:var(--gold);border:2px solid #111;display:inline-block}
+
+
+
+.pulse{width:8px;height:8px;background:#3fa35a;border:1px solid #fff;display:inline-block;vertical-align:middle;margin-right:4px;animation:pulse 1s infinite alternate}
+
+
+
+@keyframes pulse{from{opacity:1}to{opacity:.3}}
+
+
+
+.zoom-badge{position:absolute;top:10px;right:10px;background:#111;color:var(--gold);border:2px solid var(--gold);padding:6px 8px;font:700 9px 'IBM Plex Mono';opacity:0;transition:.3s;pointer-events:none;z-index:5}
+
+
+
+.zoom-badge.on{opacity:1}
+
+
+
+</style>
+
+
+
+</head>
+
+
+
+<body>
+
+
+
+<div class="top-rule"><b>?????????????? // REAL-TIME WAR</b> <span>??? REVOLUTIONARIES vs ERWIN ??? REAL TIME TILL 1 OCT 2026 ??? PRAVDA LIVE ???</span> <span style="margin-left:auto" id="topInfo">LOADING...</span></div>
+
+
+
+<header class="hdr">
+
+
+
+  <div class="brand">
+
+
+
+    <div class="stamp">???<small>CCCP</small></div>
+
+
+
+    <div><h1><i>USSR</i> CIVIL WAR</h1><p>Pure silhouette - No SSR borders - Seeded simulation ??? same for everyone - 8 Sept -> 1 Oct</p></div>
+
+
+
+  </div>
+
+
+
+  <div class="legend">
+
+
+
+    <div class="item"><span class="dot dot-rev"></span> REV <span class="badge b-rev" id="revPct">???</span></div>
+
+
+
+    <div class="item"><span class="dot dot-erw"></span> ERW <span class="badge b-erw" id="erwPct">???</span></div>
+
+
+
+    <div class="item" style="background:var(--gold)"><span style="width:14px;height:3px;background:#111;display:inline-block;vertical-align:middle;border-top:2px dashed var(--gold)"></span> FRONT</div>
+
+
+
+  </div>
+
+
+
+</header>
+
+
+
+
+
+
+
+<div class="map-wrap">
+
+
+
+  <div class="card">
+
+
+
+    <div class="card-h"><span>Pure USSR ??? Seeded Real-Time War (till 1 Oct) ??? SAME FOR EVERYONE</span><small>84->1 SILHOUETTE - ZOOM ON CITY BATTLES - SEEDED</small></div>
+
+
+
+    <div class="map-box" id="mapBox">
+
+
+
+      <svg id="map" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet"></svg>
+
+
+
+      <div class="tooltip" id="tooltip"></div>
+
+
+
+      <div class="zoom-badge" id="zoomBadge">? ZOOM: CITY BATTLE</div>
+
+
+
+      <div id="casualtiesMap" style="position:absolute;top:42px;right:10px;left:auto;background:#111;color:#ff7a7a;border:2px solid #fff;padding:5px 7px;font:800 9px 'IBM Plex Mono';z-index:6;box-shadow:2px 2px 0 #111;pointer-events:none">CASUALTIES -</div>
+
+
+
+    </div>
+
+
+
+    <div class="timeline">
+
+
+
+      <div class="timeline-row">
+
+
+
+        <span class="countdown"><span class="pulse"></span><span id="dateLabel">???</span> - <span id="countdown">???</span></span>
+
+
+
+        <span class="badge b-gold" id="warStatus">SYNCING REAL TIME???</span>
+
+
+
+        <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap">
+
+
+
+          <button id="btnRealtime" class="active">??? REAL TIME (NO SKIP)</button>
+
+
+
+          <button id="btnPause">??? PAUSE</button>
+
+
+
+          <button id="btnSound">???? SOUND ON</button>
+
+
+
+          <button id="btnSave">??? SAVE SVG</button>
+
+
+
+          <button id="btnFront">TOGGLE FRONT</button>
+
+
+
+        </span>
+
+
+
+      </div>
+
+
+
+      <div class="timeline-row" style="background:#111;color:var(--gold);padding:6px 8px;border:2px solid #111">
+
+
+
+        <span style="font:800 9px 'IBM Plex Mono'">REAL-TIME PROGRESS</span>
+
+
+
+        <div style="flex:1;height:14px;background:#222;border:1px solid #444;position:relative;overflow:hidden"><div id="timeBar" style="height:100%;width:0%;background:repeating-linear-gradient(90deg,var(--red) 0 10px,#a51a1a 10px 20px);transition:width .6s"></div><span id="dayNum" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 10px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 6px;border:1px solid #fff">DAY 0.0</span></div>
+
+
+
+        <span class="badge" style="background:var(--red);color:#fff">NO SKIP - CHERNOBYL PROTOCOL</span>
+
+
+
+      </div>
+
+
+
+      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">PROVINCE FRONT: 84 oblasts colored by centroid vs front line -> jagged state-border front (not smooth curve). Seeded same for everyone. Real-time locked (no skip). Zoom 2.8??. Sounds 9 wavs low vol. Ends 1 Oct.</div>
+
+
+
+    </div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+  <div class="stats">
+
+
+
+    <div class="stat"><b>REVOLUTIONARIES ??? CONTROL & GDP</b><strong style="color:var(--red)" id="sRev">???</strong><span id="sRevSub">???</span><div class="delta" id="sRevGdp">GDP ???</div></div>
+
+
+
+    <div class="stat"><b>ERWIN ??? CONTROL & GDP</b><strong style="color:var(--blue)" id="sErw">???</strong><span id="sErwSub">???</span><div class="delta" id="sErwGdp">GDP ???</div></div>
+
+
+
+    <div class="stat"><b>FRONT LINE</b><strong id="sFront">???</strong><span id="sFrontSub">???</span><div class="delta" id="sFrontDelta">???</div></div>
+
+
+
+    <div class="stat"><b>CASUALTIES (SEEDED)</b><strong id="sCas">???</strong><span id="sCasSub">???</span><div class="delta" id="sCasDelta">???</div></div>
+
+
+
+    <div class="stat"><b>TOTAL GDP</b><strong id="sGdp">???</strong><span>1936 RUBLES - BOTH FACTIONS</span><div class="delta" id="sGdpDelta">???</div></div>
+
+
+
+    <div class="stat"><b>WAR ECONOMY</b><strong id="sEco">???</strong><span id="sEcoSub">SUPPLY - MORALE</span><div class="delta" id="sEcoDelta">???</div></div>
+
+
+
+    <div class="stat"><b>INDUSTRY ??? OUTPUT</b><strong id="sInd">???</strong><span id="sIndSub">FACTORIES - STEEL</span><div class="delta" id="sIndDelta">???</div></div>
+
+
+
+    <div class="stat"><b>FUEL & LOGISTICS</b><strong id="sFuel">???</strong><span id="sFuelSub">OIL - RAIL CAPACITY</span><div class="delta" id="sFuelDelta">???</div></div>
+
+
+
+    <div class="stat"><b>MANPOWER</b><strong id="sMan">???</strong><span id="sManSub">RESERVES - RECRUITS</span><div class="delta" id="sManDelta">???</div></div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+  <div class="card" style="margin-top:10px">
+
+
+
+    <div class="card-h"><span>HOI4 ??? DIVISIONS - TANKS - AIRFORCE - DEPLOYED TROOPS</span><small>SEMI-REALISTIC - AIR BOMBINGS + LAND</small></div>
+
+
+
+    <div style="padding:10px;background:var(--paper);display:grid;gap:10px">
+
+
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="hoi4Divs"></div>
+
+
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="hoi4Air"></div>
+
+
+
+      <div style="font:600 9px 'IBM Plex Mono';color:#5a5242" id="hoi4Meta">HOI4 formula: org, strength, equipment, air superiority affect front push. Bombings reduce enemy industry.</div>
+
+
+
+    </div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+  <div class="card" style="margin-top:10px">
+
+
+
+    <div class="card-h"><span>??? ONGOING BATTLES ??? LIVE COMBAT (CLICK TO VIEW)</span><small id="ongoingMeta">SEEDED - HOI4 - SAME FOR ALL</small></div>
+
+
+
+    <div id="ongoingBattles" style="padding:8px;background:var(--paper);display:grid;gap:6px;max-height:360px;overflow:auto"></div>
+
+
+
+    <div style="padding:6px 8px;background:#111;color:var(--gold);font:600 9px 'IBM Plex Mono'">Click battle -> zoom to city + hear combat. Bars = org/strength. Winner predicted via HOI4 soft/hard + air sup.</div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+  <div class="war-panel">
+
+
+
+    <div class="card"><div class="card-h"><span>??? BATTLE LOG ??? SEEDED (SAME FOR ALL)</span><small id="logMeta">SEEDED - CITY ZOOM - PERSISTS</small></div><div class="log" id="warLog"></div></div>
+
+
+
+    <div class="card"><div class="card-h"><span>???? REAL WAR SOUNDS - CC0</span><small>SELF-HOSTED - LOW VOLUME</small></div>
+
+
+
+      <div style="padding:10px;background:var(--paper);font:600 10px 'IBM Plex Mono';line-height:1.6;display:grid;gap:6px">
+
+
+
+        <div>WIPED loud synth. Now <b>9 real CC0 war wavs</b> (afterglow-artillery + Pixabay distant). Self-hosted <code>/sounds/</code>, low vol.</div>
+
+
+
+        <div>- <code>blast-small</code> light mortar - <code>blast-medium</code> barrage - <code>blast-large</code> heavy - <code>blast-low</code> distant - <code>impact-soil/rock/hull</code> - <code>fire-whoosh</code> - <code>launch-thruster</code> - <code>distant-war.mp3</code> (Pixabay)</div>
+
+
+
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
+
+
+
+          <audio id="aud1" preload="auto" src="./sounds/blast-small.wav"></audio>
+
+
+
+          <audio id="aud2" preload="auto" src="./sounds/blast-medium.wav"></audio>
+
+
+
+          <audio id="aud3" preload="auto" src="./sounds/blast-large.wav"></audio>
+
+
+
+          <audio id="aud4" preload="auto" src="./sounds/impact-soil.wav"></audio>
+
+
+
+          <audio id="aud5" preload="auto" src="./sounds/fire-whoosh.wav"></audio>
+
+
+
+          <audio id="aud6" preload="auto" src="./sounds/impact-rock.wav"></audio>
+
+
+
+          <audio id="aud7" preload="auto" src="./sounds/launch-thruster.wav"></audio>
+
+
+
+          <audio id="aud8" preload="auto" src="./sounds/distant-war.mp3"></audio>
+
+
+
+          <audio id="aud9" preload="auto" src="./sounds/blast-low.wav"></audio>
+
+
+
+        </div>
+
+
+
+        <div style="display:flex;gap:6px">
+
+
+
+          <button id="btnTestSound" style="appearance:none;background:#fff;border:2px solid #111;padding:5px 8px;font:700 9px 'IBM Plex Mono';cursor:pointer;box-shadow:2px 2px 0 #111">??? TEST REAL SOUNDS (LOW VOL)</button>
+
+
+
+          <span style="font:600 9px 'IBM Plex Mono';color:#5a5242;align-self:center">Vol 0.18-0.22 - randomized picks - distant = quieter</span>
+
+
+
+        </div>
+
+
+
+        <div style="font:600 9px 'IBM Plex Mono';color:#5a5242">Auto-zoom: 2.8?? to battle city for 3.8s. Seeded ??? same for everyone.</div>
+
+
+
+      </div>
+
+
+
+    </div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+  <div class="card" style="margin-top:10px"><div class="card-h"><span>HOW IT WORKS ??? SEEDED (SAME FOR EVERYONE)</span><small>DETERMINISTIC</small></div>
+
+
+
+    <div style="padding:10px;background:var(--paper);font:500 11px 'IBM Plex Mono';line-height:1.6">Seeded PRNG <code>mulberry32</code> per day: <code>seeded01(day*...)</code> ??? same battles/front/GDP for every visitor on same wall-clock day (real-time 8 Sept -> 1 Oct). Front = <code>START->END</code> wall-clock lerp + seeded jitter (<code>??0.18??</code>). No per-client <code>Math.random()</code>. Forked from freelance-ussr-map merged silhouette (84->1) pure outer stroke.</div>
+
+
+
+  </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+
+
+
+<script>
+
+
+
+const GEO_URL="https://hyawiigithub.github.io/USSRCIVILWAR/ussr.geojson";
+
+
+
+// fallback absolute if relative fails (jsdom test would fail with relative)
+
+
+
+const FRONT_START=[[22.5,52.8],[26.5,51.5],[30.2,50.2],[34.0,49.1],[38.5,47.2],[42.8,44.6],[46.5,42.8],[51.2,41.5],[57.8,40.2],[65.2,41.0],[73.5,43.5],[82.0,47.0],[90.5,52.2],[103.0,55.5],[118.0,56.8],[132.5,54.5]];
+
+
+
+const FRONT_END=[[22.5,51.9],[26.5,50.6],[30.2,49.1],[34.0,47.8],[38.5,45.7],[42.8,43.1],[46.5,41.3],[51.2,40.0],[57.8,38.8],[65.2,39.7],[73.5,42.1],[82.0,45.6],[90.5,50.9],[103.0,54.2],[118.0,55.5],[132.5,53.6]];
+
+
+
+// SEEDED jitter ??? same for everyone (deterministic, not per-client random)
+
+
+
+function seeded01(seed){ let t=seed+=0x6D2B79F5; t=Math.imul(t ^ t>>>15, t|1); t^=t+Math.imul(t ^ t>>>7, t|61); return ((t ^ t>>>14)>>>0)/4294967296; }
+
+
+
+const FRONT_JITTER = FRONT_START.map((_,i)=> (seeded01(42+i*1337)-0.5)*0.18);
+
+
+
+const FRONT_JITTER2 = FRONT_START.map((_,i)=> (seeded01(99+i*2713)-0.5)*0.10);
+
+
+
+const CITIES0=[
+
+
+
+  {name:"MOSCOW",coords:[37.6173,55.7558]},{name:"LENINGRAD",coords:[30.3351,59.9343]},{name:"KIEV",coords:[30.5234,50.4501]},{name:"MINSK",coords:[27.5615,53.9045]},{name:"KHARKOV",coords:[36.2304,49.9935]},{name:"ROSTOV",coords:[39.7015,47.2225]},{name:"TASHKENT",coords:[69.2401,41.2995]},{name:"SAMARKAND",coords:[66.9597,39.6270]},{name:"NOVOSIBIRSK",coords:[82.9357,55.0084]},{name:"VLADIVOSTOK",coords:[131.8735,43.1056]},
+
+
+
+  {name:"MURMANSK",coords:[33.0827,68.9585]},{name:"ARCHANGELSK",coords:[40.5443,64.5393]},{name:"SVERDLOVSK",coords:[60.6122,56.8389]},{name:"OMSK",coords:[73.3686,54.9885]},{name:"TIFLIS",coords:[44.8271,41.7151]},{name:"BAKU",coords:[49.8671,40.4093]},
+
+
+
+  {name:"RIGA",coords:[24.1052,56.9496]},{name:"VILNIUS",coords:[25.2797,54.6872]},{name:"TALLINN",coords:[24.7536,59.437]},{name:"KISHINEV",coords:[28.8638,47.0105]},{name:"BREST",coords:[23.6878,52.0976]},{name:"GOMEL",coords:[31.0114,52.4345]},{name:"VITEBSK",coords:[30.2019,55.1904]},{name:"SMOLENSK",coords:[32.045,54.7903]},{name:"BRYANSK",coords:[34.3687,53.2434]},{name:"KURSK",coords:[36.1939,51.7091]},{name:"VORONEZH",coords:[39.2003,51.672]},{name:"SARATOV",coords:[46.034,51.5406]},{name:"VOLGOGRAD",coords:[44.5167,48.708]},{name:"ASTRAKHAN",coords:[48.046,46.3479]},{name:"KRASNODAR",coords:[38.9873,45.0355]},{name:"STAVROPOL",coords:[41.9734,45.0428]},{name:"GROZNY",coords:[45.6982,43.3181]},{name:"MAKHACHKALA",coords:[47.5047,42.9849]},{name:"UFA",coords:[55.9587,54.7352]},{name:"CHELYABINSK",coords:[61.4297,55.1644]},{name:"PERM",coords:[56.2502,58.0105]},{name:"KAZAN",coords:[49.1233,55.7887]},{name:"GORKY",coords:[44.002,56.2965]},{name:"YAROSLAVL",coords:[39.884,57.6261]},{name:"KALININ",coords:[35.9042,56.8584]},{name:"VLADIMIR",coords:[40.4026,56.129]},{name:"RYAZAN",coords:[39.7449,54.629]},{name:"TULA",coords:[37.6177,54.1961]},{name:"OREL",coords:[36.0639,52.9703]},{name:"LIPETSK",coords:[39.5717,52.6031]},{name:"TAMBOV",coords:[41.4353,52.7224]},{name:"PENZA",coords:[45.015,53.195]},{name:"ULYANOVSK",coords:[48.4019,54.3282]},{name:"KUIBYSHEV",coords:[50.2212,53.2415]},{name:"ORENBURG",coords:[55.099,51.7682]},{name:"ORSK",coords:[58.5667,51.229]},{name:"MAGNITOGORSK",coords:[58.985,53.4186]},{name:"TYUMEN",coords:[65.5343,57.1531]},{name:"TOMSK",coords:[84.948,56.4846]},{name:"BARNAUL",coords:[83.7769,53.3606]},{name:"KEMEROVO",coords:[86.087,55.3552]},{name:"KRASNOYARSK",coords:[92.8932,56.0153]},{name:"IRKUTSK",coords:[104.296,52.2869]},{name:"YAKUTSK",coords:[129.701,62.0355]},{name:"KHABAROVSK",coords:[135.071,48.4802]},{name:"BLAGOVESHCHENSK",coords:[127.540,50.2907]},{name:"CHITA",coords:[113.5,52.034]},{name:"ULAN-UDE",coords:[107.608,51.8345]},{name:"PETROZAVODSK",coords:[34.363,61.788]},{name:"SYKTYVKAR",coords:[50.827,61.6685]},{name:"VOLOGDA",coords:[39.8938,59.2237]},{name:"NOVGOROD",coords:[31.2755,58.5214]},{name:"PSKOV",coords:[28.3318,57.8136]},{name:"KALININGRAD",coords:[20.4522,54.71]},{name:"SEVASTOPOL",coords:[33.5254,44.6167]},{name:"ODESSA",coords:[30.7233,46.4825]},{name:"NIKOLAYEV",coords:[32.002,46.975]},{name:"KHERSON",coords:[32.616,46.6354]},{name:"DNEPROPETROVSK",coords:[35.0462,48.4647]},{name:"DONETSK",coords:[37.8028,48.0159]},{name:"LUGANSK",coords:[39.3086,48.574]},{name:"ZAPOROZHYE",coords:[35.1396,47.8388]},{name:"POLTAVA",coords:[34.5514,49.5883]},{name:"CHERNIGOV",coords:[31.292,51.4982]},{name:"SUMY",coords:[34.8002,50.9077]},{name:"ZHYTOMYR",coords:[28.6587,50.2547]},{name:"VINNITSA",coords:[28.4687,49.2328]},{name:"FRUNZE",coords:[74.6037,42.8746]},{name:"ALMA-ATA",coords:[76.9286,43.222]},{name:"ASHKHABAD",coords:[58.38,37.95]},{name:"DUSHANBE",coords:[68.78,38.5598]},{name:"EREVAN",coords:[44.5021,40.1792]},
+
+
+
+];
+
+
+
+const SECTORS=[
+
+
+
+  {name:"BREST SECTOR",city:"MINSK"},{name:"KIEV AXIS",city:"KIEV"},{name:"KHARKOV SALIENT",city:"KHARKOV"},{name:"DONBAS",city:"KHARKOV"},{name:"ROSTOV GATE",city:"ROSTOV"},{name:"CAUCASUS PASS",city:"TIFLIS"},{name:"CASPAN FLANK",city:"BAKU"},{name:"TURKMEN FRONT",city:"SAMARKAND"},{name:"TASHKENT CORRIDOR",city:"TASHKENT"},{name:"BALKHASH LINE",city:"OMSK"},{name:"SAYAN RIDGE",city:"NOVOSIBIRSK"},{name:"BAIKAL SHORE",city:"NOVOSIBIRSK"},{name:"FAR EAST BEND",city:"VLADIVOSTOK"}
+
+
+
+];
+
+
+
+const DIV_TEMPLATES=[
+
+
+
+  {id:"inf", name:"Strelkovaya (9 INF)", icon:"????", man:9000, art:36, tanks:0, soft:142, hard:12, org:60, cost:0.8},
+
+
+
+  {id:"tank", name:"Tankovaya (T-26/BT)", icon:"???????", man:4200, art:12, tanks:120, soft:48, hard:85, org:45, cost:2.4},
+
+
+
+  {id:"mot", name:"Motostrelki", icon:"????", man:6500, art:24, tanks:20, soft:110, hard:28, org:55, cost:1.4},
+
+
+
+  {id:"cav", name:"Kavaleriya", icon:"????", man:5500, art:12, tanks:0, soft:78, hard:8, org:65, cost:0.6},
+
+
+
+];
+
+
+
+const HOI4_REV_BASE=[{t:"inf",n:34},{t:"tank",n:8},{t:"mot",n:6},{t:"cav",n:4}];
+
+
+
+const HOI4_ERW_BASE=[{t:"inf",n:18},{t:"tank",n:4},{t:"mot",n:3},{t:"cav",n:3}];
+
+
+
+const AIR_REV_BASE={fighters:420, cas:110, bombers:78, trans:16};
+
+
+
+const AIR_ERW_BASE={fighters:210, cas:58, bombers:36, trans:10};
+
+
+
+const WAR_START=new Date("2026-09-08T00:00:00Z"), WAR_END=new Date("2026-10-01T00:00:00Z"), DAYS=Math.round((WAR_END-WAR_START)/86400000);
+
+
+
+let proj,path,mergedD,feats, statesFeats=[], provCentroids=[], provAreas=[], cityProvIdx=[];
+
+
+
+let curFloat=0, curDay=0, playing=false, realtime=true, timer=null, fastTimer=null, soundOn=true, showFront=false, gBase=null;
+
+
+
+let casual=0, gdpTotal=1820, gdpRev=1238, gdpErw=582, lastLogDay=-1;
+
+
+
+const SOUNDS=[
+
+
+
+  {id:"aud1", vol:0.18}, // blast-small light
+
+
+
+  {id:"aud2", vol:0.18}, // blast-medium
+
+
+
+  {id:"aud3", vol:0.16}, // blast-large heavy ??? quietest
+
+
+
+  {id:"aud4", vol:0.17}, // impact-soil
+
+
+
+  {id:"aud5", vol:0.19}, // fire-whoosh
+
+
+
+  {id:"aud6", vol:0.17}, // impact-rock
+
+
+
+  {id:"aud7", vol:0.15}, // launch-thruster distant
+
+
+
+  {id:"aud8", vol:0.16}, // distant-war pixabay
+
+
+
+  {id:"aud9", vol:0.15}, // blast-low distant rumble
+
+
+
+];
+
+
+
+function playRealSound(variant){
+
+
+
+  if(!soundOn) return;
+
+
+
+  const pick = variant!=null ? SOUNDS[variant % SOUNDS.length] : SOUNDS[Math.floor(seeded01(Date.now()%100000)*SOUNDS.length)];
+
+
+
+  const a=document.getElementById(pick.id);
+
+
+
+  if(!a) return;
+
+
+
+  try{
+
+
+
+    a.pause(); a.currentTime=0; a.volume=pick.vol;
+
+
+
+    a.play().catch(()=>{});
+
+
+
+  }catch(e){}
+
+
+
+}
+
+
+
+function playBattleSounds(outcome, attacker){
+
+
+
+  // layered, not loud ??? pick 1-2 wavs per battle, staggered low vol
+
+
+
+  if(outcome.includes("ADVANCE")){
+
+
+
+    playRealSound(2); setTimeout(()=> playRealSound(5), 180); setTimeout(()=> playRealSound(8), 420);
+
+
+
+  } else if(attacker==="REV"){
+
+
+
+    playRealSound(0); setTimeout(()=> playRealSound(4), 220);
+
+
+
+  } else {
+
+
+
+    playRealSound(1); setTimeout(()=> playRealSound(3), 260);
+
+
+
+  }
+
+
+
+  if(outcome==="STALEMATE") setTimeout(()=> playRealSound(6), 500);
+
+
+
+}
+
+
+
+const svg=d3.select("#map"), W=1000, H=560;
+
+
+
+function frontForFloat(f){
+
+
+
+  const t=Math.max(0,Math.min(1,f/DAYS));
+
+
+
+  const day=Math.floor(f);
+
+
+
+  return FRONT_START.map((c,i)=>{
+
+
+
+    const e=FRONT_END[i];
+
+
+
+    const baseLon=c[0]+(e[0]-c[0])*t, baseLat=c[1]+(e[1]-c[1])*t;
+
+
+
+    // seeded jitter ??? same for everyone
+
+
+
+    const wob = FRONT_JITTER[i]*Math.sin(f*0.35) + FRONT_JITTER2[i]*Math.cos(f*0.22);
+
+
+
+    const r1=seeded01(day*1000 + i*917), r2=seeded01(day*2000 + i*677);
+
+
+
+    const push = (r1<0.08 ? (r2-0.5)*0.30 : 0);
+
+
+
+    return [baseLon, baseLat+wob+push];
+
+
+
+  });
+
+
+
+}
+
+
+
+function factionAt(lon,lat,front){
+
+
+
+  let best=front[0], idx=0;
+
+
+
+  for(let i=0;i<front.length;i++) if(Math.abs(front[i][0]-lon)<Math.abs(best[0]-lon)){best=front[i]; idx=i;}
+
+
+
+  let latAt=best[1];
+
+
+
+  if(idx>0&&idx<front.length-1){const a=front[idx-1], b=front[idx+1]; if(b[0]!==a[0]){const f=(lon-a[0])/(b[0]-a[0]); latAt=a[1]+f*(b[1]-a[1]);}}
+
+
+
+  else if(idx===0){const b=front[1]; if(b[0]!==best[0]){const f=(lon-best[0])/(b[0]-best[0]); latAt=best[1]+f*(b[1]-best[1]);}}
+
+
+
+  return lat<latAt?"ERW":"REV";
+
+
+
+}
+
+
+
+function projectionFor(features){
+
+
+
+  // FIX zoomed out: fitExtent then zoom 1.35x so USSR fills, not tiny
+
+
+
+  const p=d3.geoMercator().center([0,0]).translate([500,295]).scale(620).rotate([-11,0,0]);
+
+
+
+  try{ const fc={type:"FeatureCollection",features}; p.fitExtent([[18,18],[982,542]], fc); p.scale(p.scale()*1.65); }catch(e){}
+
+
+
+  return p;
+
+
+
+}
+
+
+
+function fmtDate(d){return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}).toUpperCase();}
+
+
+
+function realProgress(){const now=Date.now(), s=WAR_START.getTime(), e=WAR_END.getTime(); return Math.max(0,Math.min(1,(now-s)/(e-s)));}
+
+
+
+function realFloat(){return realProgress()*DAYS;}
+
+
+
+function getHOI4(f){
+
+
+
+  const day=Math.floor(f);
+
+
+
+  // attrition seeded
+
+
+
+  let revDivs=[], erwDivs=[];
+
+
+
+  let revMan=0, erwMan=0, revTanks=0, erwTanks=0, revArt=0, erwArt=0;
+
+
+
+  HOI4_REV_BASE.forEach(b=>{
+
+
+
+    const tmpl=DIV_TEMPLATES.find(x=>x.id===b.t); const losses= seeded01(day*700 + b.t.charCodeAt(0))*0.08;
+
+
+
+    const str= Math.max(0.55, 1 - losses - f*0.006);
+
+
+
+    const n=b.n;
+
+
+
+    revDivs.push({tmpl, n, str, deployed: Math.round(n*str)});
+
+
+
+    revMan+= Math.round(tmpl.man*n*str); revTanks+= Math.round(tmpl.tanks*n*str); revArt+= Math.round(tmpl.art*n*str);
+
+
+
+  });
+
+
+
+  HOI4_ERW_BASE.forEach(b=>{
+
+
+
+    const tmpl=DIV_TEMPLATES.find(x=>x.id===b.t); const losses= seeded01(day*900 + b.t.charCodeAt(0)+5)*0.09;
+
+
+
+    const str= Math.max(0.5, 1 - losses - f*0.008);
+
+
+
+    const n=b.n;
+
+
+
+    erwDivs.push({tmpl, n, str, deployed: Math.round(n*str)});
+
+
+
+    erwMan+= Math.round(tmpl.man*n*str); erwTanks+= Math.round(tmpl.tanks*n*str); erwArt+= Math.round(tmpl.art*n*str);
+
+
+
+  });
+
+
+
+  const revTotalN=HOI4_REV_BASE.reduce((s,b)=>s+b.n,0), erwTotalN=HOI4_ERW_BASE.reduce((s,b)=>s+b.n,0);
+
+
+
+  // air ??? fighters attrition + production
+
+
+
+  const revAir={fighters: Math.round(AIR_REV_BASE.fighters* Math.max(0.6, 1 - seeded01(day*111)*0.12 - f*0.005)), cas: Math.round(AIR_REV_BASE.cas* Math.max(0.65, 1 - seeded01(day*222)*0.10 - f*0.004)), bombers: Math.round(AIR_REV_BASE.bombers* Math.max(0.6, 1 - seeded01(day*333)*0.11 - f*0.003))};
+
+
+
+  const erwAir={fighters: Math.round(AIR_ERW_BASE.fighters* Math.max(0.55, 1 - seeded01(day*444+1)*0.13 - f*0.006)), cas: Math.round(AIR_ERW_BASE.cas* Math.max(0.6, 1 - seeded01(day*555+1)*0.11 - f*0.005)), bombers: Math.round(AIR_ERW_BASE.bombers* Math.max(0.55, 1 - seeded01(day*666+1)*0.12 - f*0.004))};
+
+
+
+  const airSup = Math.round( 50 + (revAir.fighters - erwAir.fighters)/(revAir.fighters+erwAir.fighters)*50 + (seeded01(day*777)-0.5)*6 );
+
+
+
+  // bombings per day ??? CAS + bombers do damage to industry/manpower
+
+
+
+  const bombings = Math.round( (revAir.cas*0.18 + revAir.bombers*0.35 + erwAir.cas*0.18 + erwAir.bombers*0.35) + seeded01(day*888)*12 );
+
+
+
+  return {revDivs, erwDivs, revTotalN, erwTotalN, revMan, erwMan, revTanks, erwTanks, revArt, erwArt, revAir, erwAir, airSup: Math.max(12,Math.min(88,airSup)), bombings};
+
+
+
+}
+
+
+
+function renderHOI4(f){
+
+
+
+  const h=getHOI4(f);
+
+
+
+  const divEl=document.getElementById("hoi4Divs"), airEl=document.getElementById("hoi4Air"), meta=document.getElementById("hoi4Meta");
+
+
+
+  if(!divEl||!airEl) return;
+
+
+
+  const divRow=(label, data, totalN, man, tanks, art, color)=>{
+
+
+
+    const rows=data.map(d=> `${d.tmpl.icon} ${d.tmpl.name} ??${d.n} -> <b>${d.deployed} deployed</b> ${(d.str*100).toFixed(0)}% str`).join("<br>");
+
+
+
+    const avgStr=(data.reduce((s,d)=>s+d.str*d.n,0)/totalN*100).toFixed(0);
+
+
+
+    return `<div style="border:2px solid #111;padding:8px;background:${color==="REV"?"#fff5f5":"#f0f6ff"};box-shadow:2px 2px 0 #111"><div style="font:800 10px 'IBM Plex Mono';color:${color==="REV"?"var(--red)":"var(--blue)"}">${label} ??? ${totalN} DIVS - ${man.toLocaleString()} men - ${tanks} tanks - ${art} art - ORG ${avgStr}%</div><div style="font:600 9px 'IBM Plex Mono';margin-top:4px;line-height:1.5">${rows}</div></div>`;
+
+
+
+  };
+
+
+
+  divEl.innerHTML= divRow("REVOLUTIONARIES", h.revDivs, h.revTotalN, h.revMan, h.revTanks, h.revArt, "REV") + divRow("ERWIN SUPPORTERS", h.erwDivs, h.erwTotalN, h.erwMan, h.erwTanks, h.erwArt, "ERW");
+
+
+
+  const airRow=(label, air, supLabel)=>{
+
+
+
+    return `<div style="border:2px solid #111;padding:8px;background:#fff;box-shadow:2px 2px 0 #111"><div style="font:800 10px 'IBM Plex Mono'">${label}</div><div style="font:600 10px 'IBM Plex Mono';margin-top:4px">??? Fighters ${air.fighters} - CAS ${air.cas} - Bombers ${air.bombers}<br><span style="color:#5a5242">${supLabel}</span></div></div>`;
+
+
+
+  };
+
+
+
+  airEl.innerHTML= airRow("REV AIRFORCE", h.revAir, `Air sup ${h.airSup}% (REV)`) + airRow("ERW AIRFORCE", h.erwAir, `Air sup ${100-h.airSup}% (ERW) - Bombings today: ${h.bombings} sorties`);
+
+
+
+  if(meta) meta.textContent=`HOI4: ${h.revTotalN+h.erwTotalN} total divs - Deployed ${ (h.revMan+h.erwMan).toLocaleString()} men, ${h.revTanks+h.erwTanks} tanks, ${h.revArt+h.erwArt} art. Air ${h.revAir.fighters+h.erwAir.fighters} fighters, ${h.revAir.cas+h.erwAir.cas} CAS. Bombings ${h.bombings}/day degrade enemy industry/GDP. Same for everyone (seeded).`;
+
+
+
+}
+
+
+
+function renderOngoingBattles(f){
+
+
+
+  const el=document.getElementById("ongoingBattles"); if(!el) return;
+
+
+
+  const battles=battlesForDay(Math.floor(f));
+
+
+
+  const hoi=getHOI4(f);
+
+
+
+  // build ongoing list with combat calc
+
+
+
+  el.innerHTML="";
+
+
+
+  if(battles.length===0){
+
+
+
+    el.innerHTML=`<div style="padding:8px;border:2px dashed #111;background:#fff;font:600 10px 'IBM Plex Mono';text-align:center">No active battles ??? front consolidating</div>`;
+
+
+
+    return;
+
+
+
+  }
+
+
+
+  battles.forEach((b, idx)=>{
+
+
+
+    const day=Math.floor(f), seed=day*10000+idx*791;
+
+
+
+    const isRevAtk=b.attacker==="REV";
+
+
+
+    const atkAir=isRevAtk? hoi.revAir.cas : hoi.erwAir.cas;
+
+
+
+    const defAir=isRevAtk? hoi.erwAir.cas : hoi.revAir.cas;
+
+
+
+    // pull division avg stats
+
+
+
+    const atkDivs=isRevAtk? hoi.revDivs : hoi.erwDivs;
+
+
+
+    const defDivs=isRevAtk? hoi.erwDivs : hoi.revDivs;
+
+
+
+    const atkSoft= atkDivs.reduce((s,d)=>s+d.tmpl.soft*d.deployed,0)/Math.max(1, atkDivs.reduce((s,d)=>s+d.deployed,0));
+
+
+
+    const defSoft= defDivs.reduce((s,d)=>s+d.tmpl.soft*d.deployed,0)/Math.max(1, defDivs.reduce((s,d)=>s+d.deployed,0));
+
+
+
+    const airBonus=(atkAir-defAir)*0.18;
+
+
+
+    const atkRoll=seeded01(seed+1)*12, defRoll=seeded01(seed+2)*12;
+
+
+
+    const atkScore= atkSoft*0.62 + airBonus + atkRoll + (hoi.airSup>55? 6:0);
+
+
+
+    const defScore= defSoft*0.58 + defRoll + (hoi.airSup<45? 6:0);
+
+
+
+    const total=atkScore+defScore;
+
+
+
+    const atkPct=Math.round(atkScore/total*100), defPct=100-atkPct;
+
+
+
+    const winning= atkPct>defPct ? b.attacker : (b.attacker==="REV"?"ERW":"REV");
+
+
+
+    const winningName= winning==="REV"?"Revolutionaries":"Erwin";
+
+
+
+    const col=winning==="REV"?"#8a0f14":"#1e3d64";
+
+
+
+    const progress=Math.min(99, Math.round(((f - Math.floor(f))*100 + seeded01(seed+3)*18) % 92 + 8));
+
+
+
+    const div=document.createElement("div");
+
+
+
+    div.style.cssText="border:2px solid #111;padding:7px;background:#fff;box-shadow:2px 2px 0 #111;cursor:pointer";
+
+
+
+    div.innerHTML=`
+
+
+
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+
+
+
+        <div style="font:800 10px 'IBM Plex Mono'">${b.sector} <span style="font:600 9px;color:#5a5242">-> ${b.city}</span> <span style="background:${b.attacker==="REV"?"var(--red)":"var(--blue)"};color:#fff;padding:1px 4px;border:1px solid #111">${b.attacker==="REV"?"REV ATK":"ERW ATK"}</span></div>
+
+
+
+        <span style="font:700 9px 'IBM Plex Mono';color:${col}">${winningName} WINNING ${Math.max(atkPct,defPct)}%</span>
+
+
+
+      </div>
+
+
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
+
+
+
+        <div>
+
+
+
+          <div style="font:700 8px 'IBM Plex Mono'">${b.attacker==="REV"?"REV":"ERW"} ATTACK ${atkScore.toFixed(0)} - CAS ${atkAir} - roll ${atkRoll.toFixed(0)}</div>
+
+
+
+          <div style="height:10px;background:#fff;border:1px solid #111;margin-top:2px"><div style="height:100%;width:${atkPct}%;background:${b.attacker==="REV"?"var(--red)":"var(--blue)"}"></div></div>
+
+
+
+        </div>
+
+
+
+        <div>
+
+
+
+          <div style="font:700 8px 'IBM Plex Mono'">${b.attacker==="REV"?"ERW":"REV"} DEFEND ${defScore.toFixed(0)} - CAS ${defAir} - roll ${defRoll.toFixed(0)}</div>
+
+
+
+          <div style="height:10px;background:#fff;border:1px solid #111;margin-top:2px"><div style="height:100%;width:${defPct}%;background:${b.attacker==="REV"?"var(--blue)":"var(--red)"}"></div></div>
+
+
+
+        </div>
+
+
+
+      </div>
+
+
+
+      <div style="height:8px;background:#222;border:1px solid #111;margin-top:6px;position:relative"><div style="height:100%;width:${progress}%;background:repeating-linear-gradient(90deg,var(--gold) 0 6px,#d8b24a 6px 12px);transition:width .4s"></div><span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:700 7px 'IBM Plex Mono';background:#111;color:var(--gold);padding:1px 4px">COMBAT ${progress}% - ${b.outcome}</span></div>
+
+
+
+      <div style="font:600 8px 'IBM Plex Mono';color:#5a5242;margin-top:4px">${Math.round(atkScore)} vs ${Math.round(defScore)} - ${b.cas} cas. - click to zoom -> ${b.city}</div>
+
+
+
+    `;
+
+
+
+    div.onclick=()=>{ zoomToCity(b.city); playBattleSounds(b.outcome, b.attacker); };
+
+
+
+    el.appendChild(div);
+
+
+
+  });
+
+
+
+}
+
+
+
+let cityState=[];
+
+
+
+async function init(){
+
+
+
+  let raw=null;
+
+
+
+  const urls=[GEO_URL, "https://raw.githubusercontent.com/HyawiiGithub/USSRCIVILWAR/main/ussr.geojson", "./ussr.geojson"];
+
+
+
+  for(const u of urls){
+
+
+
+    try{ raw=await d3.json(u); if(raw && raw.features && raw.features.length) break; }catch(e){ console.warn("geo fetch failed",u,e.message); }
+
+
+
+  }
+
+
+
+  if(!raw || !raw.features) throw new Error("ussr.geojson failed all urls");
+
+
+
+  let origFeats=raw.features;
+
+
+
+  // FIX 190?? antimeridian -> clamp to 179.9 (Chukotka) so bbox not huge (-170->179 = 350?? bug)
+
+
+
+  try{
+
+
+
+    origFeats.forEach(fe=>{
+
+
+
+      const g=fe.geometry; if(!g||!g.coordinates) return;
+
+
+
+      if(g.type==="Polygon") g.coordinates.forEach(r=> r.forEach(c=>{ if(c[0]>180) c[0]=179.9; }));
+
+
+
+      else if(g.type==="MultiPolygon") g.coordinates.forEach(poly=> poly.forEach(r=> r.forEach(c=>{ if(c[0]>180) c[0]=179.9; })));
+
+
+
+    });
+
+
+
+  }catch(e){}
+
+
+
+  // CLEAN: 84 real oblasts as provinces ??? HOI4 states = same, but draw both for visibility
+
+
+
+  let union=null;
+
+
+
+  try{ union=origFeats[0]; for(let i=1;i<origFeats.length;i++) try{ union=turf.union(union, origFeats[i]); }catch(e){} }catch(e){}
+
+
+
+  feats=origFeats;
+
+
+
+  window._statesFeats=origFeats;
+
+
+
+  proj=projectionFor(feats); path=d3.geoPath(proj);
+
+
+
+  mergedD=""; try{ mergedD=path(union); }catch(e){ feats.forEach(f=>{ try{ const d=path(f); if(d) mergedD+=d+" "; }catch(e){} }); }
+
+
+
+  // cache centroids/areas ??? OPTIMIZED: no recompute per frame
+
+
+
+  try{
+
+
+
+    provCentroids=feats.map(fe=>{ try{ return d3.geoCentroid(fe); }catch(e){ try{ return turf.centroid(fe).geometry.coordinates; }catch(e2){ return [0,0]; } } });
+
+
+
+    provAreas=feats.map(fe=>{ try{ return turf.area(fe); }catch(e){ return 1; } });
+
+
+
+    // cache city -> province index (fixes bugged city ownership + speeds up)
+
+
+
+    cityProvIdx=CITIES0.map(c=>{
+
+
+
+      const pt=turf.point(c.coords);
+
+
+
+      for(let i=0;i<feats.length;i++){ try{ if(turf.booleanPointInPolygon(pt, feats[i])) return i; }catch(e){} }
+
+
+
+      return -1;
+
+
+
+    });
+
+
+
+  }catch(e){ provCentroids=[]; provAreas=[]; cityProvIdx=[]; }
+
+
+
+  document.getElementById("topInfo").textContent=feats.length+" OBLASTS/STATES - "+CITIES0.length+" CITIES - HOI4 - FIXED";
+
+
+
+  const ds=document.getElementById("daySlider"); if(ds){ ds.max=DAYS; ds.step=0.1; }
+
+
+
+  // restore pravda log from localStorage (persists after refresh lmao)
+
+
+
+  try{
+
+
+
+    const saved=localStorage.getItem("pravdaLog");
+
+
+
+    if(saved){
+
+
+
+      const el=document.getElementById("warLog"); el.innerHTML=saved;
+
+
+
+      el.scrollTop=el.scrollHeight;
+
+
+
+    }
+
+
+
+    const sd=localStorage.getItem("pravdaLogDay");
+
+
+
+    if(sd!=null && !isNaN(parseFloat(sd))) lastDayLogged=Math.floor(parseFloat(sd));
+
+
+
+  }catch(e){}
+
+
+
+  // if empty, seed initial
+
+
+
+  if(!document.getElementById("warLog").innerHTML.trim()){
+
+
+
+    log(`<b>${fmtDate(WAR_START)} ??? WAR BEGINS (SEEDED ??? SAME FOR ALL)</b> <span class="rev">Revolutionaries</span> ~68% / <span class="erw">Erwin</span> ~32%. Front by province (${feats.length} states) ??? jagged, not smooth curve. Real war wavs low vol.`,true);
+
+
+
+  }
+
+
+
+  curFloat=realFloat(); curDay=Math.floor(curFloat);
+
+
+
+  // if we restored log, ensure we don't re-log already logged days
+
+
+
+  if(lastDayLogged < Math.floor(curFloat)) {
+
+
+
+  } else {
+
+
+
+    lastDayLogged=Math.floor(curFloat);
+
+
+
+  }
+
+
+
+  render(curFloat);
+
+
+
+  // seed battle log for current day so not empty (no sound/zoom on init)
+
+
+
+  try{
+
+
+
+    const cb=battlesForDay(Math.floor(curFloat));
+
+
+
+    cb.forEach(b=>{
+
+
+
+      const col=b.attacker==="REV"?"rev":"erw";
+
+
+
+      const dateStr=fmtDate(new Date(WAR_START.getTime()+Math.floor(curFloat)*86400000));
+
+
+
+      const exists=document.getElementById("warLog").innerHTML.includes(b.sector);
+
+
+
+      if(!exists) log(`<b>${dateStr}</b> ??? <span class="${col}">${b.sector}</span> (${b.city}) - ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
+
+
+
+    });
+
+
+
+    if(curFloat<0.5) lastDayLogged=Math.floor(curFloat);
+
+
+
+  }catch(e){}
+
+
+
+  bindControls(); startRealtimeTick();
+
+
+
+  try{ localStorage.setItem("pravdaLogDay", String(curFloat)); }catch(e){}
+
+
+
+}
+
+
+
+function render(f){
+
+
+
+  curFloat=f; curDay=Math.floor(f);
+
+
+
+  const front=frontForFloat(f);
+
+
+
+  const curDate=new Date(WAR_START.getTime()+f*86400000);
+
+
+
+  // province control ??? use cached centroids/areas (optimized)
+
+
+
+  let provRev=0, provErw=0, areaRev=0, areaErw=0;
+
+
+
+  let provFacs=[];
+
+
+
+  try{
+
+
+
+    for(let i=0;i<feats.length;i++){
+
+
+
+      const cent=provCentroids[i]|| d3.geoCentroid(feats[i]);
+
+
+
+      const fac=factionAt(cent[0], cent[1], front);
+
+
+
+      provFacs[i]=fac;
+
+
+
+      const a=provAreas[i]||1;
+
+
+
+      if(fac==="REV"){provRev++; areaRev+=a;} else {provErw++; areaErw+=a;}
+
+
+
+    }
+
+
+
+  }catch(e){ provRev=Math.round(feats.length*0.68); provErw=feats.length-provRev; provFacs=feats.map(()=> "REV"); }
+
+
+
+  // city ownership ??? FIXED via cached province index (fast + matches map)
+
+
+
+  cityState=CITIES0.map((c, idx)=>{
+
+
+
+    let fac="REV";
+
+
+
+    const pIdx=cityProvIdx[idx];
+
+
+
+    if(pIdx>=0 && provFacs[pIdx]!=null) fac=provFacs[pIdx];
+
+
+
+    else {
+
+
+
+      try{ fac=factionAt(c.coords[0], c.coords[1], front); }catch(e){ fac="REV"; }
+
+
+
+    }
+
+
+
+    return {...c, faction:fac};
+
+
+
+  });
+
+
+
+  const revCities=cityState.filter(c=>c.faction==="REV").length, erwCities=cityState.length-revCities;
+
+
+
+  // revPct from actual province AREA (not fake wob) ??? front truly moves provinces
+
+
+
+  const areaPct = areaRev+areaErw>0 ? Math.round(areaRev/(areaRev+areaErw)*100) : 68;
+
+
+
+  // blend areaPct with base progression so trend stays 68->78 but provinces decide exact
+
+
+
+  const baseRev=areaPct;
+
+
+
+  const revPct=Math.max(60,Math.min(84, baseRev)), erwPct=100-revPct;
+
+
+
+  // store for draw (optimized)
+
+
+
+  window._provStats={provRev, provErw, areaRev, areaErw};
+
+
+
+  window._provFacs=provFacs;
+
+
+
+  casual=0; for(let i=0;i<=Math.floor(f);i++){ const r1=seeded01(i*1543), r2=seeded01(i*2909+1); casual+=900+Math.floor(r1*900)+(r2<0.33?400:0); }
+
+
+
+  casual+=Math.floor((f-Math.floor(f))* (900+seeded01(Math.floor(f)*3333)*400));
+
+
+
+  const prodRev=1.04, prodErw=0.92;
+
+
+
+  const warDrag= (casual/80000)*18 + f*2.2;
+
+
+
+  gdpTotal=Math.max(1720, 1820 + f*4.2 - warDrag + (seeded01(Math.floor(f)*7777)-0.5)*8);
+
+
+
+  gdpRev=gdpTotal*(revPct/100)*prodRev; gdpErw=gdpTotal*(erwPct/100)*prodErw;
+
+
+
+  const sum=gdpRev+gdpErw, adj=gdpTotal/sum; gdpRev*=adj; gdpErw*=adj;
+
+
+
+  let frontLen=0; try{frontLen=Math.round(turf.length({type:"Feature",geometry:{type:"LineString",coordinates:front}},{units:"kilometers"}));}catch(e){frontLen=2840-Math.round(f*12);}
+
+
+
+  document.getElementById("dateLabel").textContent=`${fmtDate(curDate)} ??? DAY ${f.toFixed(1)}/${DAYS}`;
+
+
+
+  document.getElementById("dayNum").textContent=`DAY ${f.toFixed(1)}`;
+
+
+
+  document.getElementById("countdown").textContent=f>=DAYS?`ARMISTICE 1 OCT 2026`: `${(DAYS-f).toFixed(1)} DAYS TO 1 OCT - ${Math.floor((1-realProgress())*24)}h`;
+
+
+
+  document.getElementById("warStatus").textContent=f>=DAYS?"??? ARMISTICE ??? WAR ENDS 1 OCT":(realtime?`??? REAL TIME ${(realProgress()*100).toFixed(1)}%`:(playing?"??? FAST SIM":"PAUSED"));
+
+
+
+  const _casMap=document.getElementById("casualtiesMap"); if(_casMap) _casMap.textContent=`X ${casual.toLocaleString()} CAS - DAY ${f.toFixed(1)}`;
+
+
+
+  document.getElementById("revPct").textContent=revPct+"%"; document.getElementById("erwPct").textContent=erwPct+"%";
+
+
+
+  document.getElementById("sRev").textContent=revPct+"% USSR"; document.getElementById("sErw").textContent=erwPct+"% USSR";
+
+
+
+  document.getElementById("sRevSub").textContent=`${revCities} CITIES - ${revPct>70?'ADVANCING':'HOLDING'}`; document.getElementById("sErwSub").textContent=`${erwCities} CITIES - ${erwPct<30?'RETREATING':'DEFENDING'}`;
+
+
+
+  document.getElementById("sFront").textContent=frontLen.toLocaleString()+" KM"; document.getElementById("sFrontSub").textContent=`DAY ${f.toFixed(1)} - SHIFT ${(front[3][1]-FRONT_START[3][1]).toFixed(2)}??`;
+
+
+
+  document.getElementById("sFrontDelta").textContent= f>0? (seeded01(Math.floor(f)*444)>0.5?'-> LIVE':'??? PUSH'): '???';
+
+
+
+  document.getElementById("sCas").textContent=casual.toLocaleString(); document.getElementById("sCasSub").textContent=`~${Math.round(casual/(f+0.6)).toLocaleString()}/DAY`;
+
+
+
+  document.getElementById("sCasDelta").textContent=`+${Math.floor(700+seeded01(Math.floor(f)*555)*600)}/tick`;
+
+
+
+  document.getElementById("sGdp").textContent=gdpTotal.toFixed(0)+"B ???"; document.getElementById("sGdpDelta").textContent=`REV ${gdpRev.toFixed(0)}B / ERW ${gdpErw.toFixed(0)}B`;
+
+
+
+  document.getElementById("sRevGdp").textContent=`GDP ${gdpRev.toFixed(0)}B ???`; document.getElementById("sRevGdp").className="delta "+(gdpRev>1238?"up":"down");
+
+
+
+  document.getElementById("sErwGdp").textContent=`GDP ${gdpErw.toFixed(0)}B ???`; document.getElementById("sErwGdp").className="delta "+(gdpErw>582?"up":"down");
+
+
+
+  document.getElementById("sGdpDelta").textContent=gdpTotal>1820?`??? +${(gdpTotal-1820).toFixed(0)}B vs 8 Sept`:`??? ${(gdpTotal-1820).toFixed(0)}B`;
+
+
+
+  document.getElementById("sEco").textContent=(revPct>72?"REV OFFENSIVE":erwPct>30?"CONTESTED":"ERW DEFENSIVE"); document.getElementById("sEcoSub").textContent=`SUPPLY ${Math.round(88 - f*0.9 + (seeded01(Math.floor(f)*888)-0.5)*6)}% - MORALE REV ${Math.round(68+f*0.6)} / ERW ${Math.round(62-f*0.4)}`;
+
+
+
+  // NEW SYSTEMS
+
+
+
+  const ind = Math.round(92 - f*1.1 + (seeded01(Math.floor(f)*121)-0.5)*8);
+
+
+
+  const fuel = Math.round(81 - f*1.4 + (seeded01(Math.floor(f)*323)-0.5)*10);
+
+
+
+  const manRev = Math.round(1450 - f*18 + (seeded01(Math.floor(f)*777)-0.5)*40);
+
+
+
+  const manErw = Math.round(980 - f*12 + (seeded01(Math.floor(f)*979)-0.5)*30);
+
+
+
+  document.getElementById("sInd").textContent=ind+"% CAPACITY"; document.getElementById("sIndSub").textContent=`REV ${Math.round(ind*0.68)}% - ERW ${Math.round(ind*0.32)}% - STEEL ${Math.round(420 - f*6)}kt`;
+
+
+
+  document.getElementById("sIndDelta").textContent= ind>88? "??? STABLE" : ind>75? "-> STRAINED" : "??? CRITICAL";
+
+
+
+  document.getElementById("sFuel").textContent=fuel+"% RESERVE"; document.getElementById("sFuelSub").textContent=`OIL ${Math.round(64 - f*1.2)}% - RAIL ${Math.round(78 - f*0.9)}%`;
+
+
+
+  document.getElementById("sFuelDelta").textContent= fuel>70? "-> ADEQUATE" : "??? SHORTAGE";
+
+
+
+  document.getElementById("sMan").textContent=(manRev+manErw).toLocaleString()+"k"; document.getElementById("sManSub").textContent=`REV ${manRev}k - ERW ${manErw}k`;
+
+
+
+  document.getElementById("sManDelta").textContent= `???${Math.floor(18+seeded01(Math.floor(f)*654)*12)}/day`;
+
+
+
+  // progress bar
+
+
+
+  const bar=document.getElementById("timeBar"); if(bar) bar.style.width=(f/DAYS*100).toFixed(1)+"%";
+
+
+
+  try{ renderHOI4(f); }catch(e){}
+
+
+
+  try{ renderOngoingBattles(f); }catch(e){}
+
+
+
+  drawMap(front,f);
+
+
+
+}
+
+
+
+function drawMap(front,f){
+
+
+
+  const frontD=path({type:"Feature",geometry:{type:"LineString",coordinates:front}});
+
+
+
+  svg.selectAll("*").remove();
+
+
+
+  const defs=svg.append("defs");
+
+
+
+  defs.append("pattern").attr("id","paperHatch").attr("width",6).attr("height",6).attr("patternUnits","userSpaceOnUse").append("path").attr("d","M0 6 L6 0").attr("stroke","rgba(0,0,0,.07)").attr("stroke-width",0.7);
+
+
+
+  defs.append("clipPath").attr("id","ussrClip").append("path").attr("d",mergedD);
+
+
+
+  svg.append("rect").attr("width",W).attr("height",H).attr("fill","#b8ad94");
+
+
+
+  gBase=svg.append("g").attr("id","gBase");
+
+
+
+  // PURE USSR: 0 provinces - smooth front only, no state limitation, balanced like before
+
+
+
+  const frontProj=front.map(c=>proj(c));
+
+
+
+  const FAR=4000;
+
+
+
+  const erwinPts=[...frontProj,[FAR,FAR],[-FAR,FAR],[-FAR,frontProj[0][1]]];
+
+
+
+  const erwinPolyD="M"+erwinPts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L ")+" Z";
+
+
+
+  // pure war front - no provinces, just smooth clip (0 provinces as requested)
+
+
+
+  const warG=gBase.append("g").attr("clip-path","url(#ussrClip)");
+
+
+
+  warG.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","#9e1a1f").attr("opacity",0.92); // REV bigger
+
+
+
+  warG.append("path").attr("d",erwinPolyD).attr("fill","#1e3d64").attr("opacity",0.96);
+
+
+
+  warG.append("path").attr("d",erwinPolyD).attr("fill","none").attr("stroke","rgba(255,255,255,.18)").attr("stroke-width",0.6).attr("stroke-dasharray","5 5");
+
+
+
+  // hatch overlay clipped to USSR for texture
+
+
+
+  const hatchG=gBase.append("g").attr("clip-path","url(#ussrClip)");
+
+
+
+  hatchG.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","url(#paperHatch)").attr("opacity",0.22).attr("pointer-events","none");
+
+
+
+  gBase.append("path").attr("d",mergedD).attr("fill","none").attr("stroke","#111").attr("stroke-width",2.6).attr("stroke-linejoin","round");
+
+
+
+  gBase.append("path").attr("d",mergedD).attr("fill","none").attr("stroke","rgba(245,230,163,.35)").attr("stroke-width",0.8);
+
+
+
+  const frontG=gBase.append("g").attr("id","frontG").style("display",showFront?"block":"none");
+
+
+
+  frontG.append("path").attr("d",frontD).attr("fill","none").attr("stroke","rgba(245,230,163,.9)").attr("stroke-width",7).attr("stroke-linecap","round").attr("opacity",0.35);
+
+
+
+  frontG.append("path").attr("d",frontD).attr("fill","none").attr("stroke","#f5e6a3").attr("stroke-width",3.2).attr("stroke-linecap","round").attr("stroke-dasharray","10 7").attr("stroke-dashoffset",f*6);
+
+
+
+  frontG.append("path").attr("d",frontD).attr("fill","none").attr("stroke","#111").attr("stroke-width",1.2).attr("stroke-dasharray","10 7").attr("stroke-dashoffset",f*6);
+
+
+
+  try{const tmp=document.createElementNS("http://www.w3.org/2000/svg","path"); tmp.setAttribute("d",frontD); const L=tmp.getTotalLength(); for(let t=0.18;t<0.88;t+=0.22){const pt=tmp.getPointAtLength(t*L), pt2=tmp.getPointAtLength(t*L+1); const ang=Math.atan2(pt2.y-pt.y,pt2.x-pt.x)*180/Math.PI; frontG.append("g").attr("transform",`translate(${pt.x},${pt.y}) rotate(${ang})`).append("path").attr("d","M -10 -6 L 0 0 L -10 6").attr("fill","none").attr("stroke","#f5e6a3").attr("stroke-width",1.4).attr("stroke-linecap","round");}}catch(e){}
+
+
+
+  const battles=battlesForFloat(f);
+
+
+
+  battles.forEach(b=>{
+
+
+
+    const city=CITIES0.find(c=>c.name===b.city); const coord=b.coord||front[3]; const [x,y]=city?proj(city.coords):proj(coord);
+
+
+
+    const g=gBase.append("g").attr("transform",`translate(${x},${y})`);
+
+
+
+    g.append("circle").attr("r",7).attr("fill","none").attr("stroke","#ff3b30").attr("stroke-width",1.4).attr("opacity",0.9).append("animate").attr("attributeName","r").attr("from","7").attr("to","20").attr("dur","0.9s").attr("repeatCount","indefinite");
+
+
+
+    g.append("circle").attr("r",3).attr("fill","#f5e6a3").attr("stroke","#111").attr("stroke-width",1);
+
+
+
+    g.append("text").attr("y",-14).attr("text-anchor","middle").attr("font-size","7px").attr("font-weight","800").attr("fill","#111").attr("paint-order","stroke").attr("stroke","#fff").attr("stroke-width","3").text(b.sector.split(" ")[0]);
+
+
+
+  });
+
+
+
+  const cityG=gBase.append("g");
+
+
+
+  const tooltip=document.getElementById("tooltip"), mapBox=document.getElementById("mapBox");
+
+
+
+  const MAJOR=new Set(["MOSCOW","LENINGRAD","KIEV","MINSK","KHARKOV","ROSTOV","TASHKENT","NOVOSIBIRSK","VLADIVOSTOK","SVERDLOVSK","TIFLIS","BAKU","RIGA","TALLINN","ODESSA","STAVROPOL","GORKY","KAZAN"]);
+
+
+
+  cityState.forEach(c=>{
+
+
+
+    const [x,y]=proj(c.coords); const isRev=c.faction==="REV"; const isMajor=MAJOR.has(c.name);
+
+
+
+    const g=cityG.append("g").attr("transform",`translate(${x},${y})`).style("cursor","pointer");
+
+
+
+    const rOuter=isMajor?6.5:4.2, rInner=isMajor?5:3.2;
+
+
+
+    g.append("circle").attr("r",rOuter).attr("fill","#111").attr("opacity",0.95);
+
+
+
+    g.append("circle").attr("r",rInner).attr("fill",isRev?"#ff4444":"#5aa0ff").attr("stroke","#fff").attr("stroke-width",1.1);
+
+
+
+    g.append("circle").attr("r",isMajor?1.7:1.1).attr("fill","#fff");
+
+
+
+    if(isMajor){
+
+
+
+      g.append("text").attr("y",isRev?-10:14).attr("text-anchor","middle").attr("class","city-label").text(c.name);
+
+
+
+    } else {
+
+
+
+      // minor towns: label only on hover via tooltip, dot only on map ??? fixes bugged clutter
+
+
+
+      g.append("title").text(c.name);
+
+
+
+    }
+
+
+
+    g.on("mouseenter",()=>{tooltip.style.opacity="1"; tooltip.innerHTML=`<span style="color:${isRev?'#ff6b6b':'#8ec0ff'}">???</span> ${c.name} ??? ${isRev?'REVOLUTIONARIES':'ERWIN'}<br><span style="opacity:.7">Day ${f.toFixed(1)} - ${fmtDate(new Date(WAR_START.getTime()+f*86400000))}</span>`;})
+
+
+
+     .on("mouseleave",()=>tooltip.style.opacity="0")
+
+
+
+     .on("mousemove",()=>{const rect=mapBox.getBoundingClientRect(), svgRect=document.getElementById("map").getBoundingClientRect(); const sx=svgRect.left+(x/W)*svgRect.width, sy=svgRect.top+(y/H)*svgRect.height; tooltip.style.left=(sx-rect.left)+"px"; tooltip.style.top=(sy-rect.top)+"px";});
+
+
+
+    g.on("click",()=>{ zoomToCity(c.name); }); // no sound on city click (requested)
+
+
+
+  });
+
+
+
+  gBase.append("text").attr("x",W/2).attr("y",28).attr("text-anchor","middle").attr("font-family","Playfair Display").attr("font-weight",900).attr("font-size",15).attr("letter-spacing",".06em").attr("fill","#111").attr("opacity",0.92).text(`USSR - ${fmtDate(new Date(WAR_START.getTime()+f*86400000))} - DAY ${f.toFixed(1)}/${DAYS} - ${f>=DAYS?"ARMISTICE":"TILL 1 OCT"}`).attr("paint-order","stroke").attr("stroke","#e8dcc6").attr("stroke-width",4).attr("stroke-linejoin","round");
+
+
+
+}
+
+
+
+function battlesForFloat(f){
+
+
+
+  const day=Math.floor(f), frac=f-day;
+
+
+
+  const out=battlesForDay(day);
+
+
+
+  if(frac>0.6 && day+1<=DAYS) out.push(...battlesForDay(day+1).slice(0,1));
+
+
+
+  return out;
+
+
+
+}
+
+
+
+// SEEDED RANDOM ??? same for everyone (deterministic per day), still feels random but synced
+
+
+
+function battlesForDay(d){
+
+
+
+  if(d<0) return [];
+
+
+
+  if(d===0){
+
+
+
+    // day 0: initial skirmish so log not empty
+
+
+
+    const sec=SECTORS[Math.floor(seeded01(0*133)*SECTORS.length)];
+
+
+
+    return [{sector:sec.name, city:sec.city, attacker:"REV", outcome:"SKIRMISH", cas:84, coord:FRONT_START[3]}];
+
+
+
+  }
+
+
+
+  const r0=seeded01(d*7919);
+
+
+
+  const n = 2 + (r0<0.28?1:0);
+
+
+
+  const out=[];
+
+
+
+  for(let i=0;i<n;i++){
+
+
+
+    const sec=SECTORS[Math.floor(seeded01(d*1000 + i*133)*SECTORS.length)];
+
+
+
+    const attacker=seeded01(d*2000 + i*517)>0.5?"REV":"ERW";
+
+
+
+    const roll=seeded01(d*3000 + i*977);
+
+
+
+    const outcome= roll>0.62 ? (attacker==="REV"?"REV ADVANCE":"ERW COUNTER") : roll>0.30?"STALEMATE":"SKIRMISH";
+
+
+
+    const cas=80+Math.floor(seeded01(d*4000 + i*1237)*520);
+
+
+
+    const idx=Math.floor(seeded01(d*5000 + i*2011)*FRONT_START.length);
+
+
+
+    const coord=FRONT_START[idx];
+
+
+
+    out.push({sector:sec.name, city:sec.city, attacker, outcome, cas, coord});
+
+
+
+  }
+
+
+
+  return out;
+
+
+
+}
+
+
+
+function log(html,top=false){
+
+
+
+  const el=document.getElementById("warLog"); const p=document.createElement("div"); p.innerHTML=html; p.style.borderBottom="1px solid #222"; p.style.padding="4px 0"; if(top) el.prepend(p); else el.appendChild(p);
+
+
+
+  // keep max 90 lines, persist to localStorage so survives refresh
+
+
+
+  while(el.children.length>90) el.removeChild(el.firstChild);
+
+
+
+  el.scrollTop=el.scrollHeight;
+
+
+
+  try{ localStorage.setItem("pravdaLog", el.innerHTML); localStorage.setItem("pravdaLogDay", String(curFloat)); }catch(e){}
+
+
+
+}
+
+
+
+let lastDayLogged=-1;
+
+
+
+function stepTo(f, withLog=true){
+
+
+
+  const prevFloat=curFloat, prevDay=Math.floor(prevFloat);
+
+
+
+  render(f); const ds=document.getElementById("daySlider"); if(ds) ds.value=f.toFixed(1);
+
+
+
+  if(withLog){
+
+
+
+    const newDay=Math.floor(f);
+
+
+
+    for(let d=Math.max(lastDayLogged+1, prevDay+1); d<=newDay; d++){
+
+
+
+      const battles=battlesForDay(d), dateStr=fmtDate(new Date(WAR_START.getTime()+d*86400000));
+
+
+
+      battles.forEach(b=>{
+
+
+
+        const col=b.attacker==="REV"?"rev":"erw";
+
+
+
+        log(`<b>${dateStr}</b> ??? <span class="${col}">${b.sector}</span> (${b.city}) - ${b.attacker==="REV"?"Revolutionaries":"Erwin"} ${b.outcome} <span style="opacity:.7">(${b.cas} cas.)</span>`);
+
+
+
+        zoomToCity(b.city);
+
+
+
+        playBattleSounds(b.outcome, b.attacker);
+
+
+
+      });
+
+
+
+      const flips=cityState.filter(c=>{
+
+
+
+        const prevFront=frontForFloat(prevFloat), facPrev=factionAt(c.coords[0],c.coords[1],prevFront);
+
+
+
+        return facPrev!==c.faction;
+
+
+
+      });
+
+
+
+      flips.forEach(c=> log(`<b>??? ${c.name} CAPTURED</b> by <span class="${c.faction==="REV"?"rev":"erw"}">${c.faction==="REV"?"REVOLUTIONARIES":"ERWIN"}</span> ??? ${dateStr}`));
+
+
+
+      if(d===DAYS){ log(`<b style="color:#f5e6a3">1 OCT 2026 ??? ARMISTICE</b> Final: <span class="rev">${document.getElementById("revPct").textContent} Rev</span> / <span class="erw">${document.getElementById("erwPct").textContent} Erw</span> - GDP ${gdpTotal.toFixed(0)}B - Casualties ${casual.toLocaleString()}`,true); stopAll(); }
+
+
+
+    }
+
+
+
+    lastDayLogged=Math.max(lastDayLogged,newDay);
+
+
+
+  }
+
+
+
+}
+
+
+
+function zoomToCity(cityName){
+
+
+
+  const city=CITIES0.find(c=>c.name===cityName); if(!city||!gBase) return;
+
+
+
+  const [x,y]=proj(city.coords);
+
+
+
+  const k=2.8;
+
+
+
+  const tx=W/2 - x*k, ty=H/2 - y*k;
+
+
+
+  try{ gBase.interrupt(); }catch(e){}
+
+
+
+  gBase.transition().duration(900).ease(d3.easeCubicOut).attr("transform",`translate(${tx},${ty}) scale(${k})`);
+
+
+
+  const badge=document.getElementById("zoomBadge"); badge.textContent=`??? ZOOM: ${cityName} BATTLE`; badge.classList.add("on");
+
+
+
+  setTimeout(()=>{
+
+
+
+    gBase.transition().duration(1100).ease(d3.easeCubicInOut).attr("transform","translate(0,0) scale(1)");
+
+
+
+    setTimeout(()=> badge.classList.remove("on"), 400);
+
+
+
+  }, 3800);
+
+
+
+}
+
+
+
+function startRealtimeTick(){
+
+
+
+  if(timer) clearInterval(timer);
+
+
+
+  timer=setInterval(()=>{
+
+
+
+    if(!realtime || playing) return;
+
+
+
+    const rf=realFloat();
+
+
+
+    if(Math.abs(rf - curFloat) > 0.005){
+
+
+
+      stepTo(rf, true);
+
+
+
+    }
+
+
+
+    document.getElementById("countdown").textContent= rf>=DAYS?`ARMISTICE 1 OCT 2026`: `${(DAYS-rf).toFixed(1)} DAYS TO 1 OCT - ${Math.floor((1-realProgress())*24)}h`;
+
+
+
+  }, 2000);
+
+
+
+}
+
+
+
+function playFast(){
+
+
+
+  if(curFloat>=DAYS) return;
+
+
+
+  playing=true; realtime=false;
+
+
+
+  document.getElementById("warStatus").textContent="??? FAST SIM";
+
+
+
+  if(fastTimer) clearInterval(fastTimer);
+
+
+
+  fastTimer=setInterval(()=>{ if(curFloat>=DAYS){pauseFast();return;} stepTo(Math.min(DAYS, curFloat+0.25), true); }, 520);
+
+
+
+}
+
+
+
+function pauseFast(){ playing=false; if(fastTimer) clearInterval(fastTimer); fastTimer=null; document.getElementById("warStatus").textContent= curFloat>=DAYS?"??? ARMISTICE":"PAUSED"; }
+
+
+
+function stopAll(){ playing=false; realtime=false; if(timer) clearInterval(timer); if(fastTimer) clearInterval(fastTimer); }
+
+
+
+function bindControls(){
+
+
+
+  document.getElementById("btnRealtime").onclick=()=>{
+
+
+
+    realtime=true; playing=false; if(fastTimer) clearInterval(fastTimer);
+
+
+
+    document.getElementById("btnRealtime").classList.add("active");
+
+
+
+    stepTo(realFloat(), false); startRealtimeTick();
+
+
+
+  };
+
+
+
+  document.getElementById("btnPause").onclick=()=>{ realtime=false; pauseFast(); };
+
+
+
+  // NO SKIP ??? slider/fast/step/reset removed (Chernobyl protocol)
+
+
+
+  document.getElementById("btnSound").onclick=(e)=>{
+
+
+
+    soundOn=!soundOn; e.target.textContent=soundOn?"???? SOUND ON":"???? SOUND OFF"; e.target.style.background=soundOn?"#111":"#fff"; e.target.style.color=soundOn?"var(--gold)":"#111";
+
+
+
+    if(soundOn) playBattleSounds("REV ADVANCE","REV");
+
+
+
+  };
+
+
+
+  document.getElementById("btnTestSound").onclick=()=>{ soundOn=true; document.getElementById("btnSound").textContent="???? SOUND ON"; document.getElementById("btnSound").style.background="#111"; document.getElementById("btnSound").style.color="var(--gold)"; playRealSound(0); setTimeout(()=>playRealSound(1),280); setTimeout(()=>playRealSound(2),560); setTimeout(()=>playRealSound(3),850); setTimeout(()=>playRealSound(8),1050); };
+
+
+
+  document.getElementById("btnSave").onclick=()=>{
+
+
+
+    const src=new XMLSerializer().serializeToString(document.getElementById("map"));
+
+
+
+    const blob=new Blob([`<?xml version="1.0" encoding="UTF-8"?>\n`+src],{type:"image/svg+xml"});
+
+
+
+    const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=`ussr-civilwar-day${curFloat.toFixed(1)}-1oct.svg`; a.click(); URL.revokeObjectURL(url);
+
+
+
+  };
+
+
+
+  document.getElementById("btnFront").onclick=()=>{ showFront=!showFront; const g=document.getElementById("frontG"); if(g) g.style.display=showFront?"block":"none"; };
+
+
+
+  // block any manual seek via devtools ??? no slider to hijack
+
+
+
+}
+
+
+
+init().catch(e=>{console.error(e); document.getElementById("topInfo").textContent="ERR "+e.message;});
+
+
+
+</script>
+
+
+
+</body>
+
+
+
+</html>
+
+
+
