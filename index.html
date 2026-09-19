@@ -77,7 +77,8 @@ input[type="range"]{flex:1;min-width:140px;accent-color:var(--red);height:6px}
     <div class="map-box" id="mapBox">
       <svg id="map" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="tooltip" id="tooltip"></div>
-      <div class="zoom-badge" id="zoomBadge">Ôùë ZOOM: CITY BATTLE</div>
+      <div class="zoom-badge" id="zoomBadge">◉ ZOOM: CITY BATTLE</div>
+      <div id="casualtiesMap" style="position:absolute;top:42px;right:10px;left:auto;background:#111;color:#ff7a7a;border:2px solid #fff;padding:5px 7px;font:800 9px 'IBM Plex Mono';z-index:6;box-shadow:2px 2px 0 #111;pointer-events:none">CASUALTIES —</div>
     </div>
     <div class="timeline">
       <div class="timeline-row">
@@ -471,6 +472,7 @@ function render(f){
   document.getElementById("dayNum").textContent=`DAY ${f.toFixed(1)}`;
   document.getElementById("countdown").textContent=f>=DAYS?`ARMISTICE 1 OCT 2026`: `${(DAYS-f).toFixed(1)} DAYS TO 1 OCT ÔÇó ${Math.floor((1-realProgress())*24)}h`;
   document.getElementById("warStatus").textContent=f>=DAYS?"Ôÿ¡ ARMISTICE ÔÇö WAR ENDS 1 OCT":(realtime?`ÔÅ▒ REAL TIME ${(realProgress()*100).toFixed(1)}%`:(playing?"ÔùÅ FAST SIM":"PAUSED"));
+  const _casMap=document.getElementById("casualtiesMap"); if(_casMap) _casMap.textContent=`☠ ${casual.toLocaleString()} CAS • DAY ${f.toFixed(1)}`;
   document.getElementById("revPct").textContent=revPct+"%"; document.getElementById("erwPct").textContent=erwPct+"%";
   document.getElementById("sRev").textContent=revPct+"% USSR"; document.getElementById("sErw").textContent=erwPct+"% USSR";
   document.getElementById("sRevSub").textContent=`${revCities} CITIES ÔÇó ${revPct>70?'ADVANCING':'HOLDING'}`; document.getElementById("sErwSub").textContent=`${erwCities} CITIES ÔÇó ${erwPct<30?'RETREATING':'DEFENDING'}`;
@@ -508,23 +510,12 @@ function drawMap(front,f){
   defs.append("clipPath").attr("id","ussrClip").append("path").attr("d",mergedD);
   svg.append("rect").attr("width",W).attr("height",H).attr("fill","#b8ad94");
   gBase=svg.append("g").attr("id","gBase");
-  // FIX everything blue + states limitation: back to smooth front (not province centroid) so front cuts through states, balanced
+  // PURE USSR: 0 provinces — smooth front only, no state limitation, balanced like before
   const frontProj=front.map(c=>proj(c));
   const FAR=4000;
   const erwinPts=[...frontProj,[FAR,FAR],[-FAR,FAR],[-FAR,frontProj[0][1]]];
   const erwinPolyD="M"+erwinPts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L ")+" Z";
-  // provinces as neutral base (visible thin white), states thick black ÔÇö HOI4
-  const provG=gBase.append("g").attr("id","provinces");
-  for(let i=0;i<feats.length;i++){
-    const d=path(feats[i]);
-    if(!d) continue;
-    provG.append("path").attr("d", d).attr("fill","#d8cab0").attr("stroke","#ffffff").attr("stroke-width",0.9).attr("opacity",1);
-  }
-  const stateG=gBase.append("g").attr("id","states");
-  for(const st of (window._statesFeats||statesFeats||[])){
-    try{ const d=path(st); if(d) stateG.append("path").attr("d",d).attr("fill","none").attr("stroke","#111").attr("stroke-width",1.9).attr("opacity",0.98); }catch(e){}
-  }
-  // smooth war front ÔÇö balanced, not limited to states (like before but balanced 68/32)
+  // pure war front — no provinces, just smooth clip (0 provinces as requested)
   const warG=gBase.append("g").attr("clip-path","url(#ussrClip)");
   warG.append("rect").attr("x",0).attr("y",0).attr("width",W).attr("height",H).attr("fill","#9e1a1f").attr("opacity",0.92); // REV bigger
   warG.append("path").attr("d",erwinPolyD).attr("fill","#1e3d64").attr("opacity",0.96);
